@@ -2,7 +2,7 @@
 
 namespace Hospital_mangement_system.Domain.Repositories;
 
-public interface IDoctorRepository : IGenericRepository<Doctor>
+public interface IDoctorRepository
 {
     Task<Doctor?> GetByCodeAsync(string code);
 }

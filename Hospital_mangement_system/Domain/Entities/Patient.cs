@@ -12,7 +12,7 @@ public class Patient : Person
     [Column("emergency_contact_name", TypeName = "varchar(150)")]
     public string? EmergencyContactName { get; set; }
     [Phone]
-    [Column("emergency_contact_phone", TypeName = "varchar(20")]
+    [Column("emergency_contact_phone", TypeName = "varchar(20)")]
     public string? EmergencyContactPhone { get; set; }
     //[StringLength(100)]
     //public string? InsuranceProvider { get; set; }
@@ -20,4 +20,9 @@ public class Patient : Person
     //public string? InsurancePolicyNumber { get; set; }
     [Column("blood_type", TypeName = "varchar(5)")]
     public string? BloodType { get; set; }
+
+    public virtual ICollection<Appointment> Appointments { get; set; } = [];
+    //public virtual ICollection<PatientVisit> PatientVisits { get; set; } = new List<PatientVisit>();
+    //public virtual ICollection<PatientService> PatientServices { get; set; } = new List<PatientService>();
+    //public virtual ICollection<Bill> Bills { get; set; } = new List<Bill>();
 }

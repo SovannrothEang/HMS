@@ -1,4 +1,4 @@
-﻿using Hospital_mangement_system.Application.DTO;
+﻿using Hospital_mangement_system.Application.DTO.Doctor;
 using Hospital_mangement_system.Application.Interfaces;
 
 namespace Hospital_mangement_system.Infrastructure.Services;

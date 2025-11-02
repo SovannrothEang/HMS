@@ -27,18 +27,18 @@ where T : class
         await _dbContext.SaveChangesAsync();
         return entity;
     }
-    public Task UpdateAsync(string id, T entity)
+    public async Task<bool> UpdateAsync(string id, T entity)
     {
         _dbSet.Update(entity);
-        return _dbContext.SaveChangesAsync();
+        return await _dbContext.SaveChangesAsync() is 1;
     }
-    public async Task DeleteAsync(string id)
+    public async Task<bool> DeleteAsync(string id)
     {
         var entity = await _dbSet.FindAsync(id);
         if (entity != null)
         {
             _dbSet.Remove(entity);
-            await _dbContext.SaveChangesAsync();
         }
+        return await _dbContext.SaveChangesAsync() is 1;
     }
 }

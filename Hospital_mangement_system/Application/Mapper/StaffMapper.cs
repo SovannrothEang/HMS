@@ -1,15 +1,15 @@
-﻿using Hospital_mangement_system.Application.DTO.Doctor;
+﻿using Hospital_mangement_system.Application.DTO.Staff;
 using Hospital_mangement_system.Domain.Entities;
 
 namespace Hospital_mangement_system.Application.Mapper;
 
-public static class DoctorMapper
+public static class StaffMapper
 {
-    public static Doctor ToEntity(this DoctorDto dto)
+    public static Staff ToEntity(this StaffCreateDto dto)
     {
-        return new Doctor()
+        return new Staff()
         {
-            DoctorId = Guid.NewGuid().ToString(),
+            StaffId = Guid.NewGuid().ToString(),
             Code = dto.Code,
             Firstname = dto.Firstname,
             Lastname = dto.Lastname,
@@ -18,20 +18,18 @@ public static class DoctorMapper
             PhoneNumber = dto.PhoneNumber,
             Address = dto.Address,
             Email = dto.Email,
-            LicenseNumber = dto.LicenseNumber,
-            YearsOfExperiense = dto.YearsOfExperiense,
-            Specialization = dto.Specialization,
+            Position = dto.Position,
             HiredDate = dto.HiredDate,
             Salary = dto.Salary,
-            CreatedAt = DateTime.UtcNow.AddHours(7),
+            DepartmentId = dto.DepartmentId
         };
     }
 
-    public static DoctorDto ToDto(this Doctor entity)
+    public static StaffDto ToDto(this Staff entity)
     {
-        return new DoctorDto()
+        return new StaffDto()
         {
-            DoctorId = entity.DoctorId,
+            StaffId = entity.StaffId,
             Code = entity.Code,
             Firstname = entity.Firstname,
             Lastname = entity.Lastname,
@@ -40,11 +38,12 @@ public static class DoctorMapper
             PhoneNumber = entity.PhoneNumber,
             Address = entity.Address,
             Email = entity.Email,
-            LicenseNumber = entity.LicenseNumber,
-            YearsOfExperiense = entity.YearsOfExperiense,
-            Specialization = entity.Specialization,
+            Position = entity.Position,
             HiredDate = entity.HiredDate,
             Salary = entity.Salary,
+            DepartmentId = entity.DepartmentId,
+            CreatedAt = entity.CreatedAt,
+            UpdatedAt = entity.UpdatedAt
         };
     }
 }

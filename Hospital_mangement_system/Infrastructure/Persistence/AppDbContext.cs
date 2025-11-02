@@ -5,12 +5,24 @@ namespace Hospital_mangement_system.Infrastructure.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
+    public DbSet<Appointment> Appointments { get; set; }
     public DbSet<Department> Departments { get; set; }
-    public DbSet<Staff> Staffs { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
+    public DbSet<Patient> Patients { get; set; }
+    public DbSet<Staff> Staffs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Patient)
+                .WithMany(p => p.Appointments)
+                .HasForeignKey(a => a.PatientId);
+
+        modelBuilder.Entity<Appointment>()
+            .HasOne(a => a.Doctor)
+            .WithMany()
+            .HasForeignKey(a => a.DoctorId);
+
         modelBuilder.Entity<Department>(buildAction =>
         {
             buildAction.Property(d => d.Name)
@@ -79,6 +91,29 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasOne(s => s.Department)
                 .WithMany(d => d.Staffs)
                 .HasForeignKey(d => d.DepartmentId);
+        });
+        modelBuilder.Entity<Patient>(buildAction =>
+        {
+            buildAction.Property(p => p.Firstname)
+                .HasColumnName("firstname")
+                .HasColumnType("varchar(70)")
+                .UseCollation("SQL_Latin1_General_CP850_BIN");
+            buildAction.Property(p => p.Lastname)
+                .HasColumnName("lastname")
+                .HasColumnType("varchar(70)")
+                .UseCollation("SQL_Latin1_General_CP850_BIN");
+            buildAction.HasIndex(p => p.Code).IsUnique();
+            buildAction.ToTable(t =>
+            {
+                t.HasCheckConstraint(
+                    "CHK_CODE_NOT_EMPTY",
+                    $"LTRIM(RTRIM(ISNULL([{nameof(Patient.Code)}], ''))) <> ''"
+                );
+                t.HasCheckConstraint(
+                    "CHK_NAME_NOT_EMPTY",
+                    $"LTRIM(RTRIM({nameof(Patient.Firstname)} + ' ' + {nameof(Patient.Lastname)})) <> ''"
+                );
+            });
         });
 
         // Seed data
