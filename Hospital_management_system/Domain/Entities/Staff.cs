@@ -8,7 +8,7 @@ public class Staff : Person
 {
     [Key]
     [Column("staff_id", TypeName = "varchar(150)")]
-    public string StaffId { get; set; } = string.Empty;
+    public string StaffId { get; init; } = string.Empty;
     [Column("position", TypeName = "varchar(150)")]
     public string Position { get; set; } = string.Empty;
     [Column("hired_date", TypeName = "datetime2")]

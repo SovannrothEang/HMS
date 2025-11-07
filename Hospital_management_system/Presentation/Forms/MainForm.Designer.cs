@@ -29,17 +29,19 @@
         private void InitializeComponent()
         {
             panelSidebar = new Panel();
+            btnDepartment = new Button();
             btnExit = new Button();
             btnDoctor = new Button();
             btnDashboard = new Button();
             mainPanel = new Panel();
-            btnDepartment = new Button();
+            btnStaff = new Button();
             panelSidebar.SuspendLayout();
             SuspendLayout();
             // 
             // panelSidebar
             // 
             panelSidebar.BackColor = SystemColors.ButtonShadow;
+            panelSidebar.Controls.Add(btnStaff);
             panelSidebar.Controls.Add(btnDepartment);
             panelSidebar.Controls.Add(btnExit);
             panelSidebar.Controls.Add(btnDoctor);
@@ -48,8 +50,20 @@
             panelSidebar.Location = new Point(0, 0);
             panelSidebar.Margin = new Padding(4);
             panelSidebar.Name = "panelSidebar";
-            panelSidebar.Size = new Size(194, 739);
+            panelSidebar.Size = new Size(194, 700);
             panelSidebar.TabIndex = 0;
+            // 
+            // btnDepartment
+            // 
+            btnDepartment.BackColor = Color.White;
+            btnDepartment.FlatStyle = FlatStyle.Flat;
+            btnDepartment.Location = new Point(8, 118);
+            btnDepartment.Margin = new Padding(4);
+            btnDepartment.Name = "btnDepartment";
+            btnDepartment.Size = new Size(178, 49);
+            btnDepartment.TabIndex = 3;
+            btnDepartment.Text = "Department";
+            btnDepartment.UseVisualStyleBackColor = false;
             // 
             // btnExit
             // 
@@ -57,7 +71,7 @@
             btnExit.FlatStyle = FlatStyle.Flat;
             btnExit.Font = new Font("Arial", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnExit.ForeColor = Color.White;
-            btnExit.Location = new Point(8, 676);
+            btnExit.Location = new Point(8, 556);
             btnExit.Margin = new Padding(4);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(178, 49);
@@ -69,7 +83,7 @@
             // 
             btnDoctor.BackColor = Color.White;
             btnDoctor.FlatStyle = FlatStyle.Flat;
-            btnDoctor.Location = new Point(8, 175);
+            btnDoctor.Location = new Point(8, 232);
             btnDoctor.Margin = new Padding(4);
             btnDoctor.Name = "btnDoctor";
             btnDoctor.Size = new Size(178, 49);
@@ -95,33 +109,33 @@
             mainPanel.Location = new Point(194, 0);
             mainPanel.Margin = new Padding(4);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(1216, 739);
+            mainPanel.Size = new Size(1200, 700);
             mainPanel.TabIndex = 1;
             // 
-            // btnDepartment
+            // btnStaff
             // 
-            btnDepartment.BackColor = Color.White;
-            btnDepartment.FlatStyle = FlatStyle.Flat;
-            btnDepartment.Location = new Point(8, 118);
-            btnDepartment.Margin = new Padding(4);
-            btnDepartment.Name = "btnDepartment";
-            btnDepartment.Size = new Size(178, 49);
-            btnDepartment.TabIndex = 3;
-            btnDepartment.Text = "Department";
-            btnDepartment.UseVisualStyleBackColor = false;
+            btnStaff.BackColor = Color.White;
+            btnStaff.FlatStyle = FlatStyle.Flat;
+            btnStaff.Location = new Point(8, 175);
+            btnStaff.Margin = new Padding(4);
+            btnStaff.Name = "btnStaff";
+            btnStaff.Size = new Size(178, 49);
+            btnStaff.TabIndex = 4;
+            btnStaff.Text = "Staff";
+            btnStaff.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1410, 739);
+            ClientSize = new Size(1394, 700);
             Controls.Add(mainPanel);
             Controls.Add(panelSidebar);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(4);
-            MaximumSize = new Size(1410, 739);
-            MinimumSize = new Size(1410, 739);
+            MaximumSize = new Size(1394, 700);
+            MinimumSize = new Size(1394, 700);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "HMS";
@@ -137,5 +151,6 @@
         private Button btnDoctor;
         private Button btnExit;
         private Button btnDepartment;
+        private Button btnStaff;
     }
 }

@@ -8,7 +8,7 @@ public class Appointment : BaseEntity
 {
     [Key]
     [Column("appointment_id", TypeName = "varchar(150)")]
-    public string AppointmentId { get; set; } = string.Empty;
+    public string AppointmentId { get; init; } = string.Empty;
 
     [Column("patient_id", TypeName = "varchar(150)")]
     public string PatientId { get; set; } = string.Empty;

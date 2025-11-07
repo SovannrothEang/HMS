@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Application\DTO\Patient\" />
+    <Folder Include="Application\DTO\Staff\" />
     <Folder Include="Presentation\Resources\" />
   </ItemGroup>
 

@@ -12,7 +12,7 @@ public abstract class BaseEntity
     [Column("is_deleted", TypeName = "bit")]
     public bool IsDeleted { get; set; } = false;
     [Column("created_at", TypeName = "datetime2")]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     [Column("updated_at", TypeName = "datetime2")]
     public DateTime? UpdatedAt { get; set; } = null;
 }

@@ -8,7 +8,7 @@ public class Patient : Person
 {
     [Key]
     [Column("patient_id", TypeName = "varchar(150)")]
-    public string PatientId { get; set; } = string.Empty;
+    public string PatientId { get; init; } = string.Empty;
     [Column("emergency_contact_name", TypeName = "varchar(150)")]
     public string? EmergencyContactName { get; set; }
     [Phone]

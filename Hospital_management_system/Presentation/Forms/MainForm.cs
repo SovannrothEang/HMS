@@ -17,18 +17,22 @@ public partial class MainForm : Form
         _serviceProvider = serviceProvider;
 
         // Preload data
-
-
-        this.Shown += (s, e) =>
-        {
-            ShowControl(() => _serviceProvider.GetRequiredService<DashboardControl>());
-        };
         //this.HandleCreated += async (s, e) =>
         //{
         //    if (!DesignMode)
         //        await PreLoadDataAsync();
         //};
-        PreLoadDataAsync().ConfigureAwait(false);
+
+        this.Shown += async (s, e) =>
+        {
+            ShowControl(() => _serviceProvider.GetRequiredService<DashboardControl>());
+            await PreLoadDataAsync();
+        };
+        //this.Load += async (s, e) =>
+        //{
+        //    await PreLoadDataAsync();
+        //};
+
         btnDashboard.Click += (s, e) =>
         {
             ShowControl(() => _serviceProvider.GetRequiredService<DashboardControl>());
@@ -40,6 +44,10 @@ public partial class MainForm : Form
         btnDepartment.Click += (s, e) =>
         {
             ShowControl(() => _serviceProvider.GetRequiredService<DepartmentControl>());
+        };
+        btnStaff.Click += (s, e) =>
+        {
+            ShowControl(() => _serviceProvider.GetRequiredService<StaffControl>());
         };
         btnExit.Click += (s, e) =>
         {
@@ -88,15 +96,54 @@ public partial class MainForm : Form
         try
         {
             GlobalState.Departments.Clear();
-            var deptRepo = _serviceProvider
-                .GetRequiredService<IGenericRepository<Department>>();
-            GlobalState.Departments.AddRange(
-                (await deptRepo.GetAllAsync())
-                .Select(d => d.ToDto()));
+            var departments = await Task.Run(async () =>
+            {
+                var deptRepo = _serviceProvider
+                    .GetRequiredService<IGenericRepository<Department>>();
+                return await deptRepo.GetAllAsync();
+            });
+            foreach (var department in departments)
+            {
+                GlobalState.Departments.Add(department.ToDto());
+            }
+
+            GlobalState.Staffs.Clear();
+            var staffs = await Task.Run(async () =>
+            {
+                var staffRepo = _serviceProvider
+                    .GetRequiredService<IGenericRepository<Staff>>();
+                return await staffRepo.GetAllAsync();
+            });
+            foreach (var staff in staffs)
+            {
+                GlobalState.Staffs.Add(staff.ToDto());
+            }
+
+            //#region Departments
+            //GlobalState.Departments.Clear();
+            //var deptRepo = _serviceProvider
+            //    .GetRequiredService<IGenericRepository<Department>>();
+            //var departments = await deptRepo.GetAllAsync();
+            //foreach (var department in departments)
+            //{
+            //    GlobalState.Departments.Add(department.ToDto());
+            //}
+            //#endregion
+
+            //#region Staffs
+            //GlobalState.Staffs.Clear();
+            //var staffRepo = _serviceProvider
+            //    .GetRequiredService<IGenericRepository<Staff>>();
+            //var staffs = await staffRepo.GetAllAsync();
+            //foreach (var staff in staffs)
+            //{
+            //    GlobalState.Staffs.Add(staff.ToDto());
+            //}
+            //#endregion
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error loading departments: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"Database error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

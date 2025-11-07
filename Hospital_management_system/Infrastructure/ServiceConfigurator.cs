@@ -24,6 +24,7 @@ public static class ServiceConfigurator
         services.AddTransient<DashboardControl>();
         services.AddTransient<DepartmentControl>();
         services.AddTransient<DoctorControl>();
+        services.AddTransient<StaffControl>();
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IDoctorRepository, DoctorRepository>();

@@ -1,9 +1,10 @@
 ﻿using Hospital_management_system.Domain.ValueObjects;
 
-namespace Hospital_management_system.Application.DTO.Staff;
+namespace Hospital_management_system.Application.DTO;
 
-public class StaffCreateDto
+public class StaffDto
 {
+    public string StaffId { get; set; } = string.Empty;
     public string Code { get; set; } = string.Empty;
     public string Firstname { get; set; } = string.Empty;
     public string Lastname { get; set; } = string.Empty;
@@ -16,5 +17,7 @@ public class StaffCreateDto
     public DateTime HiredDate { get; set; }
     public decimal Salary { get; set; }
     public string DepartmentId { get; set; } = string.Empty;
-
+    public bool StopWorking { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 }

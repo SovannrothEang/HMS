@@ -18,17 +18,16 @@ public partial class DepartmentControl : UserControl
         _repo = repo;
         InitializeComponent();
         LoadControlsConfiguration();
-        DisableControls();
+        DisableControls(true);
 
         _bsDepartments.DataSource = GlobalState.Departments; // set BindingSource data source
-        deprtDgv.DataSource = _bsDepartments; // bind DataGridView to BindingSource
+        dgvDept.DataSource = _bsDepartments; // bind DataGridView to BindingSource
+        _bsDepartments.ResetBindings(false);
 
-        //this.HandleCreated += async (s, e) => 
-        //{
-        //    if (!DesignMode)
-        //        await LoadDepartmentsAsync();
-        //};
-        deprtDgv.SelectionChanged += DeprtDgv_SelectionChanged;
+        dgvDept.SelectionChanged += DeprtDgv_SelectionChanged;
+        //this.Load += async (s, e) => await LoadDepartmentsAsync();
+
+        #region Click Events
         btnRefresh.Click += async (s, e) =>
         {
             await LoadDepartmentsAsync();
@@ -48,7 +47,7 @@ public partial class DepartmentControl : UserControl
                     if (confirmResult == DialogResult.Yes)
                     {
                         IsNew = false;
-                        if (deprtDgv.CurrentRow != null)
+                        if (dgvDept.CurrentRow != null)
                         {
                             DeprtDgv_SelectionChanged(this, EventArgs.Empty);
                         }
@@ -57,13 +56,13 @@ public partial class DepartmentControl : UserControl
                 else
                 {
                     IsNew = false;
-                    if (deprtDgv.CurrentRow != null)
+                    if (dgvDept.CurrentRow != null)
                     {
                         DeprtDgv_SelectionChanged(this, EventArgs.Empty);
                     }
                 }
             }
-            DisableControls();
+            DisableControls(true);
         };
         btnNew.Click += (s, e) =>
         {
@@ -88,44 +87,82 @@ public partial class DepartmentControl : UserControl
 
             if (!IsNew)
             {
-                var id = deprtDgv.CurrentRow!.Cells["colId"].Value!.ToString()!;
-                await _repo.UpdateAsync(id, new Department
+                var id = dgvDept.CurrentRow!.Cells["colId"].Value!.ToString()!;
+                try
                 {
-                    DepartmentId = id,
-                    Code = code,
-                    Name = name,
-                    Description = description
-                });
-                var d = GlobalState.Departments.FirstOrDefault(x => x.DepartmentId == id);
-                if (d != null)
-                {
-                    d.Code = code;
-                    d.Name = name;
-                    d.Description = description;
-                }
-
-                _bsDepartments.ResetBindings(false);
-            }
-            else
-            {
-                var department = await _repo
-                    .CreateAsync(new Department
+                    await _repo.UpdateAsync(id, new Department
                     {
-                        DepartmentId = Guid.NewGuid().ToString(),
+                        DepartmentId = id,
                         Code = code,
                         Name = name,
                         Description = description
                     });
+                    var d = GlobalState.Departments.FirstOrDefault(x => x.DepartmentId == id);
+                    if (d != null)
+                    {
+                        d.Code = code;
+                        d.Name = name;
+                        d.Description = description;
+                    }
+
+                    _bsDepartments.ResetBindings(false);
+
+                    MessageBox.Show(
+                        "Successfully updated",
+                        "Updated department",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Failed to update, error: {ex.Message}",
+                        "Updated department",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
+            }
+            else
+            {
+                try
+                {
+                    var department = await _repo
+                        .CreateAsync(new Department
+                        {
+                            DepartmentId = Guid.NewGuid().ToString(),
+                            Code = code,
+                            Name = name,
+                            Description = description
+                        });
                 GlobalState.Departments.Add(department.ToDto());
                 IsNew = false;
                 _bsDepartments.ResetBindings(false);
+
+                    MessageBox.Show(
+                        "Successfully created",
+                        "Created department",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Failed to create, error: {ex.Message}",
+                        "Created department",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
             }
-            DisableControls();
+            DisableControls(true);
         };
         btnDelete.Click += async (s, e) =>
         {
-            if (deprtDgv.CurrentRow == null) return;
-            var id = deprtDgv.CurrentRow.Cells["colId"].Value!.ToString()!;
+            if (dgvDept.CurrentRow == null) return;
+            var id = dgvDept.CurrentRow.Cells["colId"].Value!.ToString()!;
             var confirmResult = MessageBox.Show("Are you sure to delete this department?", 
                 "Confirm Delete", 
                 MessageBoxButtons.YesNo, 
@@ -149,12 +186,14 @@ public partial class DepartmentControl : UserControl
                 }
             }
         };
+        #endregion
     }
-
+    #region UI config
     private void LoadControlsConfiguration()
     {
-        deprtDgv.AutoGenerateColumns = false;
-        deprtDgv.Columns.AddRange([
+        dgvDept.AutoGenerateColumns = false;
+        #region Columns
+        dgvDept.Columns.AddRange([
             new DataGridViewTextBoxColumn {
                 Name = "colId",
                 DataPropertyName = "DepartmentId",
@@ -191,32 +230,29 @@ public partial class DepartmentControl : UserControl
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             }
         ]);
+        #endregion
     }
-
-    private void DisableControls(bool con = true)
+    private void DisableControls(bool con)
     {
-        if (!con)
-        {
-            tbCode.ReadOnly = false;
-            tbName.ReadOnly = false;
-            tbDescription.ReadOnly = false;
-        }
-        else
-        {
-            tbCode.ReadOnly = true;
-            tbName.ReadOnly = true;
-            tbDescription.ReadOnly = true;
-        }
+        tbCode.Enabled = !con;
+        tbName.Enabled = !con;
+        tbDescription.Enabled = !con;
     }
+    #endregion
 
     private async Task LoadDepartmentsAsync()
     {
+        dgvDept.Enabled = false;
         try
         {
-            deprtDgv.Enabled = false;
             var departments = await _repo.GetAllAsync();
+
             GlobalState.Departments.Clear();
-            GlobalState.Departments.AddRange(departments.Select(d => d.ToDto()));
+            foreach (var department in departments)
+            {
+                GlobalState.Departments.Add(department.ToDto());
+            }
+
             _bsDepartments.ResetBindings(false);
         }
         catch (Exception ex)
@@ -225,15 +261,15 @@ public partial class DepartmentControl : UserControl
         }
         finally
         {
-            deprtDgv.Enabled = true;
+            dgvDept.Enabled = true;
         }
     }
 
     private void DeprtDgv_SelectionChanged(object? sender, EventArgs e)
     {
-        if (deprtDgv.CurrentRow == null) return;
+        if (dgvDept.CurrentRow == null) return;
 
-        if (deprtDgv.CurrentRow.DataBoundItem is DepartmentDto selectedDept)
+        if (dgvDept.CurrentRow.DataBoundItem is DepartmentDto selectedDept)
         {
             tbCode.Text = selectedDept.Code;
             tbName.Text = selectedDept.Name;

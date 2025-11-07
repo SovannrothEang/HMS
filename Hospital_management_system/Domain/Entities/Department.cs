@@ -8,7 +8,7 @@ public class Department : BaseEntity
 {
     [Key]
     [Column("department_id", TypeName = "varchar(150)")]
-    public string DepartmentId { get; set; } = string.Empty;
+    public string DepartmentId { get; init; } = string.Empty;
     [Column("name", TypeName = "varchar(150)")]
     public string Name { get; set; } = string.Empty;
     [Column("description", TypeName = "varchar(500)")]
