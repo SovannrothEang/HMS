@@ -1,5 +1,6 @@
 ﻿using Hospital_management_system.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Hospital_management_system.Infrastructure.Persistence;
 
@@ -41,6 +42,20 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Automatically apply soft delete filters
+        //foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        //{
+        //    if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+        //    {
+        //        var parameter = Expression.Parameter(entityType.ClrType, "e");
+        //        var prop = Expression.Property(parameter, "IsDeleted");
+        //        var condition = Expression.Equal(prop, Expression.Constant(false));
+        //        var lambda = Expression.Lambda(condition, parameter);
+
+        //        modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
+        //    }
+        //}
+
         modelBuilder.Entity<Appointment>(buildAction =>
         {
             buildAction.HasIndex(a => a.AppointmentDate);
@@ -147,5 +162,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         //    new Department { DepartmentId = Guid.NewGuid().ToString(), Name = "General Medicine", Description = "General Health Department" },
         //    new Department { DepartmentId = Guid.NewGuid().ToString(), Name = "Emergency", Description = "Emergency Department" }
         //);
+
+
+        //base.OnModelCreating(modelBuilder);
     }
 }

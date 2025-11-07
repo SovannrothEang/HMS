@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Hospital_management_system.Domain.Entities;
 
 [Table("tbl_appointments")]
-public class Appointment : BaseClass
+public class Appointment : BaseEntity
 {
     [Key]
     [Column("appointment_id", TypeName = "varchar(150)")]

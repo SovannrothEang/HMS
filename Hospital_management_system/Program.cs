@@ -11,16 +11,28 @@ internal static class Program
     [STAThread]
     static void Main()
     {
-        // To customize application configuration such as set high DPI settings or default font,
-        // see https://aka.ms/applicationconfiguration.
-        ApplicationConfiguration.Initialize();
-
-        var services = new ServiceCollection();
-        services.ConfigureServices();
-
-        var provider = services.BuildServiceProvider();
-
         System.Windows.Forms
-            .Application.Run(provider.GetRequiredService<MainForm>());
+            .Application.EnableVisualStyles();
+        System.Windows.Forms
+            .Application.SetCompatibleTextRenderingDefault(false);
+        try
+        {
+            ApplicationConfiguration.Initialize();
+
+            var services = new ServiceCollection();
+            services.ConfigureServices();
+
+            var provider = services.BuildServiceProvider();
+
+            System.Windows.Forms
+                .Application.Run(provider.GetRequiredService<MainForm>());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Application startup error: {ex.Message}", "Critical Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Environment.Exit(1);
+        }
+        ;
     }
 }

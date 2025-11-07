@@ -14,26 +14,18 @@ public static class ServiceConfigurator
     {
         services.AddDbContext<AppDbContext>(options =>
         {
-            options.UseSqlServer("""
-
-                Data Source=localhost\\MSSQLSERVER2022;
-                Initial Catalog=hms;
-                Integrated Security=True;
-                Persist Security Info=False;
-                Pooling=False;
-                MultipleActiveResultSets=False;
-                Encrypt=False;
-                TrustServerCertificate=False
-                
-                """);   
+            options.UseSqlServer(
+                @"Data Source=localhost\MSSQLSERVER2022;Initial Catalog=hms;Integrated Security=True;TrustServerCertificate=True;");
         });
 
         services.AddSingleton<MainForm>();
         services.AddTransient<LoginForm>();
 
         services.AddTransient<DashboardControl>();
+        services.AddTransient<DepartmentControl>();
         services.AddTransient<DoctorControl>();
 
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IDoctorRepository, DoctorRepository>();
 
         return services;

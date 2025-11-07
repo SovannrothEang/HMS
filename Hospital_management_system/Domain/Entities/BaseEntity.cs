@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hospital_management_system.Domain.Entities;
-public abstract class BaseClass
+public abstract class BaseEntity
 {
     [Required]
     [Column("code", TypeName = "varchar(150)")]

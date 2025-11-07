@@ -33,12 +33,14 @@
             btnDoctor = new Button();
             btnDashboard = new Button();
             mainPanel = new Panel();
+            btnDepartment = new Button();
             panelSidebar.SuspendLayout();
             SuspendLayout();
             // 
             // panelSidebar
             // 
             panelSidebar.BackColor = SystemColors.ButtonShadow;
+            panelSidebar.Controls.Add(btnDepartment);
             panelSidebar.Controls.Add(btnExit);
             panelSidebar.Controls.Add(btnDoctor);
             panelSidebar.Controls.Add(btnDashboard);
@@ -67,7 +69,7 @@
             // 
             btnDoctor.BackColor = Color.White;
             btnDoctor.FlatStyle = FlatStyle.Flat;
-            btnDoctor.Location = new Point(8, 118);
+            btnDoctor.Location = new Point(8, 175);
             btnDoctor.Margin = new Padding(4);
             btnDoctor.Name = "btnDoctor";
             btnDoctor.Size = new Size(178, 49);
@@ -96,6 +98,18 @@
             mainPanel.Size = new Size(1216, 739);
             mainPanel.TabIndex = 1;
             // 
+            // btnDepartment
+            // 
+            btnDepartment.BackColor = Color.White;
+            btnDepartment.FlatStyle = FlatStyle.Flat;
+            btnDepartment.Location = new Point(8, 118);
+            btnDepartment.Margin = new Padding(4);
+            btnDepartment.Name = "btnDepartment";
+            btnDepartment.Size = new Size(178, 49);
+            btnDepartment.TabIndex = 3;
+            btnDepartment.Text = "Department";
+            btnDepartment.UseVisualStyleBackColor = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
@@ -122,5 +136,6 @@
         private Button btnDashboard;
         private Button btnDoctor;
         private Button btnExit;
+        private Button btnDepartment;
     }
 }

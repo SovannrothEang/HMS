@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hospital_management_system.Domain.Entities;
 
-public abstract class Person : BaseClass
+public abstract class Person : BaseEntity
 {
     [Required]
     [Column("firstname", TypeName = "varchar(70)")]

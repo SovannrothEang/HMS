@@ -1,4 +1,6 @@
-﻿namespace Hospital_management_system.Presentation.State;
+﻿using Hospital_management_system.Application.DTO;
+
+namespace Hospital_management_system.Presentation.State;
 
 public static class GlobalState
 {
@@ -8,17 +10,19 @@ public static class GlobalState
     public static DateTime LastLoginTime { get; set; }
     public static bool IsUserLoggedIn { get; set; } = false;
 
-    // Recently accessed records
-    public static List<int> RecentPatientIds { get; set; } = new List<int>();
-    public static List<int> RecentDoctorIds { get; set; } = new List<int>();
 
-    public static void AddRecentPatient(int patientId)
-    {
-        if (!RecentPatientIds.Contains(patientId))
-        {
-            RecentPatientIds.Insert(0, patientId);
-            if (RecentPatientIds.Count > 10) // Keep only last 10
-                RecentPatientIds.RemoveAt(RecentPatientIds.Count - 1);
-        }
-    }
+    // Recently accessed records
+    public static List<DepartmentDto> Departments { get; set; } = [];
+
+    //public static List<int> RecentDoctorIds { get; set; } = new List<int>();
+
+    //public static void AddRecentPatient(int patientId)
+    //{
+    //    if (!RecentPatientIds.Contains(patientId))
+    //    {
+    //        RecentPatientIds.Insert(0, patientId);
+    //        if (RecentPatientIds.Count > 10) // Keep only last 10
+    //            RecentPatientIds.RemoveAt(RecentPatientIds.Count - 1);
+    //    }
+    //}
 }
