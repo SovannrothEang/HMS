@@ -95,6 +95,7 @@ public partial class MainForm : Form
     {
         try
         {
+            #region Departments
             GlobalState.Departments.Clear();
             var departments = await Task.Run(async () =>
             {
@@ -106,40 +107,21 @@ public partial class MainForm : Form
             {
                 GlobalState.Departments.Add(department.ToDto());
             }
+            #endregion
 
+            #region Staffs
             GlobalState.Staffs.Clear();
             var staffs = await Task.Run(async () =>
             {
                 var staffRepo = _serviceProvider
-                    .GetRequiredService<IGenericRepository<Staff>>();
-                return await staffRepo.GetAllAsync();
+                    .GetRequiredService<IStaffRepository>();
+                return await staffRepo.GetAllWithDepartments();
             });
             foreach (var staff in staffs)
             {
                 GlobalState.Staffs.Add(staff.ToDto());
             }
-
-            //#region Departments
-            //GlobalState.Departments.Clear();
-            //var deptRepo = _serviceProvider
-            //    .GetRequiredService<IGenericRepository<Department>>();
-            //var departments = await deptRepo.GetAllAsync();
-            //foreach (var department in departments)
-            //{
-            //    GlobalState.Departments.Add(department.ToDto());
-            //}
-            //#endregion
-
-            //#region Staffs
-            //GlobalState.Staffs.Clear();
-            //var staffRepo = _serviceProvider
-            //    .GetRequiredService<IGenericRepository<Staff>>();
-            //var staffs = await staffRepo.GetAllAsync();
-            //foreach (var staff in staffs)
-            //{
-            //    GlobalState.Staffs.Add(staff.ToDto());
-            //}
-            //#endregion
+            #endregion
         }
         catch (Exception ex)
         {

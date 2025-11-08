@@ -131,7 +131,7 @@
             btnSubmit.Location = new Point(929, 155);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(99, 38);
-            btnSubmit.TabIndex = 24;
+            btnSubmit.TabIndex = 13;
             btnSubmit.Text = "Submit";
             btnSubmit.UseVisualStyleBackColor = true;
             // 
@@ -140,7 +140,7 @@
             btnCancel.Location = new Point(824, 155);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
-            btnCancel.TabIndex = 23;
+            btnCancel.TabIndex = 12;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -159,7 +159,7 @@
             tbFirstName.Multiline = true;
             tbFirstName.Name = "tbFirstName";
             tbFirstName.Size = new Size(266, 29);
-            tbFirstName.TabIndex = 19;
+            tbFirstName.TabIndex = 2;
             // 
             // lbCode
             // 
@@ -176,7 +176,7 @@
             tbCode.Multiline = true;
             tbCode.Name = "tbCode";
             tbCode.Size = new Size(266, 29);
-            tbCode.TabIndex = 17;
+            tbCode.TabIndex = 1;
             // 
             // dgvStaff
             // 
@@ -218,7 +218,7 @@
             tbLastName.Multiline = true;
             tbLastName.Name = "tbLastName";
             tbLastName.Size = new Size(266, 29);
-            tbLastName.TabIndex = 29;
+            tbLastName.TabIndex = 3;
             // 
             // label2
             // 
@@ -253,7 +253,7 @@
             tbPhoneNumber.Multiline = true;
             tbPhoneNumber.Name = "tbPhoneNumber";
             tbPhoneNumber.Size = new Size(228, 29);
-            tbPhoneNumber.TabIndex = 35;
+            tbPhoneNumber.TabIndex = 6;
             // 
             // label5
             // 
@@ -270,7 +270,7 @@
             tbAddress.Multiline = true;
             tbAddress.Name = "tbAddress";
             tbAddress.Size = new Size(228, 29);
-            tbAddress.TabIndex = 37;
+            tbAddress.TabIndex = 7;
             // 
             // label6
             // 
@@ -287,7 +287,7 @@
             tbEmail.Multiline = true;
             tbEmail.Name = "tbEmail";
             tbEmail.Size = new Size(228, 29);
-            tbEmail.TabIndex = 39;
+            tbEmail.TabIndex = 8;
             // 
             // label7
             // 
@@ -313,7 +313,7 @@
             tbSalary.Multiline = true;
             tbSalary.Name = "tbSalary";
             tbSalary.Size = new Size(228, 29);
-            tbSalary.TabIndex = 43;
+            tbSalary.TabIndex = 10;
             // 
             // label9
             // 
@@ -329,31 +329,34 @@
             dtpDob.Location = new Point(116, 159);
             dtpDob.Name = "dtpDob";
             dtpDob.Size = new Size(266, 26);
-            dtpDob.TabIndex = 47;
+            dtpDob.TabIndex = 5;
             // 
             // cmbGender
             // 
+            cmbGender.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGender.FormattingEnabled = true;
             cmbGender.Location = new Point(116, 127);
             cmbGender.Name = "cmbGender";
             cmbGender.Size = new Size(143, 26);
-            cmbGender.TabIndex = 48;
+            cmbGender.TabIndex = 4;
             // 
             // cmbPosition
             // 
+            cmbPosition.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPosition.FormattingEnabled = true;
             cmbPosition.Location = new Point(549, 127);
             cmbPosition.Name = "cmbPosition";
             cmbPosition.Size = new Size(228, 26);
-            cmbPosition.TabIndex = 49;
+            cmbPosition.TabIndex = 9;
             // 
             // cmbDepartment
             // 
+            cmbDepartment.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbDepartment.FormattingEnabled = true;
             cmbDepartment.Location = new Point(920, 22);
             cmbDepartment.Name = "cmbDepartment";
             cmbDepartment.Size = new Size(228, 26);
-            cmbDepartment.TabIndex = 50;
+            cmbDepartment.TabIndex = 11;
             // 
             // StaffControl
             // 

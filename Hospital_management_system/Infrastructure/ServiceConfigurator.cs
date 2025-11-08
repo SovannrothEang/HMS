@@ -28,6 +28,7 @@ public static class ServiceConfigurator
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IDoctorRepository, DoctorRepository>();
+        services.AddScoped<IStaffRepository, StaffRepository>();
 
         return services;
     }

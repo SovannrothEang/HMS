@@ -6,4 +6,6 @@ public interface IStaffRepository
 {
     Task<Staff?> GetByCodeAsync(string code);
     Task<Staff?> GetByEmailAsync(string email);
+    Task<Staff?> GetByIdWithDepartment(string id);
+    Task<IEnumerable<Staff>> GetAllWithDepartments();
 }

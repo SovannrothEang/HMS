@@ -24,7 +24,12 @@ public partial class DepartmentControl : UserControl
         dgvDept.DataSource = _bsDepartments; // bind DataGridView to BindingSource
         _bsDepartments.ResetBindings(false);
 
-        dgvDept.SelectionChanged += DeprtDgv_SelectionChanged;
+        dgvDept.SelectionChanged += OnDgvDeptSelectionChanged;
+        dgvDept.DataBindingComplete += (s, e) =>
+        {
+            if (dgvDept.Columns.Contains("colId"))
+                dgvDept.Columns["colId"].Visible = false;
+        };
         //this.Load += async (s, e) => await LoadDepartmentsAsync();
 
         #region Click Events
@@ -49,7 +54,7 @@ public partial class DepartmentControl : UserControl
                         IsNew = false;
                         if (dgvDept.CurrentRow != null)
                         {
-                            DeprtDgv_SelectionChanged(this, EventArgs.Empty);
+                            OnDgvDeptSelectionChanged(this, EventArgs.Empty);
                         }
                     }
                 }
@@ -58,7 +63,7 @@ public partial class DepartmentControl : UserControl
                     IsNew = false;
                     if (dgvDept.CurrentRow != null)
                     {
-                        DeprtDgv_SelectionChanged(this, EventArgs.Empty);
+                        OnDgvDeptSelectionChanged(this, EventArgs.Empty);
                     }
                 }
             }
@@ -71,13 +76,13 @@ public partial class DepartmentControl : UserControl
             tbName.Clear();
             tbDescription.Clear();
             DisableControls(false);
-            tbCode.Cursor = this.Cursor;
+            tbCode.Focus();
         };
         btnUpdate.Click += (s, e) =>
         {
             IsNew = false;
             DisableControls(false);
-            tbCode.Cursor = this.Cursor;
+            tbCode.Focus();
         };
         btnSubmit.Click += async (s, e) =>
         {
@@ -105,6 +110,7 @@ public partial class DepartmentControl : UserControl
                         d.Description = description;
                     }
 
+                    IsNew = false;
                     _bsDepartments.ResetBindings(false);
 
                     MessageBox.Show(
@@ -177,13 +183,13 @@ public partial class DepartmentControl : UserControl
                     {
                         GlobalState.Departments.Remove(d);
                     }
-                    _bsDepartments.ResetBindings(false);
                 }
                 else
                 {
                     MessageBox.Show("Failed to delete the department.", "Error", 
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                _bsDepartments.ResetBindings(false);
             }
         };
         #endregion
@@ -192,6 +198,7 @@ public partial class DepartmentControl : UserControl
     private void LoadControlsConfiguration()
     {
         dgvDept.AutoGenerateColumns = false;
+
         #region Columns
         dgvDept.Columns.AddRange([
             new DataGridViewTextBoxColumn {
@@ -265,7 +272,7 @@ public partial class DepartmentControl : UserControl
         }
     }
 
-    private void DeprtDgv_SelectionChanged(object? sender, EventArgs e)
+    private void OnDgvDeptSelectionChanged(object? sender, EventArgs e)
     {
         if (dgvDept.CurrentRow == null) return;
 

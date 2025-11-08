@@ -179,17 +179,16 @@
             tbCode.Size = new Size(228, 29);
             tbCode.TabIndex = 2;
             // 
-            // deprtDgv
+            // dgvDept
             // 
             dgvDept.AllowUserToAddRows = false;
             dgvDept.AllowUserToDeleteRows = false;
             dgvDept.AllowUserToResizeColumns = false;
             dgvDept.AllowUserToResizeRows = false;
-            dgvDept.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvDept.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDept.Location = new Point(17, 238);
             dgvDept.MultiSelect = false;
-            dgvDept.Name = "deprtDgv";
+            dgvDept.Name = "dgvDept";
             dgvDept.ReadOnly = true;
             dgvDept.RowHeadersVisible = false;
             dgvDept.Size = new Size(1164, 431);

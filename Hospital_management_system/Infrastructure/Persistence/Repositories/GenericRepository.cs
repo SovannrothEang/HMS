@@ -17,7 +17,7 @@ where T : class
         {
             return await _dbSet.AsNoTracking()
                 .Where(e => EF.Property<bool>(e, "IsDeleted") == false)
-                .ToListAsync() ?? [];
+                .ToListAsync();
         }
         catch (Exception ex)
         {

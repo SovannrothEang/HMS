@@ -14,7 +14,7 @@ public abstract class Person : BaseEntity
     [Column("dob", TypeName = "varchar(150)")]
     public DateTime DOB { get; set; }
     [Required]
-    [Column("gender", TypeName = "varchar(50)")]
+    [Column("gender", TypeName = "integer")]
     public Gender Gender { get; set; }
     [Phone]
     [Column("phonenumber", TypeName = "varchar(20)")]

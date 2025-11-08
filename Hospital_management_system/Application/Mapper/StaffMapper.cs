@@ -11,8 +11,8 @@ public static class StaffMapper
         {
             StaffId = Guid.NewGuid().ToString(),
             Code = dto.Code,
-            FirstName = dto.Firstname,
-            LastName = dto.Lastname,
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
             Gender = dto.Gender,
             DOB = dto.DOB,
             PhoneNumber = dto.PhoneNumber,
@@ -31,8 +31,8 @@ public static class StaffMapper
         {
             StaffId = entity.StaffId,
             Code = entity.Code,
-            Firstname = entity.FirstName,
-            Lastname = entity.LastName,
+            FirstName = entity.FirstName,
+            LastName = entity.LastName,
             Gender = entity.Gender,
             DOB = entity.DOB,
             PhoneNumber = entity.PhoneNumber,
@@ -42,6 +42,7 @@ public static class StaffMapper
             HiredDate = entity.HiredDate,
             Salary = entity.Salary,
             DepartmentId = entity.DepartmentId,
+            Department = entity.Department?.ToDto(),
             CreatedAt = entity.CreatedAt,
             UpdatedAt = entity.UpdatedAt
         };

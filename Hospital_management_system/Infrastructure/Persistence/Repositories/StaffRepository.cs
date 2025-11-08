@@ -1,13 +1,28 @@
 ﻿using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Hospital_management_system.Infrastructure.Persistence.Repositories;
 
 public class StaffRepository (AppDbContext context) : IStaffRepository
 {
     private readonly AppDbContext _context = context;
+    public async Task<IEnumerable<Staff>> GetAllWithDepartments()
+    {
+        return await _context.Staffs
+            .AsNoTracking()
+            .Include(s => s.Department)
+            .Where(e => EF.Property<bool>(e, "IsDeleted") == false)
+            .ToListAsync();
+    }
+    public async Task<Staff?> GetByIdWithDepartment(string id)
+    {
+        return await _context.Staffs
+            .AsNoTracking()
+            .Include(s => s.Department)
+            .FirstOrDefaultAsync(s => s.StaffId == id);
+    }
+
     public async Task<Staff?> GetByCodeAsync(string code)
     {
         return await _context.Staffs
@@ -19,4 +34,5 @@ public class StaffRepository (AppDbContext context) : IStaffRepository
         return await _context.Staffs
             .FirstOrDefaultAsync(s => s.Email == email);
     }
+    
 }
