@@ -12,6 +12,7 @@ public class DoctorRepository (AppDbContext context) : IDoctorRepository
         return await _context.Doctors
             .Include(d => d.Staff)
             .ThenInclude(s => s.Department)
+            .Where(d => d.IsDeleted == false)
             .ToListAsync();
     }
     public async Task<Doctor?> GetByIdWithStaffAsync(string id)
@@ -19,6 +20,7 @@ public class DoctorRepository (AppDbContext context) : IDoctorRepository
         return await _context.Doctors
             .Include(d => d.Staff)
             .ThenInclude(s => s.Department)
+            .Where(d => d.IsDeleted == false)
             .FirstOrDefaultAsync(d => d.DoctorId == id);
     }
     public async Task<Doctor?> GetWithAppointmentsAsync(string id)
@@ -27,6 +29,7 @@ public class DoctorRepository (AppDbContext context) : IDoctorRepository
             .Include(d => d.Staff)
             .Include(d => d.Appointments)
             .ThenInclude(d => d.Patient)
+            .Where(d => d.IsDeleted == false)
             .FirstOrDefaultAsync(d => d.DoctorId == id);
     }
     public async Task<IEnumerable<Doctor>> SearchAsync(string searchTerm)

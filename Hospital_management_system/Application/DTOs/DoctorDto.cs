@@ -1,6 +1,4 @@
-﻿using Hospital_management_system.Domain.ValueObjects;
-
-namespace Hospital_management_system.Application.DTO;
+﻿namespace Hospital_management_system.Application.DTOs;
 
 public class DoctorDto
 {
@@ -11,4 +9,6 @@ public class DoctorDto
     public bool StoppedWork { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+
+    public StaffDto? Staff { get; set; }
 }

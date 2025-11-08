@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             panelSidebar = new Panel();
+            btnStaff = new Button();
             btnDepartment = new Button();
             btnExit = new Button();
             btnDoctor = new Button();
             btnDashboard = new Button();
             mainPanel = new Panel();
-            btnStaff = new Button();
             panelSidebar.SuspendLayout();
             SuspendLayout();
             // 
@@ -53,25 +53,43 @@
             panelSidebar.Size = new Size(194, 700);
             panelSidebar.TabIndex = 0;
             // 
+            // btnStaff
+            // 
+            btnStaff.BackColor = Color.White;
+            btnStaff.FlatStyle = FlatStyle.Flat;
+            btnStaff.Font = new Font("Arial", 18F, FontStyle.Bold);
+            btnStaff.Location = new Point(8, 276);
+            btnStaff.Margin = new Padding(4);
+            btnStaff.Name = "btnStaff";
+            btnStaff.Padding = new Padding(10, 0, 0, 0);
+            btnStaff.Size = new Size(178, 49);
+            btnStaff.TabIndex = 4;
+            btnStaff.Text = "Staff";
+            btnStaff.TextAlign = ContentAlignment.MiddleLeft;
+            btnStaff.UseVisualStyleBackColor = false;
+            // 
             // btnDepartment
             // 
             btnDepartment.BackColor = Color.White;
             btnDepartment.FlatStyle = FlatStyle.Flat;
-            btnDepartment.Location = new Point(8, 118);
+            btnDepartment.Font = new Font("Arial", 18F, FontStyle.Bold);
+            btnDepartment.Location = new Point(8, 219);
             btnDepartment.Margin = new Padding(4);
             btnDepartment.Name = "btnDepartment";
+            btnDepartment.Padding = new Padding(10, 0, 0, 0);
             btnDepartment.Size = new Size(178, 49);
             btnDepartment.TabIndex = 3;
             btnDepartment.Text = "Department";
+            btnDepartment.TextAlign = ContentAlignment.MiddleLeft;
             btnDepartment.UseVisualStyleBackColor = false;
             // 
             // btnExit
             // 
             btnExit.BackColor = Color.Red;
             btnExit.FlatStyle = FlatStyle.Flat;
-            btnExit.Font = new Font("Arial", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExit.Font = new Font("Arial", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnExit.ForeColor = Color.White;
-            btnExit.Location = new Point(8, 556);
+            btnExit.Location = new Point(8, 638);
             btnExit.Margin = new Padding(4);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(178, 49);
@@ -83,24 +101,30 @@
             // 
             btnDoctor.BackColor = Color.White;
             btnDoctor.FlatStyle = FlatStyle.Flat;
-            btnDoctor.Location = new Point(8, 232);
+            btnDoctor.Font = new Font("Arial", 18F, FontStyle.Bold);
+            btnDoctor.Location = new Point(8, 333);
             btnDoctor.Margin = new Padding(4);
             btnDoctor.Name = "btnDoctor";
+            btnDoctor.Padding = new Padding(10, 0, 0, 0);
             btnDoctor.Size = new Size(178, 49);
             btnDoctor.TabIndex = 1;
             btnDoctor.Text = "Doctor";
+            btnDoctor.TextAlign = ContentAlignment.MiddleLeft;
             btnDoctor.UseVisualStyleBackColor = false;
             // 
             // btnDashboard
             // 
             btnDashboard.BackColor = Color.White;
             btnDashboard.FlatStyle = FlatStyle.Flat;
-            btnDashboard.Location = new Point(8, 61);
+            btnDashboard.Font = new Font("Arial", 18F, FontStyle.Bold);
+            btnDashboard.Location = new Point(8, 162);
             btnDashboard.Margin = new Padding(4);
             btnDashboard.Name = "btnDashboard";
+            btnDashboard.Padding = new Padding(10, 0, 0, 0);
             btnDashboard.Size = new Size(178, 49);
             btnDashboard.TabIndex = 0;
             btnDashboard.Text = "Dashboard";
+            btnDashboard.TextAlign = ContentAlignment.MiddleLeft;
             btnDashboard.UseVisualStyleBackColor = false;
             // 
             // mainPanel
@@ -111,18 +135,6 @@
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(1200, 700);
             mainPanel.TabIndex = 1;
-            // 
-            // btnStaff
-            // 
-            btnStaff.BackColor = Color.White;
-            btnStaff.FlatStyle = FlatStyle.Flat;
-            btnStaff.Location = new Point(8, 175);
-            btnStaff.Margin = new Padding(4);
-            btnStaff.Name = "btnStaff";
-            btnStaff.Size = new Size(178, 49);
-            btnStaff.TabIndex = 4;
-            btnStaff.Text = "Staff";
-            btnStaff.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 

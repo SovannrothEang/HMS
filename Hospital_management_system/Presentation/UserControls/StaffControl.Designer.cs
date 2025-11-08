@@ -77,10 +77,10 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(19, 205);
+            textBox1.Location = new Point(20, 205);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(402, 36);
+            textBox1.Size = new Size(402, 38);
             textBox1.TabIndex = 26;
             // 
             // colUpdatedAt

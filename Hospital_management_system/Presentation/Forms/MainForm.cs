@@ -1,9 +1,12 @@
+using Hospital_management_system.Application.DTOs;
 using Hospital_management_system.Application.Mapper;
 using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
+using Hospital_management_system.Domain.ValueObjects;
 using Hospital_management_system.Presentation.State;
 using Hospital_management_system.Presentation.UserControls;
 using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
 
 namespace Hospital_management_system;
 
@@ -26,6 +29,7 @@ public partial class MainForm : Form
         this.Shown += async (s, e) =>
         {
             ShowControl(() => _serviceProvider.GetRequiredService<DashboardControl>());
+            Thread.Sleep(500); // Small delay to ensure UI is ready
             await PreLoadDataAsync();
         };
         //this.Load += async (s, e) =>
@@ -91,12 +95,54 @@ public partial class MainForm : Form
         }
     }
 
+    //private async Task PreLoadDataAsync()
+    //{
+    //    try
+    //    {
+    //        var deptDtos = await Task.Run(async () =>
+    //        {
+    //            var repo = _serviceProvider.GetRequiredService<IGenericRepository<Department>>();
+    //            var list = await repo.GetAllAsync();
+
+    //            return list.Select(x => x.ToDto()).ToList();
+    //        });
+
+    //        var staffDtos = await Task.Run(async () =>
+    //        {
+    //            var repo = _serviceProvider.GetRequiredService<IStaffRepository>();
+    //            var list = await repo.GetAllWithDepartments();
+    //            return list.Select(x => x.ToDto()).ToList();
+    //        });
+
+    //        var doctorDtos = await Task.Run(async () =>
+    //        {
+    //            var repo = _serviceProvider.GetRequiredService<IDoctorRepository>();
+    //            var list = await repo.GetAllWithStaffAsync();
+
+    //            return list.Select(x => x.ToDto()).ToList();
+    //        });
+
+    //        GlobalState.DoctorsCodeList = new BindingList<string>([.. staffDtos
+    //            .Where(s => s.Position == Position.Doctor.ToString())
+    //            .Select(s => s.Code)]);
+
+    //        Invoke(() =>
+    //        {
+    //            GlobalState.Departments = new BindingList<DepartmentDto>(deptDtos);
+    //            GlobalState.Staffs = new BindingList<StaffDto>(staffDtos);
+    //            GlobalState.Doctors = new BindingList<DoctorDto>(doctorDtos);
+    //        });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        MessageBox.Show($"Database error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    //    }
+    //}
     private async Task PreLoadDataAsync()
     {
         try
         {
             #region Departments
-            GlobalState.Departments.Clear();
             var departments = await Task.Run(async () =>
             {
                 var deptRepo = _serviceProvider
@@ -110,7 +156,6 @@ public partial class MainForm : Form
             #endregion
 
             #region Staffs
-            GlobalState.Staffs.Clear();
             var staffs = await Task.Run(async () =>
             {
                 var staffRepo = _serviceProvider
@@ -120,6 +165,31 @@ public partial class MainForm : Form
             foreach (var staff in staffs)
             {
                 GlobalState.Staffs.Add(staff.ToDto());
+                if (staff.Position == "Doctor")
+                    GlobalState.DoctorsCodeList.Add(staff.Code);
+            }
+            #endregion
+
+            #region Doctors
+            var doctors = await Task.Run(async () =>
+            {
+                var doctorRepo = _serviceProvider
+                    .GetRequiredService<IGenericRepository<Doctor>>();
+                return await doctorRepo.GetAllAsync();
+                //var doctorRepo = _serviceProvider
+                //    .GetRequiredService<IDoctorRepository>();
+                //return await doctorRepo.GetAllWithStaffAsync();
+            });
+            foreach (var doctor in doctors)
+            {
+                var staff = GlobalState.Staffs
+                    .First(s => s.StaffId == doctor.DoctorId);
+                var department = GlobalState.Departments
+                    .First(d => d.DepartmentId == staff?.DepartmentId);
+                staff.Department = department;
+                doctor.Staff = staff.ToEntity();
+                var doctorDto = doctor.ToDto();
+                GlobalState.Doctors.Add(doctorDto);
             }
             #endregion
         }

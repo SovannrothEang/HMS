@@ -1,4 +1,4 @@
-﻿using Hospital_management_system.Application.DTO;
+﻿using Hospital_management_system.Application.DTOs;
 using Hospital_management_system.Application.Mapper;
 using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;

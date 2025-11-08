@@ -1,6 +1,6 @@
 ﻿using Hospital_management_system.Domain.ValueObjects;
 
-namespace Hospital_management_system.Application.DTO;
+namespace Hospital_management_system.Application.DTOs;
 
 public class StaffDto
 {

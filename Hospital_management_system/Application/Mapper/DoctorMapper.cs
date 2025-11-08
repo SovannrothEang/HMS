@@ -1,4 +1,4 @@
-﻿using Hospital_management_system.Application.DTO;
+﻿using Hospital_management_system.Application.DTOs;
 using Hospital_management_system.Domain.Entities;
 
 namespace Hospital_management_system.Application.Mapper;
@@ -14,20 +14,23 @@ public static class DoctorMapper
             YearsOfExperiense = entity.YearsOfExperiense,
             Specialization = entity.Specialization,
             StoppedWork = entity.StoppedWork,
-            CreatedAt = entity.Staff.CreatedAt,
-            UpdatedAt = entity.Staff.UpdatedAt,
+            Staff = entity.Staff?.ToDto(),
+            CreatedAt = entity.Staff!.CreatedAt,
+            UpdatedAt = entity.Staff?.UpdatedAt,
         };
     }
 
-    public static Doctor ToEntity(this DoctorDto dto)
-    {
-        return new Doctor()
-        {
-            DoctorId = Guid.NewGuid().ToString(),
-            LicenseNumber = dto.LicenseNumber,
-            YearsOfExperiense = dto.YearsOfExperiense,
-            Specialization = dto.Specialization,
-            StoppedWork = dto.StoppedWork,
-        };
-    }
+    //public static Doctor ToEntity(this DoctorDto dto)
+    //{
+    //    return new Doctor()
+    //    {
+    //        DoctorId = Guid.NewGuid().ToString(),
+    //        LicenseNumber = dto.LicenseNumber,
+    //        YearsOfExperiense = dto.YearsOfExperiense,
+    //        Specialization = dto.Specialization,
+    //        StoppedWork = dto.StoppedWork,
+    //        CreatedAt = dto.CreatedAt,
+    //        UpdatedAt = dto.UpdatedAt,
+    //    };
+    //}
 }

@@ -1,4 +1,4 @@
-﻿using Hospital_management_system.Application.DTO;
+﻿using Hospital_management_system.Application.DTOs;
 using Hospital_management_system.Domain.Entities;
 
 namespace Hospital_management_system.Application.Mapper;

@@ -1,4 +1,4 @@
-﻿using Hospital_management_system.Application.DTO;
+﻿using Hospital_management_system.Application.DTOs;
 using Hospital_management_system.Application.Mapper;
 using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
@@ -86,8 +86,18 @@ public partial class StaffControl : UserControl
         btnNew.Click += (s, e) =>
         {
             IsNew = true;
-            ClearControls();
             DisableControls(false);
+            tbCode.Clear();
+            tbFirstName.Clear();
+            tbLastName.Clear();
+            cmbGender.SelectedIndex = -1;
+            //dtpDob.Clear();
+            tbPhoneNumber.Clear();
+            tbAddress.Clear();
+            tbEmail.Clear();
+            cmbPosition.SelectedIndex = -1;
+            tbSalary.Clear();
+            cmbDepartment.SelectedIndex = -1;
             tbCode.Focus();
         };
         btnUpdate.Click += (s, e) =>
@@ -112,7 +122,7 @@ public partial class StaffControl : UserControl
                     if (success)
                     {
                         var staff = GlobalState.Staffs
-                            .FirstOrDefault(x => x.DepartmentId == id);
+                            .FirstOrDefault(x => x.StaffId == id);
                         if (staff != null)
                         {
                             var department = GlobalState.Departments
@@ -152,12 +162,12 @@ public partial class StaffControl : UserControl
                 }
                 catch (Exception ex)
                 {
-                    ClearControls();
+                    OnDgvStaffSelectionChanged(this, EventArgs.Empty);
                     MessageBox.Show(
                         $"Failed to create, error: {ex.Message}",
                         "Created staff",
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
+                        MessageBoxIcon.Error
                     );
                 }
             }
@@ -182,7 +192,7 @@ public partial class StaffControl : UserControl
                         $"Failed to create, error: {ex.Message}",
                         "Updated staff",
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
+                        MessageBoxIcon.Error
                     );
                 }
             }
@@ -313,20 +323,9 @@ public partial class StaffControl : UserControl
         cmbPosition.Enabled = !con;
         tbSalary.Enabled = !con;
         cmbDepartment.Enabled = !con;
-    }
-    private void ClearControls()
-    {
-        tbCode.Clear();
-        tbFirstName.Clear();
-        tbLastName.Clear();
-        cmbGender.SelectedIndex = 0;
-        //dtpDob.Clear();
-        tbPhoneNumber.Clear();
-        tbAddress.Clear();
-        tbEmail.Clear();
-        cmbPosition.SelectedIndex = 0;
-        tbSalary.Clear();
-        cmbDepartment.SelectedIndex = 0;
+
+        btnCancel.Enabled = !con;
+        btnSubmit.Enabled = !con;
     }
     #endregion
 
@@ -347,7 +346,7 @@ public partial class StaffControl : UserControl
             tbEmail.Text = selectedStaff.Email;
             cmbPosition.SelectedItem = selectedStaff.Position;
             tbSalary.Text = selectedStaff.Salary.ToString();
-            cmbDepartment.SelectedItem = (DepartmentDto)selectedStaff.Department!;
+            cmbDepartment.SelectedValue = selectedStaff.DepartmentId;
         }
     }
     #endregion
@@ -401,6 +400,7 @@ public partial class StaffControl : UserControl
         var department = GlobalState.Departments
                             .FirstOrDefault(d => d.DepartmentId == staff.DepartmentId);
         if (department != null) staffDto.Department = department;
+
         GlobalState.Staffs.Add(staffDto);
         IsNew = false;
         _bsStaffs.ResetBindings(false);
