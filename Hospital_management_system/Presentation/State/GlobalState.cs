@@ -12,7 +12,7 @@ public static class GlobalState
     public static bool IsUserLoggedIn { get; set; } = false;
 
     // Events
-    public static event Action DashboardUpdate = null!;
+    public static event Action DataUpdated = null!;
 
     // Recently accessed records
     public static BindingList<DepartmentDto> Departments { get; set; } = [];
@@ -45,7 +45,7 @@ public static class GlobalState
         foreach (var item in items)
         {
             list.Add(item);
-            DashboardUpdate?.Invoke();
+            DataUpdated?.Invoke();
         }
     }
 }

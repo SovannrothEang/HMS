@@ -9,7 +9,7 @@ public partial class DashboardControl: UserControl
         InitializeComponent();
         
 
-        GlobalState.DashboardUpdate += OnDataUpdated;
+        GlobalState.DataUpdated += OnDataUpdated;
     }
 
     private void OnDataUpdated()

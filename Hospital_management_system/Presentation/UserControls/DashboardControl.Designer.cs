@@ -18,7 +18,7 @@ namespace Hospital_management_system.Presentation.UserControls
             if (disposing && (components != null))
             {
                 components.Dispose();
-                GlobalState.DashboardUpdate -= OnDataUpdated;
+                GlobalState.DataUpdated -= OnDataUpdated;
             }
             base.Dispose(disposing);
         }

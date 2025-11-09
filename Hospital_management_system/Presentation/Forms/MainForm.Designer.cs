@@ -35,12 +35,14 @@
             btnDoctor = new Button();
             btnDashboard = new Button();
             mainPanel = new Panel();
+            btnPatient = new Button();
             panelSidebar.SuspendLayout();
             SuspendLayout();
             // 
             // panelSidebar
             // 
             panelSidebar.BackColor = SystemColors.ButtonShadow;
+            panelSidebar.Controls.Add(btnPatient);
             panelSidebar.Controls.Add(btnStaff);
             panelSidebar.Controls.Add(btnDepartment);
             panelSidebar.Controls.Add(btnExit);
@@ -58,7 +60,7 @@
             btnStaff.BackColor = Color.White;
             btnStaff.FlatStyle = FlatStyle.Flat;
             btnStaff.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnStaff.Location = new Point(8, 276);
+            btnStaff.Location = new Point(8, 390);
             btnStaff.Margin = new Padding(4);
             btnStaff.Name = "btnStaff";
             btnStaff.Padding = new Padding(10, 0, 0, 0);
@@ -102,7 +104,7 @@
             btnDoctor.BackColor = Color.White;
             btnDoctor.FlatStyle = FlatStyle.Flat;
             btnDoctor.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnDoctor.Location = new Point(8, 333);
+            btnDoctor.Location = new Point(8, 276);
             btnDoctor.Margin = new Padding(4);
             btnDoctor.Name = "btnDoctor";
             btnDoctor.Padding = new Padding(10, 0, 0, 0);
@@ -136,6 +138,21 @@
             mainPanel.Size = new Size(1200, 700);
             mainPanel.TabIndex = 1;
             // 
+            // btnPatient
+            // 
+            btnPatient.BackColor = Color.White;
+            btnPatient.FlatStyle = FlatStyle.Flat;
+            btnPatient.Font = new Font("Arial", 18F, FontStyle.Bold);
+            btnPatient.Location = new Point(8, 333);
+            btnPatient.Margin = new Padding(4);
+            btnPatient.Name = "btnPatient";
+            btnPatient.Padding = new Padding(10, 0, 0, 0);
+            btnPatient.Size = new Size(178, 49);
+            btnPatient.TabIndex = 5;
+            btnPatient.Text = "Patient";
+            btnPatient.TextAlign = ContentAlignment.MiddleLeft;
+            btnPatient.UseVisualStyleBackColor = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
@@ -164,5 +181,6 @@
         private Button btnExit;
         private Button btnDepartment;
         private Button btnStaff;
+        private Button btnPatient;
     }
 }

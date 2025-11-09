@@ -19,11 +19,12 @@ public static class ServiceConfigurator
         });
 
         services.AddSingleton<MainForm>();
-        services.AddTransient<LoginForm>();
+        //services.AddTransient<LoginForm>();
 
         services.AddTransient<DashboardControl>();
         services.AddTransient<DepartmentControl>();
         services.AddTransient<DoctorControl>();
+        services.AddTransient<PatientControl>();
         services.AddTransient<StaffControl>();
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
