@@ -7,7 +7,15 @@ public partial class DashboardControl: UserControl
     public DashboardControl()
     {
         InitializeComponent();
+        
+
+        GlobalState.DashboardUpdate += OnDataUpdated;
+    }
+
+    private void OnDataUpdated()
+    {
         lbStaff.Text = GlobalState.Staffs.Count.ToString();
         lbDoctor.Text = GlobalState.Doctors.Count.ToString();
+        this.Refresh();
     }
 }

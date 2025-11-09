@@ -7,6 +7,8 @@ using Hospital_management_system.Presentation.State;
 using Hospital_management_system.Presentation.UserControls;
 using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
+using System.Numerics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Hospital_management_system;
 
@@ -125,6 +127,7 @@ public partial class MainForm : Form
     //        GlobalState.DoctorsCodeList = new BindingList<string>([.. staffDtos
     //            .Where(s => s.Position == Position.Doctor.ToString())
     //            .Select(s => s.Code)]);
+    //        GlobalState.DashboardUpdate.Invoke();
 
     //        Invoke(() =>
     //        {
@@ -149,10 +152,13 @@ public partial class MainForm : Form
                     .GetRequiredService<IGenericRepository<Department>>();
                 return await deptRepo.GetAllAsync();
             });
-            foreach (var department in departments)
-            {
-                GlobalState.Departments.Add(department.ToDto());
-            }
+            var deptDtos = departments.Select(d => d.ToDto()).ToList();
+            GlobalState.AddItems<DepartmentDto>(deptDtos, GlobalState.Departments);
+
+            //foreach (var department in departments)
+            //{
+            //    GlobalState.Departments.Add(department.ToDto());
+            //}
             #endregion
 
             #region Staffs
@@ -162,12 +168,16 @@ public partial class MainForm : Form
                     .GetRequiredService<IStaffRepository>();
                 return await staffRepo.GetAllWithDepartments();
             });
-            foreach (var staff in staffs)
-            {
-                GlobalState.Staffs.Add(staff.ToDto());
-                if (staff.Position == "Doctor")
-                    GlobalState.DoctorsCodeList.Add(staff.Code);
-            }
+            var staffDtos = staffs.Select(s => s.ToDto()).ToList();
+            GlobalState.AddItems<StaffDto>(staffDtos, GlobalState.Staffs);
+            //foreach (var staff in staffs)
+            //{
+            //    GlobalState.Staffs.Add(staff.ToDto());
+            //    if (staff.Position == "Doctor")
+            //    {
+            //        GlobalState.DoctorsCodeList.Add(staff.Code);
+            //    }
+            //}
             #endregion
 
             #region Doctors
@@ -189,8 +199,30 @@ public partial class MainForm : Form
                 staff.Department = department;
                 doctor.Staff = staff.ToEntity();
                 var doctorDto = doctor.ToDto();
-                GlobalState.Doctors.Add(doctorDto);
             }
+            //var doctorDtos = doctors.Select(d => d.ToDto()).ToList();
+            var doctorDtos = doctors.Select(d =>
+            {
+                var staff = GlobalState.Staffs
+                    .First(s => s.StaffId == d.DoctorId);
+                var department = GlobalState.Departments
+                    .First(d => d.DepartmentId == staff?.DepartmentId);
+                staff.Department = department;
+                d.Staff = staff.ToEntity();
+                return d.ToDto();
+            });
+            GlobalState.AddItems<DoctorDto>(doctorDtos, GlobalState.Doctors);
+            //foreach (var doctor in doctors)
+            //{
+            //    var staff = GlobalState.Staffs
+            //        .First(s => s.StaffId == doctor.DoctorId);
+            //    var department = GlobalState.Departments
+            //        .First(d => d.DepartmentId == staff?.DepartmentId);
+            //    staff.Department = department;
+            //    doctor.Staff = staff.ToEntity();
+            //    var doctorDto = doctor.ToDto();
+            //    GlobalState.Doctors.Add(doctorDto);
+            //}
             #endregion
         }
         catch (Exception ex)

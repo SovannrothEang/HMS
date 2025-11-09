@@ -1,4 +1,6 @@
-﻿namespace Hospital_management_system.Presentation.UserControls
+﻿using Hospital_management_system.Presentation.State;
+
+namespace Hospital_management_system.Presentation.UserControls
 {
     partial class DashboardControl
     {
@@ -16,6 +18,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                GlobalState.DashboardUpdate -= OnDataUpdated;
             }
             base.Dispose(disposing);
         }

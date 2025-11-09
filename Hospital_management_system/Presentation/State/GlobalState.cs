@@ -11,13 +11,15 @@ public static class GlobalState
     public static DateTime LastLoginTime { get; set; }
     public static bool IsUserLoggedIn { get; set; } = false;
 
+    // Events
+    public static event Action DashboardUpdate = null!;
 
     // Recently accessed records
     public static BindingList<DepartmentDto> Departments { get; set; } = [];
     public static BindingList<DoctorDto> Doctors { get; set; } = [];
     public static BindingList<StaffDto> Staffs { get; set; } = [];
 
-    public static BindingList<string> DoctorsCodeList = [];
+    public static BindingList<string> DoctorsCodeList { get; set; } = [];
 
     //public static List<int> RecentDoctorIds { get; set; } = new List<int>();
 
@@ -30,4 +32,20 @@ public static class GlobalState
     //            RecentPatientIds.RemoveAt(RecentPatientIds.Count - 1);
     //    }
     //}
+
+    //public static async Task LoadAsync()
+    //{
+    //    var result = await IServiceProvider
+
+    //    Items = new BindingList<MyDto>(result);
+    //    DataUpdated?.Invoke();
+    //}
+    public static void AddItems<T>(IEnumerable<T> items, BindingList<T> list)
+    {
+        foreach (var item in items)
+        {
+            list.Add(item);
+            DashboardUpdate?.Invoke();
+        }
+    }
 }
