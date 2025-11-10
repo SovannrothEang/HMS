@@ -11,9 +11,6 @@ public partial class StaffControl : UserControl
 {
     private readonly IGenericRepository<Staff> _repo;
     private readonly BindingSource _bsStaffs = [];
-    //private readonly List<string> textBoxes = [
-    //    "tbCode", ""
-    //];
 
     private static bool IsNew = false;
     public StaffControl(IGenericRepository<Staff> repo)
@@ -326,6 +323,10 @@ public partial class StaffControl : UserControl
 
         btnCancel.Enabled = !con;
         btnSubmit.Enabled = !con;
+        btnRefresh.Enabled = con;
+        btnNew.Enabled = con;
+        btnDelete.Enabled = con;
+        btnUpdate.Enabled = con;
     }
     #endregion
 

@@ -1,44 +1,20 @@
 ﻿using Hospital_management_system.Domain.Entities;
+using Hospital_management_system.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital_management_system.Infrastructure.Persistence.Repositories;
 
-public class PatientRepository(AppDbContext context)
+public class PatientRepository(AppDbContext context) : IPatientRepository
 {
     private readonly AppDbContext _context = context;
-    public async Task<IEnumerable<Patient>> GetActivePatientsAsync()
+
+    public async Task<IEnumerable<Patient>> GetAllWithDoctorAsync()
     {
         return await _context.Patients
-            .Where(p => p.IsActive)
-            .OrderBy(p => p.LastName)
+            .AsNoTracking()
+            .Include(p => p.Doctor)
+            .ThenInclude(d => d.Staff)
+            .ThenInclude(s => s.Department)
             .ToListAsync();
     }
-
-    //public async Task<Patient?> GetPatientWithVisitsAsync(int patientId)
-    //{
-    //    return await _context.Patients
-    //        .Include(p => p.PatientVisits)
-    //        .ThenInclude(v => v.Doctor)
-    //        .FirstOrDefaultAsync(p => p.PatientId == patientId);
-    //}
-
-    public async Task<IEnumerable<Patient>> SearchPatientsAsync(string searchTerm)
-    {
-        return await _context.Patients
-            .Where(p => p.FirstName.Contains(searchTerm) ||
-                       p.LastName.Contains(searchTerm) ||
-                       p.PhoneNumber!.Contains(searchTerm) ||
-                       p.Email!.Contains(searchTerm))
-            .ToListAsync();
-    }
-    //public async Task<IEnumerable<Patient>> SearchPatientsAsync(string term)
-    //{
-    //    var searchTerm = term.ToLower();
-    //    return await _context.Patients
-    //        .Where(p => p.FirstName.ToLower().Contains(searchTerm) ||
-    //                   p.LastName.ToLower().Contains(searchTerm) ||
-    //                   (p.PhoneNumber ?? "").ToLower().Contains(searchTerm) ||
-    //                   (p.Email ?? "").ToLower().Contains(searchTerm))
-    //        .ToListAsync();
-    //}
 }

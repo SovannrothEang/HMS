@@ -244,6 +244,13 @@ public partial class DepartmentControl : UserControl
         tbCode.Enabled = !con;
         tbName.Enabled = !con;
         tbDescription.Enabled = !con;
+
+        btnSubmit.Enabled = !con;
+        btnCancel.Enabled = !con;
+        btnRefresh.Enabled = con;
+        btnNew.Enabled = con;
+        btnDelete.Enabled = con;
+        btnUpdate.Enabled = con;
     }
     #endregion
 

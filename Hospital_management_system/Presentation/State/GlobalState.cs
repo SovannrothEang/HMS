@@ -5,11 +5,9 @@ namespace Hospital_management_system.Presentation.State;
 
 public static class GlobalState
 {
-    public static int CurrentUserId { get; set; }
-    public static string CurrentUserName { get; set; } = string.Empty;
-    public static string CurrentUserRole { get; set; } = string.Empty;
-    public static DateTime LastLoginTime { get; set; }
-    public static bool IsUserLoggedIn { get; set; } = false;
+    public static int CurrentStaffs { get; set; }
+    public static int CurrentDoctors { get; set; }
+    public static int CurrentPatients { get; set; }
 
     // Events
     public static event Action DataUpdated = null!;
@@ -17,8 +15,10 @@ public static class GlobalState
     // Recently accessed records
     public static BindingList<DepartmentDto> Departments { get; set; } = [];
     public static BindingList<DoctorDto> Doctors { get; set; } = [];
+    public static BindingList<PatientDto> Patients { get; set; } = [];
     public static BindingList<StaffDto> Staffs { get; set; } = [];
 
+    public static BindingList<string> AllStaffDoctorsCodeList { get; set; } = [];
     public static BindingList<string> DoctorsCodeList { get; set; } = [];
 
     //public static List<int> RecentDoctorIds { get; set; } = new List<int>();
@@ -47,5 +47,8 @@ public static class GlobalState
             list.Add(item);
             DataUpdated?.Invoke();
         }
+        CurrentStaffs = GlobalState.Staffs.Count;
+        CurrentDoctors = GlobalState.Doctors.Count;
+        CurrentPatients = GlobalState.Patients.Count;
     }
 }

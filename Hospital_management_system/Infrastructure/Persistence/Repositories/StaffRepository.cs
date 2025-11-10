@@ -7,7 +7,7 @@ namespace Hospital_management_system.Infrastructure.Persistence.Repositories;
 public class StaffRepository (AppDbContext context) : IStaffRepository
 {
     private readonly AppDbContext _context = context;
-    public async Task<IEnumerable<Staff>> GetAllWithDepartments()
+    public async Task<IEnumerable<Staff>> GetAllWithDepartmentsAsync()
     {
         return await _context.Staffs
             .AsNoTracking()
@@ -15,24 +15,4 @@ public class StaffRepository (AppDbContext context) : IStaffRepository
             .Where(e => EF.Property<bool>(e, "IsDeleted") == false)
             .ToListAsync();
     }
-    public async Task<Staff?> GetByIdWithDepartment(string id)
-    {
-        return await _context.Staffs
-            .AsNoTracking()
-            .Include(s => s.Department)
-            .FirstOrDefaultAsync(s => s.StaffId == id);
-    }
-
-    public async Task<Staff?> GetByCodeAsync(string code)
-    {
-        return await _context.Staffs
-            .FirstOrDefaultAsync(s => s.Code == code);
-    }
-
-    public async Task<Staff?> GetByEmailAsync(string email)
-    {
-        return await _context.Staffs
-            .FirstOrDefaultAsync(s => s.Email == email);
-    }
-    
 }

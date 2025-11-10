@@ -10,5 +10,5 @@ public class DoctorDto
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
-    public StaffDto? Staff { get; set; }
+    public StaffDto Staff { get; set; } = null!;
 }

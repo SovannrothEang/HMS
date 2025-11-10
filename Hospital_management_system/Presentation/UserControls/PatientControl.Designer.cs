@@ -1,4 +1,6 @@
-﻿namespace Hospital_management_system.Presentation.UserControls
+﻿using Hospital_management_system.Presentation.State;
+
+namespace Hospital_management_system.Presentation.UserControls
 {
     partial class PatientControl
     {
@@ -31,7 +33,6 @@
             cmbGender = new ComboBox();
             dtpDob = new DateTimePicker();
             label6 = new Label();
-            tbEmail = new TextBox();
             label5 = new Label();
             tbAddress = new TextBox();
             label4 = new Label();
@@ -58,6 +59,9 @@
             dgvPatient = new DataGridView();
             btnRefresh = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
+            label7 = new Label();
+            tbSickness = new TextBox();
+            cmbDoctor = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dgvPatient).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -66,14 +70,14 @@
             // 
             cmbGender.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGender.FormattingEnabled = true;
-            cmbGender.Location = new Point(509, 3);
+            cmbGender.Location = new Point(515, 3);
             cmbGender.Name = "cmbGender";
             cmbGender.Size = new Size(260, 26);
             cmbGender.TabIndex = 50;
             // 
             // dtpDob
             // 
-            dtpDob.Location = new Point(509, 52);
+            dtpDob.Location = new Point(515, 61);
             dtpDob.Name = "dtpDob";
             dtpDob.Size = new Size(260, 26);
             dtpDob.TabIndex = 51;
@@ -81,25 +85,17 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(775, 56);
+            label6.Location = new Point(788, 123);
             label6.Margin = new Padding(3, 7, 3, 0);
             label6.Name = "label6";
-            label6.Size = new Size(48, 18);
+            label6.Size = new Size(55, 18);
             label6.TabIndex = 73;
-            label6.Text = "Email";
-            // 
-            // tbEmail
-            // 
-            tbEmail.Location = new Point(895, 52);
-            tbEmail.Multiline = true;
-            tbEmail.Name = "tbEmail";
-            tbEmail.Size = new Size(261, 29);
-            tbEmail.TabIndex = 54;
+            label6.Text = "Doctor";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(775, 7);
+            label5.Location = new Point(788, 7);
             label5.Margin = new Padding(3, 7, 3, 0);
             label5.Name = "label5";
             label5.Size = new Size(67, 18);
@@ -108,16 +104,16 @@
             // 
             // tbAddress
             // 
-            tbAddress.Location = new Point(895, 3);
+            tbAddress.Location = new Point(888, 3);
             tbAddress.Multiline = true;
             tbAddress.Name = "tbAddress";
-            tbAddress.Size = new Size(261, 29);
+            tbAddress.Size = new Size(268, 45);
             tbAddress.TabIndex = 53;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(389, 105);
+            label4.Location = new Point(395, 123);
             label4.Margin = new Padding(3, 7, 3, 0);
             label4.Name = "label4";
             label4.Size = new Size(112, 18);
@@ -126,7 +122,7 @@
             // 
             // tbPhoneNumber
             // 
-            tbPhoneNumber.Location = new Point(509, 101);
+            tbPhoneNumber.Location = new Point(515, 119);
             tbPhoneNumber.Multiline = true;
             tbPhoneNumber.Name = "tbPhoneNumber";
             tbPhoneNumber.Size = new Size(260, 29);
@@ -135,7 +131,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(389, 56);
+            label3.Location = new Point(395, 65);
             label3.Margin = new Padding(3, 7, 3, 0);
             label3.Name = "label3";
             label3.Size = new Size(93, 18);
@@ -145,7 +141,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(389, 7);
+            label2.Location = new Point(395, 7);
             label2.Margin = new Padding(3, 7, 3, 0);
             label2.Name = "label2";
             label2.Size = new Size(60, 18);
@@ -155,7 +151,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(3, 105);
+            label1.Location = new Point(3, 123);
             label1.Margin = new Padding(3, 7, 3, 0);
             label1.Name = "label1";
             label1.Size = new Size(84, 18);
@@ -164,7 +160,7 @@
             // 
             // tbLastName
             // 
-            tbLastName.Location = new Point(123, 101);
+            tbLastName.Location = new Point(123, 119);
             tbLastName.Multiline = true;
             tbLastName.Name = "tbLastName";
             tbLastName.Size = new Size(260, 29);
@@ -251,7 +247,7 @@
             // lbName
             // 
             lbName.AutoSize = true;
-            lbName.Location = new Point(3, 56);
+            lbName.Location = new Point(3, 65);
             lbName.Margin = new Padding(3, 7, 3, 0);
             lbName.Name = "lbName";
             lbName.Size = new Size(85, 18);
@@ -260,7 +256,7 @@
             // 
             // tbFirstName
             // 
-            tbFirstName.Location = new Point(123, 52);
+            tbFirstName.Location = new Point(123, 61);
             tbFirstName.Multiline = true;
             tbFirstName.Name = "tbFirstName";
             tbFirstName.Size = new Size(260, 29);
@@ -316,15 +312,14 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.Controls.Add(label7, 4, 1);
             tableLayoutPanel1.Controls.Add(lbCode, 0, 0);
             tableLayoutPanel1.Controls.Add(tbCode, 1, 0);
             tableLayoutPanel1.Controls.Add(dtpDob, 3, 1);
             tableLayoutPanel1.Controls.Add(cmbGender, 3, 0);
             tableLayoutPanel1.Controls.Add(lbName, 0, 1);
-            tableLayoutPanel1.Controls.Add(tbEmail, 5, 1);
-            tableLayoutPanel1.Controls.Add(label6, 4, 1);
             tableLayoutPanel1.Controls.Add(tbFirstName, 1, 1);
             tableLayoutPanel1.Controls.Add(label1, 0, 2);
             tableLayoutPanel1.Controls.Add(tbAddress, 5, 0);
@@ -334,14 +329,44 @@
             tableLayoutPanel1.Controls.Add(tbPhoneNumber, 3, 2);
             tableLayoutPanel1.Controls.Add(label4, 2, 2);
             tableLayoutPanel1.Controls.Add(label3, 2, 1);
+            tableLayoutPanel1.Controls.Add(label6, 4, 2);
+            tableLayoutPanel1.Controls.Add(tbSickness, 5, 1);
+            tableLayoutPanel1.Controls.Add(cmbDoctor, 5, 2);
             tableLayoutPanel1.Location = new Point(25, 25);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 3;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.Size = new Size(1159, 148);
+            tableLayoutPanel1.Size = new Size(1159, 174);
             tableLayoutPanel1.TabIndex = 76;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(788, 65);
+            label7.Margin = new Padding(3, 7, 3, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(72, 18);
+            label7.TabIndex = 75;
+            label7.Text = "Sickness";
+            // 
+            // tbSickness
+            // 
+            tbSickness.Location = new Point(888, 61);
+            tbSickness.Multiline = true;
+            tbSickness.Name = "tbSickness";
+            tbSickness.Size = new Size(268, 29);
+            tbSickness.TabIndex = 74;
+            // 
+            // cmbDoctor
+            // 
+            cmbDoctor.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbDoctor.FormattingEnabled = true;
+            cmbDoctor.Location = new Point(888, 119);
+            cmbDoctor.Name = "cmbDoctor";
+            cmbDoctor.Size = new Size(268, 26);
+            cmbDoctor.TabIndex = 76;
             // 
             // PatientControl
             // 
@@ -357,7 +382,7 @@
             Controls.Add(dgvPatient);
             Controls.Add(btnRefresh);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             MaximumSize = new Size(1200, 700);
             MinimumSize = new Size(1200, 700);
             Name = "PatientControl";
@@ -373,7 +398,6 @@
         private ComboBox cmbGender;
         private DateTimePicker dtpDob;
         private Label label6;
-        private TextBox tbEmail;
         private Label label5;
         private TextBox tbAddress;
         private Label label4;
@@ -400,5 +424,8 @@
         private DataGridView dgvPatient;
         private Button btnRefresh;
         private TableLayoutPanel tableLayoutPanel1;
+        private Label label7;
+        private TextBox tbSickness;
+        private ComboBox cmbDoctor;
     }
 }

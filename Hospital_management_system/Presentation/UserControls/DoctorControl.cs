@@ -115,7 +115,7 @@ public partial class DoctorControl: UserControl
                 }
             }
 
-            cmbCode.DataSource = GlobalState.DoctorsCodeList;
+            cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
             DisableControls(true);
         };
         btnUpdate.Click += (s, e) =>
@@ -124,7 +124,7 @@ public partial class DoctorControl: UserControl
 
             cmbCode.Enabled = false;
             var dto = dgvDoctor.CurrentRow.DataBoundItem as DoctorDto;
-            cmbCode.Text = dto.Staff!.Code.ToString();
+            cmbCode.Text = dto!.Staff!.Code.ToString();
 
             IsNew = false;
             cmbCode.Focus();
@@ -240,7 +240,7 @@ public partial class DoctorControl: UserControl
                 }
             }
 
-            cmbCode.DataSource = GlobalState.DoctorsCodeList;
+            cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
             OnDgvDoctorSelectionChanged(this, EventArgs.Empty);
             DisableControls(true);
         };
@@ -253,7 +253,7 @@ public partial class DoctorControl: UserControl
         dtpHiredDate.Format = DateTimePickerFormat.Custom;
         //dtpHiredDate.Value = DateTime.Now;
 
-        cmbCode.DataSource = GlobalState.DoctorsCodeList;
+        cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
         cmbCode.SelectedIndex = -1;
 
         cmbSpecialization.DataSource = Enum.GetValues(typeof(Specialization));
@@ -331,6 +331,10 @@ public partial class DoctorControl: UserControl
 
         btnCancel.Enabled = !con;
         btnSubmit.Enabled = !con;
+        btnRefresh.Enabled = con;
+        btnNew.Enabled = con;
+        btnDelete.Enabled = con;
+        btnUpdate.Enabled = con;
     }
     #endregion
 
@@ -386,7 +390,7 @@ public partial class DoctorControl: UserControl
         }
         IsNew = false;
         _bsDoctor.ResetBindings(false);
-        cmbCode.DataSource = GlobalState.DoctorsCodeList;
+        cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
         return d != null;
     }
     private async Task<bool> CreateDoctorAsync()

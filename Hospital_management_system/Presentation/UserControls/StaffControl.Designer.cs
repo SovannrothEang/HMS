@@ -68,7 +68,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(779, 205);
+            btnUpdate.Location = new Point(743, 159);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(99, 38);
             btnUpdate.TabIndex = 28;
@@ -77,7 +77,7 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(20, 205);
+            textBox1.Location = new Point(17, 159);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(402, 38);
@@ -110,7 +110,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(546, 205);
+            btnDelete.Location = new Point(533, 159);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(99, 38);
             btnDelete.TabIndex = 27;
@@ -119,7 +119,7 @@
             // 
             // btnNew
             // 
-            btnNew.Location = new Point(663, 205);
+            btnNew.Location = new Point(638, 159);
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(99, 38);
             btnNew.TabIndex = 25;
@@ -128,7 +128,7 @@
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(929, 155);
+            btnSubmit.Location = new Point(1082, 159);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(99, 38);
             btnSubmit.TabIndex = 13;
@@ -137,7 +137,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(824, 155);
+            btnCancel.Location = new Point(977, 159);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
             btnCancel.TabIndex = 12;
@@ -186,17 +186,17 @@
             dgvStaff.AllowUserToResizeRows = false;
             dgvStaff.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvStaff.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStaff.Location = new Point(20, 249);
+            dgvStaff.Location = new Point(20, 203);
             dgvStaff.MultiSelect = false;
             dgvStaff.Name = "dgvStaff";
             dgvStaff.ReadOnly = true;
             dgvStaff.RowHeadersVisible = false;
-            dgvStaff.Size = new Size(1164, 430);
+            dgvStaff.Size = new Size(1164, 476);
             dgvStaff.TabIndex = 16;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(431, 205);
+            btnRefresh.Location = new Point(428, 159);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(99, 38);
             btnRefresh.TabIndex = 15;
@@ -232,7 +232,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(17, 165);
+            label3.Location = new Point(431, 130);
             label3.Name = "label3";
             label3.Size = new Size(93, 18);
             label3.TabIndex = 34;
@@ -292,7 +292,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(431, 130);
+            label7.Location = new Point(824, 60);
             label7.Name = "label7";
             label7.Size = new Size(65, 18);
             label7.TabIndex = 42;
@@ -301,7 +301,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(431, 165);
+            label8.Location = new Point(824, 95);
             label8.Name = "label8";
             label8.Size = new Size(52, 18);
             label8.TabIndex = 44;
@@ -309,7 +309,7 @@
             // 
             // tbSalary
             // 
-            tbSalary.Location = new Point(549, 162);
+            tbSalary.Location = new Point(920, 92);
             tbSalary.Multiline = true;
             tbSalary.Name = "tbSalary";
             tbSalary.Size = new Size(228, 29);
@@ -326,7 +326,7 @@
             // 
             // dtpDob
             // 
-            dtpDob.Location = new Point(116, 159);
+            dtpDob.Location = new Point(549, 127);
             dtpDob.Name = "dtpDob";
             dtpDob.Size = new Size(266, 26);
             dtpDob.TabIndex = 5;
@@ -344,7 +344,7 @@
             // 
             cmbPosition.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPosition.FormattingEnabled = true;
-            cmbPosition.Location = new Point(549, 127);
+            cmbPosition.Location = new Point(920, 57);
             cmbPosition.Name = "cmbPosition";
             cmbPosition.Size = new Size(228, 26);
             cmbPosition.TabIndex = 9;

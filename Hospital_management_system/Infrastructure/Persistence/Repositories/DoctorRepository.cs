@@ -7,42 +7,12 @@ namespace Hospital_management_system.Infrastructure.Persistence.Repositories;
 public class DoctorRepository (AppDbContext context) : IDoctorRepository
 {
     private readonly AppDbContext _context = context;
-    public async Task<IEnumerable<Doctor>> GetAllWithStaffAsync()
+    public async Task<IEnumerable<Doctor>> GetAllWithStaffsAsync()
     {
         return await _context.Doctors
             .Include(d => d.Staff)
             .ThenInclude(s => s.Department)
-            .Where(d => d.IsDeleted == false)
+            .Where(e => EF.Property<bool>(e, "IsDeleted") == false)
             .ToListAsync();
-    }
-    public async Task<Doctor?> GetByIdWithStaffAsync(string id)
-    {
-        return await _context.Doctors
-            .Include(d => d.Staff)
-            .ThenInclude(s => s.Department)
-            .Where(d => d.IsDeleted == false)
-            .FirstOrDefaultAsync(d => d.DoctorId == id);
-    }
-    public async Task<Doctor?> GetWithAppointmentsAsync(string id)
-    {
-        return await _context.Doctors
-            .Include(d => d.Staff)
-            .Include(d => d.Appointments)
-            .ThenInclude(d => d.Patient)
-            .Where(d => d.IsDeleted == false)
-            .FirstOrDefaultAsync(d => d.DoctorId == id);
-    }
-    public async Task<IEnumerable<Doctor>> SearchAsync(string searchTerm)
-    {
-        var founds = await _context.Doctors
-            .Include(d => d.Staff)
-            .ThenInclude(s => s.Department)
-            .Where(d => d.Staff.FirstName.Contains(searchTerm) ||
-                       d.Staff.LastName.Contains(searchTerm) ||
-                       d.Specialization.Contains(searchTerm) ||
-                       d.LicenseNumber.Contains(searchTerm))
-            .ToListAsync();
-
-        return founds.Count == 0 ? [] : founds;
     }
 }

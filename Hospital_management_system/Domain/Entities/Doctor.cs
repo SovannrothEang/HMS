@@ -8,7 +8,7 @@ public class Doctor : BaseEntity
 {
     [Key]
     [Column("doctor_id", TypeName = "varchar(150)")]
-    public string DoctorId { get; init; } = string.Empty;
+    public string DoctorId { get; init; } = null!;
     [Column("specialization", TypeName = "varchar(150)")]
     public string Specialization { get; set; } = string.Empty;
     [Column("license_number", TypeName = "varchar(150)")]
@@ -19,5 +19,5 @@ public class Doctor : BaseEntity
     public bool StoppedWork { get; set; } = false;
 
     public virtual Staff Staff { get; set; } = null!;
-    public virtual ICollection<Appointment> Appointments { get; set; } = [];
+    public virtual ICollection<Patient> Patients { get; set; } = [];
 }

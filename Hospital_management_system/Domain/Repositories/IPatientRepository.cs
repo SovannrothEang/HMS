@@ -2,7 +2,7 @@
 
 namespace Hospital_management_system.Domain.Repositories;
 
-public interface IStaffRepository
+public interface IPatientRepository
 {
-    Task<IEnumerable<Staff>> GetAllWithDepartmentsAsync();
+    Task<IEnumerable<Patient>> GetAllWithDoctorAsync();
 }

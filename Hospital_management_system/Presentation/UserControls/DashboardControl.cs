@@ -8,14 +8,14 @@ public partial class DashboardControl: UserControl
     {
         InitializeComponent();
         
-
         GlobalState.DataUpdated += OnDataUpdated;
     }
 
     private void OnDataUpdated()
     {
-        lbStaff.Text = GlobalState.Staffs.Count.ToString();
-        lbDoctor.Text = GlobalState.Doctors.Count.ToString();
+        lbStaff.Text = GlobalState.CurrentStaffs.ToString();
+        lbDoctor.Text = GlobalState.CurrentDoctors.ToString();
+        lbPatient.Text = GlobalState.CurrentPatients.ToString();
         this.Refresh();
     }
 }

@@ -14,23 +14,24 @@ public static class DoctorMapper
             YearsOfExperiense = entity.YearsOfExperiense,
             Specialization = entity.Specialization,
             StoppedWork = entity.StoppedWork,
-            Staff = entity.Staff?.ToDto(),
-            CreatedAt = entity.Staff!.CreatedAt,
+            Staff = entity.Staff.ToDto(),
+            CreatedAt = entity.Staff.CreatedAt,
             UpdatedAt = entity.Staff?.UpdatedAt,
         };
     }
 
-    //public static Doctor ToEntity(this DoctorDto dto)
-    //{
-    //    return new Doctor()
-    //    {
-    //        DoctorId = Guid.NewGuid().ToString(),
-    //        LicenseNumber = dto.LicenseNumber,
-    //        YearsOfExperiense = dto.YearsOfExperiense,
-    //        Specialization = dto.Specialization,
-    //        StoppedWork = dto.StoppedWork,
-    //        CreatedAt = dto.CreatedAt,
-    //        UpdatedAt = dto.UpdatedAt,
-    //    };
-    //}
+    public static Doctor ToEntity(this DoctorDto dto, Staff staff)
+    {
+        return new Doctor()
+        {
+            DoctorId = dto.DoctorId,
+            LicenseNumber = dto.LicenseNumber,
+            YearsOfExperiense = dto.YearsOfExperiense,
+            Specialization = dto.Specialization,
+            StoppedWork = dto.StoppedWork,
+            Staff = staff,
+            CreatedAt = dto.CreatedAt,
+            UpdatedAt = dto.UpdatedAt,
+        };
+    }
 }

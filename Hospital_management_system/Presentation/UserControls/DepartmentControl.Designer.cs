@@ -52,7 +52,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(777, 180);
+            btnUpdate.Location = new Point(774, 107);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(99, 38);
             btnUpdate.TabIndex = 14;
@@ -61,7 +61,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(544, 180);
+            btnDelete.Location = new Point(541, 107);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(99, 38);
             btnDelete.TabIndex = 13;
@@ -70,10 +70,10 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(17, 180);
+            textBox1.Location = new Point(25, 107);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(402, 36);
+            textBox1.Size = new Size(391, 38);
             textBox1.TabIndex = 12;
             // 
             // colUpdatedAt
@@ -103,7 +103,7 @@
             // 
             // btnNew
             // 
-            btnNew.Location = new Point(661, 180);
+            btnNew.Location = new Point(658, 107);
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(99, 38);
             btnNew.TabIndex = 11;
@@ -112,7 +112,7 @@
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(199, 117);
+            btnSubmit.Location = new Point(1079, 107);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(99, 38);
             btnSubmit.TabIndex = 10;
@@ -121,7 +121,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(17, 117);
+            btnCancel.Location = new Point(974, 107);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
             btnCancel.TabIndex = 9;
@@ -147,7 +147,7 @@
             // 
             // tbName
             // 
-            tbName.Location = new Point(70, 67);
+            tbName.Location = new Point(81, 61);
             tbName.Multiline = true;
             tbName.Name = "tbName";
             tbName.Size = new Size(228, 29);
@@ -156,7 +156,7 @@
             // lbName
             // 
             lbName.AutoSize = true;
-            lbName.Location = new Point(14, 70);
+            lbName.Location = new Point(25, 64);
             lbName.Name = "lbName";
             lbName.Size = new Size(50, 18);
             lbName.TabIndex = 5;
@@ -165,7 +165,7 @@
             // lbCode
             // 
             lbCode.AutoSize = true;
-            lbCode.Location = new Point(14, 15);
+            lbCode.Location = new Point(25, 25);
             lbCode.Name = "lbCode";
             lbCode.Size = new Size(47, 18);
             lbCode.TabIndex = 3;
@@ -173,7 +173,7 @@
             // 
             // tbCode
             // 
-            tbCode.Location = new Point(70, 12);
+            tbCode.Location = new Point(81, 22);
             tbCode.Multiline = true;
             tbCode.Name = "tbCode";
             tbCode.Size = new Size(228, 29);
@@ -186,17 +186,17 @@
             dgvDept.AllowUserToResizeColumns = false;
             dgvDept.AllowUserToResizeRows = false;
             dgvDept.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDept.Location = new Point(17, 238);
+            dgvDept.Location = new Point(25, 151);
             dgvDept.MultiSelect = false;
             dgvDept.Name = "dgvDept";
             dgvDept.ReadOnly = true;
             dgvDept.RowHeadersVisible = false;
-            dgvDept.Size = new Size(1164, 431);
+            dgvDept.Size = new Size(1156, 518);
             dgvDept.TabIndex = 1;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(429, 180);
+            btnRefresh.Location = new Point(426, 107);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(99, 38);
             btnRefresh.TabIndex = 0;

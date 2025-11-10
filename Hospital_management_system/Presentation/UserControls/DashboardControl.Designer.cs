@@ -52,10 +52,10 @@ namespace Hospital_management_system.Presentation.UserControls
             // lbStaff
             // 
             lbStaff.AutoSize = true;
-            lbStaff.Font = new Font("Arial", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbStaff.Location = new Point(233, 23);
+            lbStaff.Font = new Font("Arial", 21.75F);
+            lbStaff.Location = new Point(233, 28);
             lbStaff.Name = "lbStaff";
-            lbStaff.Size = new Size(154, 40);
+            lbStaff.Size = new Size(133, 33);
             lbStaff.TabIndex = 1;
             lbStaff.Text = "loading...";
             // 
@@ -82,20 +82,20 @@ namespace Hospital_management_system.Presentation.UserControls
             // lbPatient
             // 
             lbPatient.AutoSize = true;
-            lbPatient.Font = new Font("Arial", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbPatient.Location = new Point(1013, 23);
+            lbPatient.Font = new Font("Arial", 21.75F);
+            lbPatient.Location = new Point(1013, 28);
             lbPatient.Name = "lbPatient";
-            lbPatient.Size = new Size(154, 40);
+            lbPatient.Size = new Size(133, 33);
             lbPatient.TabIndex = 6;
             lbPatient.Text = "loading...";
             // 
             // lbDoctor
             // 
             lbDoctor.AutoSize = true;
-            lbDoctor.Font = new Font("Arial", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbDoctor.Location = new Point(618, 23);
+            lbDoctor.Font = new Font("Arial", 21.75F);
+            lbDoctor.Location = new Point(618, 28);
             lbDoctor.Name = "lbDoctor";
-            lbDoctor.Size = new Size(154, 40);
+            lbDoctor.Size = new Size(133, 33);
             lbDoctor.TabIndex = 7;
             lbDoctor.Text = "loading...";
             // 

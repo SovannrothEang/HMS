@@ -1,12 +1,10 @@
 ﻿using Hospital_management_system.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Hospital_management_system.Infrastructure.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<Appointment> Appointments { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Patient> Patients { get; set; }
@@ -20,17 +18,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             var entries = ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Modified &&
                     (e.Entity is Department || e.Entity is Staff ||
-                     e.Entity is Patient || e.Entity is Appointment));
+                     e.Entity is Patient || e.Entity is Doctor));
             foreach (var entry in entries)
             {
                 if (entry.Entity is Department dept)
                     dept.UpdatedAt = DateTime.UtcNow.AddHours(7);
                 else if (entry.Entity is Staff staff)
                     staff.UpdatedAt = DateTime.UtcNow.AddHours(7);
+                else if (entry.Entity is Doctor doctor)
+                    doctor.UpdatedAt = DateTime.UtcNow.AddHours(7);
                 else if (entry.Entity is Patient patient)
                     patient.UpdatedAt = DateTime.UtcNow.AddHours(7);
-                else if (entry.Entity is Appointment appointment)
-                    appointment.UpdatedAt = DateTime.UtcNow.AddHours(7);
             }
             return base.SaveChangesAsync(cancellationToken);
         }
@@ -55,19 +53,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         //        modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
         //    }
         //}
-
-        modelBuilder.Entity<Appointment>(buildAction =>
-        {
-            buildAction.HasIndex(a => a.AppointmentDate);
-            buildAction
-                .HasOne(a => a.Patient)
-                .WithMany(p => p.Appointments)
-                .HasForeignKey(a => a.PatientId);
-            buildAction
-                .HasOne(a => a.Doctor)
-                .WithMany(d => d.Appointments)
-                .HasForeignKey(a => a.DoctorId);
-        });
 
         modelBuilder.Entity<Department>(buildAction =>
         {
@@ -140,6 +125,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .UseCollation("SQL_Latin1_General_CP850_BIN");
             buildAction.HasIndex(p => p.Code).IsUnique();
             buildAction.HasIndex(p => new { p.FirstName, p.LastName });
+            buildAction
+                .HasOne(a => a.Doctor)
+                .WithMany(d => d.Patients)
+                .HasForeignKey(a => a.DoctorId);
 
             buildAction.ToTable(t =>
             {
