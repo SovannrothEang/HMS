@@ -146,7 +146,7 @@
             dgvDept.Name = "dgvDept";
             dgvDept.ReadOnly = true;
             dgvDept.RowHeadersVisible = false;
-            dgvDept.Size = new Size(1156, 461);
+            dgvDept.Size = new Size(1250, 461);
             dgvDept.TabIndex = 1;
             // 
             // btnRefresh
@@ -164,7 +164,7 @@
             flowLayoutPanel1.Controls.Add(tableLayoutPanel2);
             flowLayoutPanel1.Location = new Point(25, 25);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(1153, 133);
+            flowLayoutPanel1.Size = new Size(1250, 133);
             flowLayoutPanel1.TabIndex = 16;
             // 
             // tableLayoutPanel1
@@ -268,10 +268,10 @@
             Controls.Add(btnRefresh);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(4);
-            MaximumSize = new Size(1200, 700);
-            MinimumSize = new Size(1200, 700);
+            MaximumSize = new Size(1300, 700);
+            MinimumSize = new Size(1300, 700);
             Name = "DepartmentControl";
-            Size = new Size(1200, 700);
+            Size = new Size(1300, 700);
             ((System.ComponentModel.ISupportInitialize)dgvDept).EndInit();
             flowLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);

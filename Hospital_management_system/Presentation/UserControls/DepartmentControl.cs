@@ -31,6 +31,11 @@ public partial class DepartmentControl : UserControl
             if (dgvDept.Columns.Contains("colId"))
                 dgvDept.Columns["colId"].Visible = false;
         };
+        dgvDept.CellFormatting += (s, e) =>
+        {
+            dgvDept.Columns["colCreatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy";
+            dgvDept.Columns["colUpdatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy";
+        };
         //this.Load += async (s, e) => await LoadDepartmentsAsync();
         #endregion
 
@@ -210,6 +215,9 @@ public partial class DepartmentControl : UserControl
     #region UI config
     private void LoadControlsConfiguration()
     {
+        dgvDept.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+        dgvDept.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
         dgvDept.AutoGenerateColumns = false;
 
         #region Columns
@@ -235,7 +243,7 @@ public partial class DepartmentControl : UserControl
                 Name = "colDescription",
                 HeaderText = "Description",
                 DataPropertyName = "Description",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             },
             new DataGridViewTextBoxColumn {
                 Name = "colCreatedAt",

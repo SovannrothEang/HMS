@@ -142,6 +142,7 @@ public partial class MainForm : Form
                 .Select(s => s.Code)]);
 
             GlobalState.DoctorsCodeList = new BindingList<string>([.. doctorDtos
+                //.Where(d => d)
                 .Select(d => d.Staff.Code)]);
 
             GlobalState.AddItems<DepartmentDto>(deptDtos, GlobalState.Departments);

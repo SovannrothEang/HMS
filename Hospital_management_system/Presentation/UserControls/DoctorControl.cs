@@ -4,6 +4,7 @@ using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
 using Hospital_management_system.Domain.ValueObjects;
 using Hospital_management_system.Presentation.State;
+using System.Windows.Forms;
 
 namespace Hospital_management_system.Presentation.UserControls;
 
@@ -161,6 +162,9 @@ public partial class DoctorControl : UserControl
                         if (doctor != null)
                         {
                             GlobalState.Doctors.Remove(doctor);
+                            var doctorCode = GlobalState.DoctorsCodeList.FirstOrDefault(d => d == doctor.Staff.Code);
+                            if (doctorCode != null)
+                                GlobalState.DoctorsCodeList.Remove(doctorCode);
                         }
                     }
                     else
@@ -250,9 +254,6 @@ public partial class DoctorControl : UserControl
     #region UI config
     private void LoadControlsConfiguration()
     {
-        dtpHiredDate.Format = DateTimePickerFormat.Custom;
-        //dtpHiredDate.Value = DateTime.Now;
-
         cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
         cmbCode.SelectedIndex = -1;
 
@@ -268,6 +269,7 @@ public partial class DoctorControl : UserControl
         cmbDepartment.SelectedIndex = -1;
 
         dgvDoctor.AutoGenerateColumns = false;
+
         #region Columns
         dgvDoctor.Columns.AddRange([
             new DataGridViewTextBoxColumn {
@@ -315,7 +317,7 @@ public partial class DoctorControl : UserControl
                 Name = "colDepartment",
                 HeaderText = "Department",
                 DataPropertyName = "Staff.Department.Name",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             }
         ]);
         #endregion
@@ -435,6 +437,7 @@ public partial class DoctorControl : UserControl
         doctorDto.Staff = staff;
 
         GlobalState.Doctors.Add(doctorDto);
+        GlobalState.DoctorsCodeList.Add(doctorDto.Staff.Code);
 
         IsNew = false;
         _bsDoctor.ResetBindings(false);

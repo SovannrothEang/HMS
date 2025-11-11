@@ -4,6 +4,7 @@ using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
 using Hospital_management_system.Domain.ValueObjects;
 using Hospital_management_system.Presentation.State;
+using System.Windows.Forms;
 
 namespace Hospital_management_system.Presentation.UserControls;
 
@@ -12,6 +13,7 @@ public partial class PatientControl : UserControl
     private readonly IGenericRepository<Patient> _repo;
     private readonly IPatientRepository _patientRepo;
     private readonly BindingSource _bsPatient = [];
+    private readonly BindingSource _bsDoctorCodes = [];
 
     private static bool IsNew = false;
     public PatientControl(IGenericRepository<Patient> repo, IPatientRepository patientRepo)
@@ -24,6 +26,8 @@ public partial class PatientControl : UserControl
 
         _bsPatient.DataSource = GlobalState.Patients;
         dgvPatient.DataSource = _bsPatient;
+
+        _bsDoctorCodes.DataSource = GlobalState.DoctorsCodeList;
 
         #region Dgv events
         dgvPatient.DataBindingComplete += (s, e) =>
@@ -38,11 +42,13 @@ public partial class PatientControl : UserControl
 
             var patient = row.DataBoundItem as PatientDto;
 
+            if (patient != null)
+                patient.Doctor = GlobalState.Doctors.First(x => x.DoctorId == patient.DoctorId);
+
             if (dgvPatient.Columns.Contains("colDoctor"))
                 row.Cells["colDoctor"].Value = patient?.Doctor?.Staff?.Code ?? string.Empty;
 
-            //if (patient != null)
-            //    patient.Doctor = GlobalState.Doctors.First(x => x.DoctorId == patient.DoctorId);
+            dgvPatient.Columns["colDob"].DefaultCellStyle.Format = "dd/MM/yyyy";
         };
         dgvPatient.SelectionChanged += OnDgvPatientSelectionChanged;
         #endregion
@@ -100,6 +106,7 @@ public partial class PatientControl : UserControl
             tbSickness.Clear();
             cmbDoctor.SelectedIndex = -1;
             tbCode.Focus();
+            _bsDoctorCodes.ResetBindings(false);
         };
         btnUpdate.Click += (s, e) =>
         {
@@ -169,14 +176,18 @@ public partial class PatientControl : UserControl
     private void LoadControlsConfiguration()
     {
         dtpDob.Format = DateTimePickerFormat.Custom;
-        dtpDob.Value = DateTime.Now;
+        dtpDob.CustomFormat = "dd/MM/yyyy";
+        dtpDob.ShowUpDown = false;
 
         cmbGender.DataSource = Enum.GetValues(typeof(PersonGender));
 
-        cmbDoctor.DataSource = GlobalState.DoctorsCodeList;
+        cmbDoctor.DataSource = _bsDoctorCodes;
         cmbDoctor.SelectedIndex = -1;
 
         dgvPatient.AutoGenerateColumns = false;
+        dgvPatient.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+        dgvPatient.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
         #region Columns
         dgvPatient.Columns.AddRange([
             new DataGridViewTextBoxColumn {
@@ -194,13 +205,13 @@ public partial class PatientControl : UserControl
                 Name = "colFirstName",
                 HeaderText = "First Name",
                 DataPropertyName = "FirstName",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             },
             new DataGridViewTextBoxColumn {
                 Name = "colLastName",
                 HeaderText = "Last Name",
                 DataPropertyName = "LastName",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             },
             new DataGridViewTextBoxColumn {
                 Name = "colGender",
@@ -212,31 +223,31 @@ public partial class PatientControl : UserControl
                 Name = "colDob",
                 HeaderText = "Date of birth",
                 DataPropertyName = "DOB",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
             },
             new DataGridViewTextBoxColumn {
                 Name = "colPhone",
                 HeaderText = "Phone Number",
                 DataPropertyName = "PhoneNumber",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             },
             new DataGridViewTextBoxColumn {
                 Name = "colAddress",
                 HeaderText = "Address",
                 DataPropertyName = "Address",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             },
             new DataGridViewTextBoxColumn {
                 Name = "colSickness",
                 HeaderText = "Sickness",
                 DataPropertyName = "Sickness",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             },
             new DataGridViewTextBoxColumn {
                 Name = "colDoctor",
                 HeaderText = "Doctor",
                 DataPropertyName = "Doctor.Staff.Code",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             },
             //new DataGridViewTextBoxColumn {
             //    Name = "colCreatedAt",
@@ -251,6 +262,8 @@ public partial class PatientControl : UserControl
             //    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             //}
         ]);
+
+        dgvPatient.Columns["colSickness"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
         #endregion
     }
     private void DisableControls(bool con)

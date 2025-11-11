@@ -76,6 +76,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasIndex(d => d.LicenseNumber)
                 .IsUnique()
                 .HasFilter("[is_deleted] = 0");
+            buildAction
+                .HasIndex(d => d.StaffId)
+                .IsUnique()
+                .HasFilter("[is_deleted] = 0");
             buildAction.HasIndex(d => d.Specialization);
 
             buildAction
@@ -120,7 +124,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         });
         #endregion
 
-        #region Patient
+        #region Patients
         modelBuilder.Entity<Patient>(buildAction =>
         {
             buildAction

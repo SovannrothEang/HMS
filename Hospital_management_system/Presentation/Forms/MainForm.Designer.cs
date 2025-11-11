@@ -148,22 +148,22 @@
             mainPanel.Location = new Point(194, 0);
             mainPanel.Margin = new Padding(4);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(1200, 700);
+            mainPanel.Size = new Size(1300, 700);
             mainPanel.TabIndex = 1;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1394, 700);
+            ClientSize = new Size(1494, 700);
             Controls.Add(mainPanel);
             Controls.Add(panelSidebar);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4);
             MaximizeBox = false;
-            MaximumSize = new Size(1410, 739);
-            MinimumSize = new Size(1410, 739);
+            MaximumSize = new Size(1510, 739);
+            MinimumSize = new Size(1510, 739);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "HMS";

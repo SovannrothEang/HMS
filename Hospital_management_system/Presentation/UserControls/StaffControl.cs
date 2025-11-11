@@ -30,6 +30,8 @@ public partial class StaffControl : UserControl
         //{
         //    await LoadStaffsAsync();
         //};
+
+        #region Dgv Events
         dgvStaff.DataBindingComplete += (s, e) =>
         {
             if (dgvStaff.Columns.Contains("colId"))
@@ -40,8 +42,11 @@ public partial class StaffControl : UserControl
             StaffDto? staff = dgvStaff.Rows[e.RowIndex].DataBoundItem as StaffDto;
             //dgvStaff.Rows[e.RowIndex].Cells["colDob"].Value = staff?.DOB.ToShortDateString();
             dgvStaff.Rows[e.RowIndex].Cells["colDepartment"].Value = staff?.Department?.Name;
+            dgvStaff.Columns["colDob"].DefaultCellStyle.Format = "dd/MM/yyyy";
         };
         dgvStaff.SelectionChanged += OnDgvStaffSelectionChanged;
+        #endregion
+
         #region Click Events
         btnRefresh.Click += async (s, e) =>
         {
@@ -238,6 +243,9 @@ public partial class StaffControl : UserControl
         //cmbDepartment.SelectedIndex = 0;
 
         dgvStaff.AutoGenerateColumns = false;
+        dgvStaff.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+        dgvStaff.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
         #region Columns
         dgvStaff.Columns.AddRange([
             new DataGridViewTextBoxColumn {
@@ -255,13 +263,13 @@ public partial class StaffControl : UserControl
                 Name = "colFirstName",
                 HeaderText = "First Name",
                 DataPropertyName = "FirstName",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             },
             new DataGridViewTextBoxColumn {
                 Name = "colLastName",
                 HeaderText = "Last Name",
                 DataPropertyName = "LastName",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             },
             new DataGridViewTextBoxColumn {
                 Name = "colGender",
@@ -324,6 +332,8 @@ public partial class StaffControl : UserControl
             //    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             //}
         ]);
+
+        dgvStaff.Columns["colAddress"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
         #endregion
     }
     private void DisableControls(bool con)

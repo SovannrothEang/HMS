@@ -70,14 +70,14 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             cmbGender.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGender.FormattingEnabled = true;
-            cmbGender.Location = new Point(515, 3);
+            cmbGender.Location = new Point(546, 3);
             cmbGender.Name = "cmbGender";
             cmbGender.Size = new Size(260, 26);
             cmbGender.TabIndex = 50;
             // 
             // dtpDob
             // 
-            dtpDob.Location = new Point(515, 61);
+            dtpDob.Location = new Point(546, 61);
             dtpDob.Name = "dtpDob";
             dtpDob.Size = new Size(260, 26);
             dtpDob.TabIndex = 51;
@@ -85,7 +85,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(788, 123);
+            label6.Location = new Point(849, 123);
             label6.Margin = new Padding(3, 7, 3, 0);
             label6.Name = "label6";
             label6.Size = new Size(55, 18);
@@ -95,7 +95,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(788, 7);
+            label5.Location = new Point(849, 7);
             label5.Margin = new Padding(3, 7, 3, 0);
             label5.Name = "label5";
             label5.Size = new Size(67, 18);
@@ -104,7 +104,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             // tbAddress
             // 
-            tbAddress.Location = new Point(888, 3);
+            tbAddress.Location = new Point(949, 3);
             tbAddress.Multiline = true;
             tbAddress.Name = "tbAddress";
             tbAddress.Size = new Size(268, 45);
@@ -113,7 +113,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(395, 123);
+            label4.Location = new Point(426, 123);
             label4.Margin = new Padding(3, 7, 3, 0);
             label4.Name = "label4";
             label4.Size = new Size(112, 18);
@@ -122,7 +122,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             // tbPhoneNumber
             // 
-            tbPhoneNumber.Location = new Point(515, 119);
+            tbPhoneNumber.Location = new Point(546, 119);
             tbPhoneNumber.Multiline = true;
             tbPhoneNumber.Name = "tbPhoneNumber";
             tbPhoneNumber.Size = new Size(260, 29);
@@ -131,7 +131,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(395, 65);
+            label3.Location = new Point(426, 65);
             label3.Margin = new Padding(3, 7, 3, 0);
             label3.Name = "label3";
             label3.Size = new Size(93, 18);
@@ -141,7 +141,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(395, 7);
+            label2.Location = new Point(426, 7);
             label2.Margin = new Padding(3, 7, 3, 0);
             label2.Name = "label2";
             label2.Size = new Size(60, 18);
@@ -228,7 +228,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(1085, 205);
+            btnSubmit.Location = new Point(1143, 205);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(99, 38);
             btnSubmit.TabIndex = 59;
@@ -237,7 +237,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(980, 205);
+            btnCancel.Location = new Point(1038, 205);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
             btnCancel.TabIndex = 58;
@@ -293,7 +293,7 @@ namespace Hospital_management_system.Presentation.UserControls
             dgvPatient.Name = "dgvPatient";
             dgvPatient.ReadOnly = true;
             dgvPatient.RowHeadersVisible = false;
-            dgvPatient.Size = new Size(1159, 430);
+            dgvPatient.Size = new Size(1250, 430);
             dgvPatient.TabIndex = 61;
             // 
             // btnRefresh
@@ -338,13 +338,13 @@ namespace Hospital_management_system.Presentation.UserControls
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.Size = new Size(1159, 174);
+            tableLayoutPanel1.Size = new Size(1250, 174);
             tableLayoutPanel1.TabIndex = 76;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(788, 65);
+            label7.Location = new Point(849, 65);
             label7.Margin = new Padding(3, 7, 3, 0);
             label7.Name = "label7";
             label7.Size = new Size(72, 18);
@@ -353,7 +353,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             // tbSickness
             // 
-            tbSickness.Location = new Point(888, 61);
+            tbSickness.Location = new Point(949, 61);
             tbSickness.Multiline = true;
             tbSickness.Name = "tbSickness";
             tbSickness.Size = new Size(268, 29);
@@ -363,7 +363,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             cmbDoctor.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbDoctor.FormattingEnabled = true;
-            cmbDoctor.Location = new Point(888, 119);
+            cmbDoctor.Location = new Point(949, 119);
             cmbDoctor.Name = "cmbDoctor";
             cmbDoctor.Size = new Size(268, 26);
             cmbDoctor.TabIndex = 76;
@@ -383,10 +383,10 @@ namespace Hospital_management_system.Presentation.UserControls
             Controls.Add(btnRefresh);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(4);
-            MaximumSize = new Size(1200, 700);
-            MinimumSize = new Size(1200, 700);
+            MaximumSize = new Size(1300, 700);
+            MinimumSize = new Size(1300, 700);
             Name = "PatientControl";
-            Size = new Size(1200, 700);
+            Size = new Size(1300, 700);
             ((System.ComponentModel.ISupportInitialize)dgvPatient).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
