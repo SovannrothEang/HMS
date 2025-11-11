@@ -46,8 +46,7 @@ public partial class DoctorControl : UserControl
             var row = dgvDoctor.Rows[e.RowIndex];
             if (row == null) return;
 
-            var doctor = row.DataBoundItem as DoctorDto;
-            if (doctor == null) return;
+            if (row.DataBoundItem is not DoctorDto doctor) return;
 
             if (dgvDoctor.Columns.Contains("colCode"))
                 row.Cells["colCode"].Value = doctor.Staff?.Code ?? string.Empty;
@@ -347,7 +346,7 @@ public partial class DoctorControl : UserControl
         if (dgvDoctor.CurrentRow.DataBoundItem is DoctorDto selectedDoctor)
         {
             cmbCode.Text = selectedDoctor.Staff?.Code;
-            tbExperinse.Text = selectedDoctor.YearsOfExperiense.ToString();
+            tbExperinse.Text = selectedDoctor.YearsOfExperience.ToString();
             tbLicenseNumber.Text = selectedDoctor.LicenseNumber.ToString();
             cmbSpecialization.Text = selectedDoctor.Specialization;
 
@@ -425,8 +424,8 @@ public partial class DoctorControl : UserControl
         {
             DoctorId = Guid.NewGuid().ToString(),
             Code = code!,
-            YearsOfExperiense = int.Parse(tbExperinse.Text.Trim()),
-            LicenseNumber = int.Parse(tbLicenseNumber.Text.Trim()),
+            YearsOfExperience = int.Parse(tbExperinse.Text.Trim()),
+            LicenseNumber = tbLicenseNumber.Text.Trim(),
             Specialization = specialization.ToString(),
             StaffId = staff!.StaffId,
         };
@@ -448,7 +447,7 @@ public partial class DoctorControl : UserControl
         var code = cmbCode.SelectedItem!.ToString()!;
         var staff = GlobalState.Staffs.FirstOrDefault(s => s.Code == code);
         var yearsOfExperiense = int.Parse(tbExperinse.Text.Trim());
-        var licenseNumber = int.Parse(tbLicenseNumber.Text.Trim());
+        var licenseNumber = tbLicenseNumber.Text.Trim();
         var specialization = cmbSpecialization.SelectedItem!.ToString()!;
         var row = dgvDoctor.CurrentRow.DataBoundItem as DoctorDto;
 
@@ -457,7 +456,7 @@ public partial class DoctorControl : UserControl
                         {
                             DoctorId = id,
                             Code = code,
-                            YearsOfExperiense = yearsOfExperiense,
+                            YearsOfExperience = yearsOfExperiense,
                             LicenseNumber = licenseNumber,
                             StoppedWork = row!.StoppedWork,
                             Specialization = specialization,
@@ -465,7 +464,7 @@ public partial class DoctorControl : UserControl
         var d = GlobalState.Doctors.FirstOrDefault(d => d.DoctorId == id);
         if (d != null)
         {
-            d.YearsOfExperiense = yearsOfExperiense;
+            d.YearsOfExperience = yearsOfExperiense;
             d.LicenseNumber = licenseNumber;
             d.StoppedWork = row.StoppedWork;
             d.Specialization = specialization;

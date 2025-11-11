@@ -66,6 +66,58 @@ namespace Hospital_management_system.Migrations
                         .HasFilter("[is_deleted] = 0 AND [name] <> ''");
 
                     b.ToTable("tbl_departments");
+
+                    b.HasData(
+                        new
+                        {
+                            DepartmentId = "5b4f0ffd-9906-40f5-ab14-198f91b8a978",
+                            Code = "CAD",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Heart and Cardiovascular Department",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Cardiology"
+                        },
+                        new
+                        {
+                            DepartmentId = "c63c5832-ddb1-4cf6-83c4-0611cf1ccaf7",
+                            Code = "PED",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Children Health Department",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Pediatrics"
+                        },
+                        new
+                        {
+                            DepartmentId = "fbb13a92-145b-4a6e-a8d6-3921a37c105a",
+                            Code = "ORTH",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Bone and Joint Department",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Orthopedics"
+                        },
+                        new
+                        {
+                            DepartmentId = "d98dd393-bfdb-4a5e-ac38-48d275013551",
+                            Code = "GM",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "General Health Department",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "General Medicine"
+                        },
+                        new
+                        {
+                            DepartmentId = "3b9c81f3-b692-4c3c-8184-b5b6a3a6d136",
+                            Code = "EMG",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Emergency Department",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Emergency"
+                        });
                 });
 
             modelBuilder.Entity("Hospital_management_system.Domain.Entities.Doctor", b =>
@@ -114,7 +166,7 @@ namespace Hospital_management_system.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("YearsOfExperiense")
+                    b.Property<int>("YearsOfExperience")
                         .HasColumnType("integer")
                         .HasColumnName("years_of_experience ");
 
@@ -131,6 +183,34 @@ namespace Hospital_management_system.Migrations
                         .HasFilter("[is_deleted] = 0");
 
                     b.ToTable("tbl_doctors");
+
+                    b.HasData(
+                        new
+                        {
+                            DoctorId = "970fcbb7-f956-41a6-9a6b-9999dc026732",
+                            Code = "S001",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsDeleted = false,
+                            LicenseNumber = "LIC-CARD-001",
+                            Specialization = "Cardiology",
+                            StaffId = "5c470782-4fd0-4a3b-ba2c-1dd37db8f244",
+                            StoppedWork = false,
+                            YearsOfExperience = 15
+                        },
+                        new
+                        {
+                            DoctorId = "592a5e0f-5a2a-43d4-8a50-9733381a4451",
+                            Code = "S003",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsDeleted = false,
+                            LicenseNumber = "LIC-PED-001",
+                            Specialization = "Pediatrics",
+                            StaffId = "9bf0da55-3b7d-41e8-86f6-5fba213b6719",
+                            StoppedWork = false,
+                            YearsOfExperience = 10
+                        });
                 });
 
             modelBuilder.Entity("Hospital_management_system.Domain.Entities.Patient", b =>
@@ -218,6 +298,59 @@ namespace Hospital_management_system.Migrations
                             t.HasCheckConstraint("CHK_CODE_NOT_EMPTY", "LTRIM(RTRIM(ISNULL([Code], ''))) <> ''");
 
                             t.HasCheckConstraint("CHK_NAME_NOT_EMPTY", "LTRIM(RTRIM(FirstName + ' ' + LastName)) <> ''");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            PatientId = "959ac403-97ee-483e-95aa-2ccd3aa8a329",
+                            Address = "303 River St",
+                            Code = "P001",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = "1960-03-10 00:00:00",
+                            DoctorId = "970fcbb7-f956-41a6-9a6b-9999dc026732",
+                            Email = "frank.white@example.com",
+                            FirstName = "Frank",
+                            Gender = 0,
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "White",
+                            PhoneNumber = "555-6666",
+                            Sickness = "Headache"
+                        },
+                        new
+                        {
+                            PatientId = "d13ffa61-6538-467e-8b59-9c135d24080d",
+                            Address = "404 Lake Rd",
+                            Code = "P002",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = "2018-07-01 00:00:00",
+                            DoctorId = "592a5e0f-5a2a-43d4-8a50-9733381a4451",
+                            Email = "grace.black@example.com",
+                            FirstName = "Grace",
+                            Gender = 1,
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "Black",
+                            PhoneNumber = "555-7777",
+                            Sickness = "Fatigue"
+                        },
+                        new
+                        {
+                            PatientId = "9e97f934-343c-456f-b409-0e32c3a2d2d0",
+                            Address = "505 Mountain View",
+                            Code = "P003",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = "1990-12-25 00:00:00",
+                            DoctorId = "970fcbb7-f956-41a6-9a6b-9999dc026732",
+                            Email = "henry.green@example.com",
+                            FirstName = "Henry",
+                            Gender = 0,
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "Green",
+                            PhoneNumber = "555-8888",
+                            Sickness = "Cold"
                         });
                 });
 
@@ -314,6 +447,103 @@ namespace Hospital_management_system.Migrations
 
                             t.HasCheckConstraint("CHK_NAME_NOT_EMPTY", "LTRIM(RTRIM(FirstName + ' ' + LastName)) <> ''")
                                 .HasName("CHK_NAME_NOT_EMPTY1");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            StaffId = "5c470782-4fd0-4a3b-ba2c-1dd37db8f244",
+                            Address = "123 Main St",
+                            Code = "S001",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = "1980-05-15 00:00:00",
+                            DepartmentId = "5b4f0ffd-9906-40f5-ab14-198f91b8a978",
+                            Email = "alice.smith@hms.com",
+                            FirstName = "Alice",
+                            Gender = 1,
+                            HiredDate = new DateTime(2010, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "Smith",
+                            PhoneNumber = "555-1111",
+                            Position = "Nurse",
+                            Salary = 0m
+                        },
+                        new
+                        {
+                            StaffId = "a18162d3-4ad9-4342-b0fd-c67c7ee20fa2",
+                            Address = "456 Oak Ave",
+                            Code = "S002",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = "1975-08-20 00:00:00",
+                            DepartmentId = "d98dd393-bfdb-4a5e-ac38-48d275013551",
+                            Email = "bob.johnson@hms.com",
+                            FirstName = "Bob",
+                            Gender = 0,
+                            HiredDate = new DateTime(2005, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "Johnson",
+                            PhoneNumber = "555-2222",
+                            Position = "Administrator",
+                            Salary = 0m
+                        },
+                        new
+                        {
+                            StaffId = "9bf0da55-3b7d-41e8-86f6-5fba213b6719",
+                            Address = "789 Pine Ln",
+                            Code = "S003",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = "1990-01-25 00:00:00",
+                            DepartmentId = "c63c5832-ddb1-4cf6-83c4-0611cf1ccaf7",
+                            Email = "charlie.brown@hms.com",
+                            FirstName = "Charlie",
+                            Gender = 0,
+                            HiredDate = new DateTime(2015, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "Brown",
+                            PhoneNumber = "555-3333",
+                            Position = "Nurse",
+                            Salary = 0m
+                        },
+                        new
+                        {
+                            StaffId = "e664bff5-021b-407c-90d3-4df9a20a5a2f",
+                            Address = "101 Hero Way",
+                            Code = "S004",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = "1982-11-03 00:00:00",
+                            DepartmentId = "fbb13a92-145b-4a6e-a8d6-3921a37c105a",
+                            Email = "diana.prince@hms.com",
+                            FirstName = "Diana",
+                            Gender = 1,
+                            HiredDate = new DateTime(2012, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "Prince",
+                            PhoneNumber = "555-4444",
+                            Position = "Technician",
+                            Salary = 0m
+                        },
+                        new
+                        {
+                            StaffId = "b034f4fa-231b-4c4b-8f79-3b0c0a855843",
+                            Address = "202 Secret Rd",
+                            Code = "S005",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = "1995-02-28 00:00:00",
+                            DepartmentId = "3b9c81f3-b692-4c3c-8184-b5b6a3a6d136",
+                            Email = "eve.adams@hms.com",
+                            FirstName = "Eve",
+                            Gender = 1,
+                            HiredDate = new DateTime(2018, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "Adams",
+                            PhoneNumber = "555-5555",
+                            Position = "Receptionist",
+                            Salary = 0m
                         });
                 });
 

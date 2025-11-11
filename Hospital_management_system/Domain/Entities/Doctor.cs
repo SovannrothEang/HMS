@@ -9,7 +9,7 @@ public class Doctor : BaseEntity
     #region - Fields
     private string _doctorId = null!;
     private string _specialization = null!;
-    private int _licensenumber;
+    private string _licensenumber = null!;
     private int _experience;
     private bool _stoppedWork;
     private string _staffId = null!;
@@ -42,19 +42,19 @@ public class Doctor : BaseEntity
         }
     }
     [Column("license_number", TypeName = "varchar(150)")]
-    public int LicenseNumber
+    public string LicenseNumber
     {
         get => _licensenumber;
         set
         {
-            if (value < 99999 || value > int.MaxValue)
+            if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException(nameof(value));
-
+            
             _licensenumber = value;
         }
     }
     [Column("years_of_experience ", TypeName = "integer")]
-    public int YearsOfExperiense
+    public int YearsOfExperience
     {
         get => _experience;
         set

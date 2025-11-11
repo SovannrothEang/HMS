@@ -4,8 +4,8 @@ public class DoctorDto
 {
     public string DoctorId { get; set; } = string.Empty;
     public string Specialization { get; set; } = string.Empty;
-    public int YearsOfExperiense { get; set; }
-    public int LicenseNumber { get; set; }
+    public int YearsOfExperience { get; set; }
+    public string LicenseNumber { get; set; } = string.Empty;
     public bool StoppedWork { get; set; }
     public string StaffId { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }

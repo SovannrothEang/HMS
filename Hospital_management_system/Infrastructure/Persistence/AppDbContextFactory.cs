@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace Hospital_management_system.Infrastructure.Persistence;
 
@@ -9,18 +11,15 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         var optionBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
-        optionBuilder.UseSqlServer("""
-        
-            Data Source=localhost\MSSQLSERVER2022;
-            Initial Catalog=hms;
-            Integrated Security=True;
-            Persist Security Info=False;
-            Pooling=False;
-            MultipleActiveResultSets=False;
-            Encrypt=False;
-            TrustServerCertificate=False
-            
-            """);
+        // Build configuration for design-time tools
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+        optionBuilder.UseSqlServer(connectionString);
 
         return new AppDbContext(optionBuilder.Options);
     }

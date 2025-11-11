@@ -4,4 +4,7 @@ public enum Position
 {
     Nurse,
     Doctor,
+    Administrator,
+    Technician,
+    Receptionist
 }

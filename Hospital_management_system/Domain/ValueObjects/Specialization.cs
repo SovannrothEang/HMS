@@ -6,5 +6,6 @@ public enum Specialization
     Neurology,
     Oncology,
     Orthopedics,
+    Pediatrics,
 }
 

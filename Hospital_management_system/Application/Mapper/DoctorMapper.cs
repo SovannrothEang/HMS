@@ -11,7 +11,7 @@ public static class DoctorMapper
         {
             DoctorId = entity.DoctorId,
             LicenseNumber = entity.LicenseNumber,
-            YearsOfExperiense = entity.YearsOfExperiense,
+            YearsOfExperience = entity.YearsOfExperience,
             Specialization = entity.Specialization,
             StoppedWork = entity.StoppedWork,
             StaffId = entity.StaffId,
@@ -27,7 +27,7 @@ public static class DoctorMapper
         {
             DoctorId = dto.DoctorId,
             LicenseNumber = dto.LicenseNumber,
-            YearsOfExperiense = dto.YearsOfExperiense,
+            YearsOfExperience = dto.YearsOfExperience,
             Specialization = dto.Specialization,
             StoppedWork = dto.StoppedWork,
             StaffId = dto.StaffId,
@@ -41,7 +41,7 @@ public static class DoctorMapper
     {
         dto.DoctorId = doctor.DoctorId;
         dto.LicenseNumber = doctor.LicenseNumber;
-        dto.YearsOfExperiense = doctor.YearsOfExperiense;
+        dto.YearsOfExperience = doctor.YearsOfExperience;
         dto.Specialization = doctor.Specialization;
         dto.StoppedWork = doctor.StoppedWork;
         dto.StaffId = doctor.StaffId;
