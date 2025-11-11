@@ -10,16 +10,19 @@ namespace Hospital_management_system.Presentation.UserControls;
 public partial class StaffControl : UserControl
 {
     private readonly IGenericRepository<Staff> _repo;
+    private readonly IStaffRepository _staffRepo;
     private readonly BindingSource _bsStaffs = [];
 
     private static bool IsNew = false;
-    public StaffControl(IGenericRepository<Staff> repo)
+    public StaffControl(IGenericRepository<Staff> repo, IStaffRepository staffRepo)
     {
         _repo = repo;
+        _staffRepo = staffRepo;
+
         InitializeComponent();
         LoadControlsConfiguration();
         DisableControls(true);
-        
+
         _bsStaffs.DataSource = GlobalState.Staffs;
         dgvStaff.DataSource = _bsStaffs;
 
@@ -113,6 +116,21 @@ public partial class StaffControl : UserControl
                 MessageBoxIcon.Warning);
             if (confirmResult == DialogResult.Yes)
             {
+                var isDoctor = GlobalState.Doctors.FirstOrDefault(d => d.StaffId == id);
+                if (isDoctor is not null)
+                {
+                    var patients = GlobalState.Patients.Where(p => p.DoctorId == isDoctor.DoctorId).ToList();
+                    if (patients.Count > 0)
+                    {
+                        MessageBox.Show(
+                            "There are patients in care of this doctors",
+                            "Warning",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning
+                        );
+                        return;
+                    }
+                }
                 try
                 {
                     var success = await _repo.DeleteAsync(id);
@@ -135,8 +153,8 @@ public partial class StaffControl : UserControl
                     }
                     _bsStaffs.ResetBindings(false);
                 }
-                    catch (Exception ex)
-                    {
+                catch (Exception ex)
+                {
                     MessageBox.Show($"Error deleting staff: {ex.Message}", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -186,7 +204,7 @@ public partial class StaffControl : UserControl
                 {
                     OnDgvStaffSelectionChanged(this, EventArgs.Empty);
                     MessageBox.Show(
-                        $"Failed to create, error: {ex.Message}",
+                        $"Failed to update, error: {ex.Message}",
                         "Updated staff",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
@@ -197,6 +215,7 @@ public partial class StaffControl : UserControl
             OnDgvStaffSelectionChanged(this, EventArgs.Empty);
             DisableControls(true);
         };
+        _staffRepo = staffRepo;
         #endregion
     }
 
@@ -206,7 +225,7 @@ public partial class StaffControl : UserControl
         dtpDob.Format = DateTimePickerFormat.Custom;
         dtpDob.Value = DateTime.Now;
 
-        cmbGender.DataSource = Enum.GetValues(typeof(Gender));
+        cmbGender.DataSource = Enum.GetValues(typeof(PersonGender));
         //cmbGender.SelectedIndex = 0;
 
         cmbPosition.DataSource = Enum.GetValues(typeof(Position));
@@ -230,19 +249,19 @@ public partial class StaffControl : UserControl
                 Name = "colCode",
                 HeaderText = "Code",
                 DataPropertyName = "Code",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             },
             new DataGridViewTextBoxColumn {
                 Name = "colFirstName",
                 HeaderText = "First Name",
                 DataPropertyName = "FirstName",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             },
             new DataGridViewTextBoxColumn {
                 Name = "colLastName",
                 HeaderText = "Last Name",
                 DataPropertyName = "LastName",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             },
             new DataGridViewTextBoxColumn {
                 Name = "colGender",
@@ -345,25 +364,26 @@ public partial class StaffControl : UserControl
             tbPhoneNumber.Text = selectedStaff.PhoneNumber;
             tbAddress.Text = selectedStaff.Address;
             tbEmail.Text = selectedStaff.Email;
-            cmbPosition.SelectedItem = selectedStaff.Position;
+            cmbPosition.Text = selectedStaff.Position;
             tbSalary.Text = selectedStaff.Salary.ToString();
             cmbDepartment.SelectedValue = selectedStaff.DepartmentId;
         }
     }
     #endregion
+
+    #region Helper Methods
     private async Task LoadStaffsAsync()
     {
         dgvStaff.Enabled = false;
+        btnRefresh.Enabled = false;
+
         try
         {
-            var staffs = await _repo.GetAllAsync();
+            var staffs = await _staffRepo.GetAllWithDepartmentsAsync();
 
             GlobalState.Staffs.Clear();
             foreach (var staff in staffs)
             {
-                var department = GlobalState.Departments
-                                    .FirstOrDefault(d => d.DepartmentId == staff.DepartmentId);
-                var staffDto = staff.ToDto();
                 GlobalState.Staffs.Add(staff.ToDto());
             }
 
@@ -377,6 +397,7 @@ public partial class StaffControl : UserControl
         finally
         {
             dgvStaff.Enabled = true;
+            btnRefresh.Enabled = true;
         }
     }
     private async Task CreateStaffAsync()
@@ -388,7 +409,7 @@ public partial class StaffControl : UserControl
                             Code = tbCode.Text.Trim(),
                             FirstName = tbFirstName.Text.Trim(),
                             LastName = tbLastName.Text.Trim(),
-                            Gender = (Gender)cmbGender.SelectedItem!,
+                            Gender = (PersonGender)cmbGender.SelectedItem!,
                             DOB = DateTime.Parse(dtpDob.Value.ToString()),
                             PhoneNumber = tbPhoneNumber.Text.Trim(),
                             Address = tbAddress.Text.Trim(),
@@ -412,7 +433,7 @@ public partial class StaffControl : UserControl
         var firstName = tbFirstName.Text.Trim();
         var lastName = tbLastName.Text.Trim();
         //var gender = Enum.GetName(typeof(Gender), cmbGender.SelectedItem!);
-        var gender = (Gender)cmbGender.SelectedItem!;
+        var gender = (PersonGender)cmbGender.SelectedItem!;
         var dob = DateTime.Parse(dtpDob.Value.ToString());
         var phoneNumber = tbPhoneNumber.Text.Trim();
         var address = tbAddress.Text.Trim();
@@ -458,4 +479,5 @@ public partial class StaffControl : UserControl
         IsNew = false;
         _bsStaffs.ResetBindings(false);
     }
+    #endregion
 }

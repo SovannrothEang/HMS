@@ -25,27 +25,28 @@ public partial class PatientControl : UserControl
         _bsPatient.DataSource = GlobalState.Patients;
         dgvPatient.DataSource = _bsPatient;
 
+        #region Dgv events
         dgvPatient.DataBindingComplete += (s, e) =>
         {
             if (dgvPatient.Columns.Contains("colId"))
                 dgvPatient.Columns["colId"].Visible = false;
         };
         dgvPatient.CellFormatting += (s ,e) => {
-            try
-            {
-                PatientDto? patient = dgvPatient.Rows[e.RowIndex].DataBoundItem as PatientDto;
-                if (patient != null)
-                    patient.Doctor = GlobalState.Doctors.First(x => x.DoctorId == patient.DoctorId);
-                //dgvStaff.Rows[e.RowIndex].Cells["colDob"].Value = staff?.DOB.ToShortDateString();
-                dgvPatient.Rows[e.RowIndex].Cells["colDoctor"].Value = patient?.Doctor?.Staff?.Code;
-            }
-            catch
-            {
-                MessageBox.Show("Error cell formatting", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        };
+            if (e.RowIndex < 0 || e.RowIndex >= dgvPatient.Rows.Count) return;
+            var row = dgvPatient.Rows[e.RowIndex];
+            if (row == null) return;
 
+            var patient = row.DataBoundItem as PatientDto;
+
+            if (dgvPatient.Columns.Contains("colDoctor"))
+                row.Cells["colDoctor"].Value = patient?.Doctor?.Staff?.Code ?? string.Empty;
+
+            //if (patient != null)
+            //    patient.Doctor = GlobalState.Doctors.First(x => x.DoctorId == patient.DoctorId);
+        };
         dgvPatient.SelectionChanged += OnDgvPatientSelectionChanged;
+        #endregion
+
         #region Click Events
         btnRefresh.Click += async (s, e) =>
         {
@@ -170,7 +171,7 @@ public partial class PatientControl : UserControl
         dtpDob.Format = DateTimePickerFormat.Custom;
         dtpDob.Value = DateTime.Now;
 
-        cmbGender.DataSource = Enum.GetValues(typeof(Gender));
+        cmbGender.DataSource = Enum.GetValues(typeof(PersonGender));
 
         cmbDoctor.DataSource = GlobalState.DoctorsCodeList;
         cmbDoctor.SelectedIndex = -1;
@@ -217,7 +218,7 @@ public partial class PatientControl : UserControl
                 Name = "colPhone",
                 HeaderText = "Phone Number",
                 DataPropertyName = "PhoneNumber",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             },
             new DataGridViewTextBoxColumn {
                 Name = "colAddress",
@@ -311,7 +312,7 @@ public partial class PatientControl : UserControl
                             Code = tbCode.Text.Trim(),
                             FirstName = tbFirstName.Text.Trim(),
                             LastName = tbLastName.Text.Trim(),
-                            Gender = (Gender)cmbGender.SelectedItem!,
+                            Gender = (PersonGender)cmbGender.SelectedItem!,
                             DOB = DateTime.Parse(dtpDob.Value.ToString()),
                             PhoneNumber = tbPhoneNumber.Text.Trim(),
                             Address = tbAddress.Text.Trim(),
@@ -334,7 +335,7 @@ public partial class PatientControl : UserControl
         var firstName = tbFirstName.Text.Trim();
         var lastName = tbLastName.Text.Trim();
         //var gender = Enum.GetName(typeof(Gender), cmbGender.SelectedItem!);
-        var gender = (Gender)cmbGender.SelectedItem!;
+        var gender = (PersonGender)cmbGender.SelectedItem!;
         var dob = DateTime.Parse(dtpDob.Value.ToString());
         var phoneNumber = tbPhoneNumber.Text.Trim();
         var address = tbAddress.Text.Trim();
@@ -382,6 +383,7 @@ public partial class PatientControl : UserControl
     private async Task LoadPatientsAsync()
     {
         dgvPatient.Enabled = false;
+        btnRefresh.Enabled = false;
         try
         {
             var patients = await _patientRepo.GetAllWithDoctorAsync();
@@ -401,6 +403,7 @@ public partial class PatientControl : UserControl
         }
         finally
         {
+            btnRefresh.Enabled = true;
             dgvPatient.Enabled = true;
         }
     }

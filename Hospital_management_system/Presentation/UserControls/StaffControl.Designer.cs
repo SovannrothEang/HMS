@@ -63,12 +63,14 @@
             cmbGender = new ComboBox();
             cmbPosition = new ComboBox();
             cmbDepartment = new ComboBox();
+            tableLayoutPanel1 = new TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)dgvStaff).BeginInit();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(743, 159);
+            btnUpdate.Location = new Point(751, 194);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(99, 38);
             btnUpdate.TabIndex = 28;
@@ -77,7 +79,7 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(17, 159);
+            textBox1.Location = new Point(25, 194);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(402, 38);
@@ -110,7 +112,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(533, 159);
+            btnDelete.Location = new Point(541, 194);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(99, 38);
             btnDelete.TabIndex = 27;
@@ -119,7 +121,7 @@
             // 
             // btnNew
             // 
-            btnNew.Location = new Point(638, 159);
+            btnNew.Location = new Point(646, 194);
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(99, 38);
             btnNew.TabIndex = 25;
@@ -128,7 +130,7 @@
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(1082, 159);
+            btnSubmit.Location = new Point(1076, 194);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(99, 38);
             btnSubmit.TabIndex = 13;
@@ -137,7 +139,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(977, 159);
+            btnCancel.Location = new Point(971, 194);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
             btnCancel.TabIndex = 12;
@@ -147,7 +149,8 @@
             // lbName
             // 
             lbName.AutoSize = true;
-            lbName.Location = new Point(17, 60);
+            lbName.Location = new Point(3, 47);
+            lbName.Margin = new Padding(3, 7, 3, 0);
             lbName.Name = "lbName";
             lbName.Size = new Size(85, 18);
             lbName.TabIndex = 20;
@@ -155,16 +158,17 @@
             // 
             // tbFirstName
             // 
-            tbFirstName.Location = new Point(116, 57);
+            tbFirstName.Location = new Point(123, 43);
             tbFirstName.Multiline = true;
             tbFirstName.Name = "tbFirstName";
-            tbFirstName.Size = new Size(266, 29);
+            tbFirstName.Size = new Size(247, 26);
             tbFirstName.TabIndex = 2;
             // 
             // lbCode
             // 
             lbCode.AutoSize = true;
-            lbCode.Location = new Point(17, 25);
+            lbCode.Location = new Point(3, 7);
+            lbCode.Margin = new Padding(3, 7, 3, 0);
             lbCode.Name = "lbCode";
             lbCode.Size = new Size(47, 18);
             lbCode.TabIndex = 18;
@@ -172,10 +176,10 @@
             // 
             // tbCode
             // 
-            tbCode.Location = new Point(116, 22);
+            tbCode.Location = new Point(123, 3);
             tbCode.Multiline = true;
             tbCode.Name = "tbCode";
-            tbCode.Size = new Size(266, 29);
+            tbCode.Size = new Size(247, 26);
             tbCode.TabIndex = 1;
             // 
             // dgvStaff
@@ -186,17 +190,17 @@
             dgvStaff.AllowUserToResizeRows = false;
             dgvStaff.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvStaff.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStaff.Location = new Point(20, 203);
+            dgvStaff.Location = new Point(25, 238);
             dgvStaff.MultiSelect = false;
             dgvStaff.Name = "dgvStaff";
             dgvStaff.ReadOnly = true;
             dgvStaff.RowHeadersVisible = false;
-            dgvStaff.Size = new Size(1164, 476);
+            dgvStaff.Size = new Size(1150, 437);
             dgvStaff.TabIndex = 16;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(428, 159);
+            btnRefresh.Location = new Point(436, 194);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(99, 38);
             btnRefresh.TabIndex = 15;
@@ -206,7 +210,8 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(17, 95);
+            label1.Location = new Point(3, 87);
+            label1.Margin = new Padding(3, 7, 3, 0);
             label1.Name = "label1";
             label1.Size = new Size(84, 18);
             label1.TabIndex = 30;
@@ -214,16 +219,17 @@
             // 
             // tbLastName
             // 
-            tbLastName.Location = new Point(116, 92);
+            tbLastName.Location = new Point(123, 83);
             tbLastName.Multiline = true;
             tbLastName.Name = "tbLastName";
-            tbLastName.Size = new Size(266, 29);
+            tbLastName.Size = new Size(247, 26);
             tbLastName.TabIndex = 3;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(17, 130);
+            label2.Location = new Point(3, 127);
+            label2.Margin = new Padding(3, 7, 3, 0);
             label2.Name = "label2";
             label2.Size = new Size(60, 18);
             label2.TabIndex = 32;
@@ -232,7 +238,8 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(431, 130);
+            label3.Location = new Point(386, 127);
+            label3.Margin = new Padding(3, 7, 3, 0);
             label3.Name = "label3";
             label3.Size = new Size(93, 18);
             label3.TabIndex = 34;
@@ -241,7 +248,8 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(431, 25);
+            label4.Location = new Point(386, 7);
+            label4.Margin = new Padding(3, 7, 3, 0);
             label4.Name = "label4";
             label4.Size = new Size(112, 18);
             label4.TabIndex = 36;
@@ -249,16 +257,17 @@
             // 
             // tbPhoneNumber
             // 
-            tbPhoneNumber.Location = new Point(549, 22);
+            tbPhoneNumber.Location = new Point(506, 3);
             tbPhoneNumber.Multiline = true;
             tbPhoneNumber.Name = "tbPhoneNumber";
-            tbPhoneNumber.Size = new Size(228, 29);
+            tbPhoneNumber.Size = new Size(257, 26);
             tbPhoneNumber.TabIndex = 6;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(431, 60);
+            label5.Location = new Point(386, 47);
+            label5.Margin = new Padding(3, 7, 3, 0);
             label5.Name = "label5";
             label5.Size = new Size(67, 18);
             label5.TabIndex = 38;
@@ -266,16 +275,17 @@
             // 
             // tbAddress
             // 
-            tbAddress.Location = new Point(549, 57);
+            tbAddress.Location = new Point(506, 43);
             tbAddress.Multiline = true;
             tbAddress.Name = "tbAddress";
-            tbAddress.Size = new Size(228, 29);
+            tbAddress.Size = new Size(257, 26);
             tbAddress.TabIndex = 7;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(431, 95);
+            label6.Location = new Point(386, 87);
+            label6.Margin = new Padding(3, 7, 3, 0);
             label6.Name = "label6";
             label6.Size = new Size(48, 18);
             label6.TabIndex = 40;
@@ -283,16 +293,17 @@
             // 
             // tbEmail
             // 
-            tbEmail.Location = new Point(549, 92);
+            tbEmail.Location = new Point(506, 83);
             tbEmail.Multiline = true;
             tbEmail.Name = "tbEmail";
-            tbEmail.Size = new Size(228, 29);
+            tbEmail.Size = new Size(257, 26);
             tbEmail.TabIndex = 8;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(824, 60);
+            label7.Location = new Point(769, 47);
+            label7.Margin = new Padding(3, 7, 3, 0);
             label7.Name = "label7";
             label7.Size = new Size(65, 18);
             label7.TabIndex = 42;
@@ -301,7 +312,8 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(824, 95);
+            label8.Location = new Point(769, 87);
+            label8.Margin = new Padding(3, 7, 3, 0);
             label8.Name = "label8";
             label8.Size = new Size(52, 18);
             label8.TabIndex = 44;
@@ -309,16 +321,17 @@
             // 
             // tbSalary
             // 
-            tbSalary.Location = new Point(920, 92);
+            tbSalary.Location = new Point(889, 83);
             tbSalary.Multiline = true;
             tbSalary.Name = "tbSalary";
-            tbSalary.Size = new Size(228, 29);
+            tbSalary.Size = new Size(258, 26);
             tbSalary.TabIndex = 10;
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(824, 25);
+            label9.Location = new Point(769, 7);
+            label9.Margin = new Padding(3, 7, 3, 0);
             label9.Name = "label9";
             label9.Size = new Size(90, 18);
             label9.TabIndex = 46;
@@ -326,71 +339,91 @@
             // 
             // dtpDob
             // 
-            dtpDob.Location = new Point(549, 127);
+            dtpDob.Location = new Point(506, 123);
             dtpDob.Name = "dtpDob";
-            dtpDob.Size = new Size(266, 26);
+            dtpDob.Size = new Size(257, 26);
             dtpDob.TabIndex = 5;
             // 
             // cmbGender
             // 
             cmbGender.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGender.FormattingEnabled = true;
-            cmbGender.Location = new Point(116, 127);
+            cmbGender.Location = new Point(123, 123);
             cmbGender.Name = "cmbGender";
-            cmbGender.Size = new Size(143, 26);
+            cmbGender.Size = new Size(193, 26);
             cmbGender.TabIndex = 4;
             // 
             // cmbPosition
             // 
             cmbPosition.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPosition.FormattingEnabled = true;
-            cmbPosition.Location = new Point(920, 57);
+            cmbPosition.Location = new Point(889, 43);
             cmbPosition.Name = "cmbPosition";
-            cmbPosition.Size = new Size(228, 26);
+            cmbPosition.Size = new Size(258, 26);
             cmbPosition.TabIndex = 9;
             // 
             // cmbDepartment
             // 
             cmbDepartment.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbDepartment.FormattingEnabled = true;
-            cmbDepartment.Location = new Point(920, 22);
+            cmbDepartment.Location = new Point(889, 3);
             cmbDepartment.Name = "cmbDepartment";
-            cmbDepartment.Size = new Size(228, 26);
+            cmbDepartment.Size = new Size(258, 26);
             cmbDepartment.TabIndex = 11;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 6;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.Controls.Add(lbCode, 0, 0);
+            tableLayoutPanel1.Controls.Add(tbSalary, 5, 2);
+            tableLayoutPanel1.Controls.Add(cmbPosition, 5, 1);
+            tableLayoutPanel1.Controls.Add(cmbDepartment, 5, 0);
+            tableLayoutPanel1.Controls.Add(tbCode, 1, 0);
+            tableLayoutPanel1.Controls.Add(lbName, 0, 1);
+            tableLayoutPanel1.Controls.Add(label8, 4, 2);
+            tableLayoutPanel1.Controls.Add(label9, 4, 0);
+            tableLayoutPanel1.Controls.Add(dtpDob, 3, 3);
+            tableLayoutPanel1.Controls.Add(label7, 4, 1);
+            tableLayoutPanel1.Controls.Add(label1, 0, 2);
+            tableLayoutPanel1.Controls.Add(label2, 0, 3);
+            tableLayoutPanel1.Controls.Add(tbLastName, 1, 2);
+            tableLayoutPanel1.Controls.Add(tbFirstName, 1, 1);
+            tableLayoutPanel1.Controls.Add(label6, 2, 2);
+            tableLayoutPanel1.Controls.Add(tbAddress, 3, 1);
+            tableLayoutPanel1.Controls.Add(label4, 2, 0);
+            tableLayoutPanel1.Controls.Add(label3, 2, 3);
+            tableLayoutPanel1.Controls.Add(tbPhoneNumber, 3, 0);
+            tableLayoutPanel1.Controls.Add(label5, 2, 1);
+            tableLayoutPanel1.Controls.Add(tbEmail, 3, 2);
+            tableLayoutPanel1.Controls.Add(cmbGender, 1, 3);
+            tableLayoutPanel1.Location = new Point(25, 25);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 4;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.Size = new Size(1150, 163);
+            tableLayoutPanel1.TabIndex = 47;
             // 
             // StaffControl
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LightGray;
-            Controls.Add(cmbDepartment);
-            Controls.Add(cmbPosition);
-            Controls.Add(cmbGender);
-            Controls.Add(dtpDob);
-            Controls.Add(label9);
-            Controls.Add(label8);
-            Controls.Add(tbSalary);
-            Controls.Add(label7);
-            Controls.Add(label6);
-            Controls.Add(tbEmail);
-            Controls.Add(label5);
-            Controls.Add(tbAddress);
-            Controls.Add(label4);
-            Controls.Add(tbPhoneNumber);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Controls.Add(tbLastName);
+            Controls.Add(tableLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(textBox1);
             Controls.Add(btnDelete);
             Controls.Add(btnNew);
             Controls.Add(btnSubmit);
             Controls.Add(btnCancel);
-            Controls.Add(lbName);
-            Controls.Add(tbFirstName);
-            Controls.Add(lbCode);
-            Controls.Add(tbCode);
             Controls.Add(dgvStaff);
             Controls.Add(btnRefresh);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -400,6 +433,8 @@
             Name = "StaffControl";
             Size = new Size(1200, 700);
             ((System.ComponentModel.ISupportInitialize)dgvStaff).EndInit();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -441,5 +476,6 @@
         private ComboBox cmbGender;
         private ComboBox cmbPosition;
         private ComboBox cmbDepartment;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }

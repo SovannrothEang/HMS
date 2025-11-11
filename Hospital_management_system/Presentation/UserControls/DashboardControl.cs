@@ -9,13 +9,20 @@ public partial class DashboardControl: UserControl
         InitializeComponent();
         
         GlobalState.DataUpdated += OnDataUpdated;
+        //this.Load += (s, e) =>
+        //{
+        //    OnDataUpdated();
+        //};
     }
 
     private void OnDataUpdated()
     {
-        lbStaff.Text = GlobalState.CurrentStaffs.ToString();
-        lbDoctor.Text = GlobalState.CurrentDoctors.ToString();
-        lbPatient.Text = GlobalState.CurrentPatients.ToString();
-        this.Refresh();
+        lbStaff.Text = GlobalState.Staffs.Count.ToString();
+        lbDoctor.Text = GlobalState.Doctors.Count.ToString();
+        lbPatient.Text = GlobalState.Patients.Count.ToString();
+        //this.Refresh();
+        lbStaff.Refresh();
+        lbDoctor.Refresh();
+        lbPatient.Refresh();
     }
 }

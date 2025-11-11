@@ -54,6 +54,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         //    }
         //}
 
+        #region Departments
         modelBuilder.Entity<Department>(buildAction =>
         {
             buildAction
@@ -64,20 +65,27 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             buildAction
                 .HasIndex(d => d.Name)
                 .IsUnique()
-                .HasFilter("name <> ''");
+                .HasFilter("[is_deleted] = 0 AND [name] <> ''");
         });
+        #endregion
         
+        #region Doctor
         modelBuilder.Entity<Doctor>(buildAction =>
         {
-            buildAction.HasIndex(d => d.LicenseNumber).IsUnique();
+            buildAction
+                .HasIndex(d => d.LicenseNumber)
+                .IsUnique()
+                .HasFilter("[is_deleted] = 0");
             buildAction.HasIndex(d => d.Specialization);
 
             buildAction
                 .HasOne(d => d.Staff)
                 .WithOne(s => s.Doctor)
-                .HasForeignKey<Doctor>(d => d.DoctorId);
+                .HasForeignKey<Doctor>(d => d.StaffId);
         });
+        #endregion
         
+        #region Staffs
         modelBuilder.Entity<Staff>(buildAction =>
         {
             buildAction
@@ -90,7 +98,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasColumnName("lastname")
                 .HasColumnType("varchar(70)")
                 .UseCollation("SQL_Latin1_General_CP850_BIN");
-            buildAction.HasIndex(s => s.Code).IsUnique();
+            buildAction.HasIndex(s => s.Code).IsUnique().HasFilter("[is_deleted] = 0");
             buildAction.HasIndex(s => s.DepartmentId);
 
             buildAction.ToTable(t =>
@@ -110,7 +118,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .WithMany(d => d.Staffs)
                 .HasForeignKey(d => d.DepartmentId);
         });
+        #endregion
 
+        #region Patient
         modelBuilder.Entity<Patient>(buildAction =>
         {
             buildAction
@@ -123,7 +133,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasColumnName("lastname")
                 .HasColumnType("varchar(70)")
                 .UseCollation("SQL_Latin1_General_CP850_BIN");
-            buildAction.HasIndex(p => p.Code).IsUnique();
+            buildAction.HasIndex(p => p.Code).IsUnique().HasFilter("[is_deleted] = 0");
             buildAction.HasIndex(p => new { p.FirstName, p.LastName });
             buildAction
                 .HasOne(a => a.Doctor)
@@ -142,6 +152,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 );
             });
         });
+        #endregion
 
         // Seed data
         //modelBuilder.Entity<Department>().HasData(

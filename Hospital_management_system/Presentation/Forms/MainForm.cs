@@ -46,17 +46,17 @@ public partial class MainForm : Form
         {
             ActivateControl(this.btnStaff, () => _serviceProvider.GetRequiredService<StaffControl>());
         };
-        btnExit.Click += (s, e) =>
-        {
-            var confirmResult = MessageBox.Show("Are you sure you want to exit?",
-                        "Confirm Exit",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-            if (confirmResult == DialogResult.Yes)
-            {
-                System.Windows.Forms.Application.Exit();
-            }
-        };
+        //btnExit.Click += (s, e) =>
+        //{
+        //    var confirmResult = MessageBox.Show("Are you sure you want to exit?",
+        //                "Confirm Exit",
+        //                MessageBoxButtons.YesNo,
+        //                MessageBoxIcon.Question);
+        //    if (confirmResult == DialogResult.Yes)
+        //    {
+        //        System.Windows.Forms.Application.Exit();
+        //    }
+        //};
         #endregion
     }
     #region Helper Methods
@@ -113,36 +113,29 @@ public partial class MainForm : Form
     {
         try
         {
-            var deptDtos = await Task.Run(async () =>
-            {
-                var repo = _serviceProvider.GetRequiredService<IGenericRepository<Department>>();
-                var list = await repo.GetAllAsync();
+            #region Departments
+            var deptRepo = _serviceProvider.GetRequiredService<IGenericRepository<Department>>();
+            var deptList = await deptRepo.GetAllAsync();
+            var deptDtos = deptList.Select(x => x.ToDto()).ToList();
+            #endregion
 
-                return list.Select(x => x.ToDto()).ToList();
-            });
+            #region Staffs
+            var staffRepo = _serviceProvider.GetRequiredService<IStaffRepository>();
+            var staffList = await staffRepo.GetAllWithDepartmentsAsync();
+            var staffDtos = staffList.Select(x => x.ToDto()).ToList();
+            #endregion
 
-            var staffDtos = await Task.Run(async () =>
-            {
-                var repo = _serviceProvider.GetRequiredService<IStaffRepository>();
-                var list = await repo.GetAllWithDepartmentsAsync();
-                return list.Select(x => x.ToDto()).ToList();
-            });
+            #region Doctors
+            var docRepo = _serviceProvider.GetRequiredService<IDoctorRepository>();
+            var docList = await docRepo.GetAllWithStaffsAsync();
+            var doctorDtos = docList.Select(x => x.ToDto()).ToList();
+            #endregion
 
-            var doctorDtos = await Task.Run(async () =>
-            {
-                var repo = _serviceProvider.GetRequiredService<IDoctorRepository>();
-                var list = await repo.GetAllWithStaffsAsync();
-
-                return list.Select(x => x.ToDto()).ToList();
-            });
-
-            var patientDto = await Task.Run(async () =>
-            {
-                var repo = _serviceProvider.GetRequiredService<IPatientRepository>();
-                var list = await repo.GetAllWithDoctorAsync();
-
-                return list.Select(x => x.ToDto()).ToList();
-            });
+            #region Patients
+            var PatietnRepo = _serviceProvider.GetRequiredService<IPatientRepository>();
+            var patientRepo = await PatietnRepo.GetAllWithDoctorAsync();
+            var patientDto = patientRepo.Select(x => x.ToDto()).ToList();
+            #endregion
 
             GlobalState.AllStaffDoctorsCodeList = new BindingList<string>([.. staffDtos
                 .Where(s => s.Position == Position.Doctor.ToString())
@@ -151,17 +144,10 @@ public partial class MainForm : Form
             GlobalState.DoctorsCodeList = new BindingList<string>([.. doctorDtos
                 .Select(d => d.Staff.Code)]);
 
-            Invoke(() =>
-            {
-                //GlobalState.Departments = new BindingList<DepartmentDto>(deptDtos);
-                //GlobalState.Staffs = new BindingList<StaffDto>(staffDtos);
-                //GlobalState.Doctors = new BindingList<DoctorDto>(doctorDtos);
-
-                GlobalState.AddItems<DepartmentDto>(deptDtos, GlobalState.Departments);
-                GlobalState.AddItems<StaffDto>(staffDtos, GlobalState.Staffs);
-                GlobalState.AddItems<DoctorDto>(doctorDtos, GlobalState.Doctors);
-                GlobalState.AddItems<PatientDto>(patientDto, GlobalState.Patients);
-            });
+            GlobalState.AddItems<DepartmentDto>(deptDtos, GlobalState.Departments);
+            GlobalState.AddItems<StaffDto>(staffDtos, GlobalState.Staffs);
+            GlobalState.AddItems<DoctorDto>(doctorDtos, GlobalState.Doctors);
+            GlobalState.AddItems<PatientDto>(patientDto, GlobalState.Patients);
         }
         catch (Exception ex)
         {

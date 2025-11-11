@@ -4,6 +4,7 @@ using Hospital_management_system.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital_management_system.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251111084956_FixErrorForiegnKey")]
+    partial class FixErrorForiegnKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +66,7 @@ namespace Hospital_management_system.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique()
-                        .HasFilter("[is_deleted] = 0 AND [name] <> ''");
+                        .HasFilter("name <> ''");
 
                     b.ToTable("tbl_departments");
                 });
@@ -118,18 +121,24 @@ namespace Hospital_management_system.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("years_of_experience ");
 
+                    b.Property<string>("staff_id")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("DoctorId");
 
                     b.HasIndex("LicenseNumber")
-                        .IsUnique()
-                        .HasFilter("[is_deleted] = 0");
+                        .IsUnique();
 
                     b.HasIndex("Specialization");
 
                     b.HasIndex("StaffId")
                         .IsUnique();
 
-                    b.ToTable("tbl_doctors");
+                    b.ToTable("tbl_doctors", t =>
+                        {
+                            t.Property("staff_id")
+                                .HasColumnName("staff_id1");
+                        });
                 });
 
             modelBuilder.Entity("Hospital_management_system.Domain.Entities.Patient", b =>
@@ -205,8 +214,7 @@ namespace Hospital_management_system.Migrations
                     b.HasKey("PatientId");
 
                     b.HasIndex("Code")
-                        .IsUnique()
-                        .HasFilter("[is_deleted] = 0");
+                        .IsUnique();
 
                     b.HasIndex("DoctorId");
 
@@ -301,8 +309,7 @@ namespace Hospital_management_system.Migrations
                     b.HasKey("StaffId");
 
                     b.HasIndex("Code")
-                        .IsUnique()
-                        .HasFilter("[is_deleted] = 0");
+                        .IsUnique();
 
                     b.HasIndex("DepartmentId");
 

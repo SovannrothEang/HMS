@@ -5,9 +5,9 @@ namespace Hospital_management_system.Presentation.State;
 
 public static class GlobalState
 {
-    public static int CurrentStaffs { get; set; }
-    public static int CurrentDoctors { get; set; }
-    public static int CurrentPatients { get; set; }
+    //public static int CurrentStaffs { get; set; }
+    //public static int CurrentDoctors { get; set; }
+    //public static int CurrentPatients { get; set; }
 
     // Events
     public static event Action DataUpdated = null!;
@@ -45,10 +45,7 @@ public static class GlobalState
         foreach (var item in items)
         {
             list.Add(item);
-            DataUpdated?.Invoke();
         }
-        CurrentStaffs = GlobalState.Staffs.Count;
-        CurrentDoctors = GlobalState.Doctors.Count;
-        CurrentPatients = GlobalState.Patients.Count;
+        DataUpdated?.Invoke();
     }
 }

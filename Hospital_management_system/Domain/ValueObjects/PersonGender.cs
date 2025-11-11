@@ -1,6 +1,6 @@
 ﻿namespace Hospital_management_system.Domain.ValueObjects;
 
-public enum Gender
+public enum PersonGender
 {
     Male = 0,
     Female = 1,

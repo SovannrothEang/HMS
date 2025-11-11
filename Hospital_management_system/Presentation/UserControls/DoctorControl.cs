@@ -7,21 +7,24 @@ using Hospital_management_system.Presentation.State;
 
 namespace Hospital_management_system.Presentation.UserControls;
 
-public partial class DoctorControl: UserControl
+public partial class DoctorControl : UserControl
 {
     private readonly IGenericRepository<Doctor> _repo;
+    private readonly IDoctorRepository _docRepo;
     private readonly BindingSource _bsDoctor = [];
-    
+
     private static bool IsNew = false;
 
-    public DoctorControl(IGenericRepository<Doctor> repo)
+    public DoctorControl(IGenericRepository<Doctor> repo, IDoctorRepository docRepo)
     {
         _repo = repo;
+        _docRepo = docRepo;
 
         #region UI
         InitializeComponent();
         LoadControlsConfiguration();
         dtpHiredDate.Enabled = false;
+        cmbDepartment.Enabled = false;
         DisableControls(true);
         #endregion
 
@@ -38,50 +41,27 @@ public partial class DoctorControl: UserControl
         };
         dgvDoctor.CellFormatting += (s, e) =>
         {
-            if (dgvDoctor.CurrentRow == null) return;
-            DoctorDto? doctor = dgvDoctor.Rows[e.RowIndex].DataBoundItem as DoctorDto;
+            if (e.RowIndex < 0 || e.RowIndex >= dgvDoctor.Rows.Count) return;
+            var row = dgvDoctor.Rows[e.RowIndex];
+            if (row == null) return;
 
-            dgvDoctor.Rows[e.RowIndex].Cells["colCode"].Value = doctor?.Staff?.Code;
-            dgvDoctor.Rows[e.RowIndex].Cells["colFirstName"].Value = doctor?.Staff?.FirstName;
-            dgvDoctor.Rows[e.RowIndex].Cells["colLastName"].Value = doctor?.Staff?.LastName;
-            dgvDoctor.Rows[e.RowIndex].Cells["colDepartment"].Value = doctor?.Staff?.Department?.Name;
+            var doctor = row.DataBoundItem as DoctorDto;
+            if (doctor == null) return;
+
+            if (dgvDoctor.Columns.Contains("colCode"))
+                row.Cells["colCode"].Value = doctor.Staff?.Code ?? string.Empty;
+            if (dgvDoctor.Columns.Contains("colFirstName"))
+                row.Cells["colFirstName"].Value = doctor.Staff?.FirstName ?? string.Empty;
+            if (dgvDoctor.Columns.Contains("colLastName"))
+                row.Cells["colLastName"].Value = doctor.Staff?.LastName ?? string.Empty;
+            if (dgvDoctor.Columns.Contains("colDepartment"))
+                row.Cells["colDepartment"].Value = doctor.Staff?.Department?.Name ?? string.Empty;
         };
         dgvDoctor.SelectionChanged += OnDgvDoctorSelectionChanged;
         #endregion
 
         #region Button Events
-        btnRefresh.Click += async (s, e) =>
-        {
-            dgvDoctor.Enabled = false;
-            try
-            {
-                var doctors = await _repo.GetAllAsync();
-
-                GlobalState.Doctors.Clear();
-                foreach (var doctor in doctors)
-                {
-                    var staff= GlobalState.Staffs
-                                        .FirstOrDefault(s => s.StaffId == doctor.DoctorId);
-                    if (staff == null) continue;
-                    doctor.Staff = staff.ToEntity();
-                    var department = GlobalState.Departments
-                                        .FirstOrDefault(d => d.DepartmentId == doctor.Staff.DepartmentId);
-                    var staffDto = doctor.ToDto();
-                    GlobalState.Doctors.Add(doctor.ToDto());
-                }
-
-                OnDgvDoctorSelectionChanged(this, EventArgs.Empty);
-                _bsDoctor.ResetBindings(false);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading doctors: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                dgvDoctor.Enabled = true;
-            }
-        };
+        btnRefresh.Click += async (s, e) => await LoadDoctorsAsync();
         btnCancel.Click += (s, e) =>
         {
             if (IsNew)
@@ -135,7 +115,7 @@ public partial class DoctorControl: UserControl
 
             var unassignedDoctors = GlobalState.Staffs
                 .Where(s => s.Position == Position.Doctor.ToString() &&
-                            !GlobalState.Doctors.Any(d => d.DoctorId == s.StaffId))
+                            !GlobalState.Doctors.Any(d => d.StaffId == s.StaffId))
                 .Select(s => s.Code)
                 .ToList();
 
@@ -160,6 +140,17 @@ public partial class DoctorControl: UserControl
                 MessageBoxIcon.Warning);
             if (confirmResult == DialogResult.Yes)
             {
+                var patients = GlobalState.Patients.Where(p => p.DoctorId == id).ToList();
+                if (patients.Count > 0)
+                { 
+                    MessageBox.Show(
+                        "There are patients in care of this doctors",
+                        "Warning",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
                 try
                 {
                     var success = await _repo.DeleteAsync(id);
@@ -169,10 +160,6 @@ public partial class DoctorControl: UserControl
                             .FirstOrDefault(x => x.DoctorId == id);
                         if (doctor != null)
                         {
-                            
-                            //var department = GlobalState.Departments
-                            //    .FirstOrDefault(d => d.DepartmentId == doctor?.DepartmentId);
-                            //doctor.Department = department;
                             GlobalState.Doctors.Remove(doctor);
                         }
                     }
@@ -245,6 +232,19 @@ public partial class DoctorControl: UserControl
             DisableControls(true);
         };
         #endregion
+
+        cmbCode.SelectedIndexChanged += (s, e) =>
+        {
+            var staffCode = cmbCode.SelectedValue;
+            if (staffCode is null) return;
+
+            var staff = GlobalState.Staffs
+                .FirstOrDefault(s => s.Code == staffCode.ToString());
+            var department = GlobalState.Departments
+                .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
+            cmbDepartment.Text = department!.Name.ToString();
+        };
+        _docRepo = docRepo;
     }
 
     #region UI config
@@ -297,7 +297,7 @@ public partial class DoctorControl: UserControl
                 Name = "colSpecialization",
                 HeaderText = "Specialization",
                 DataPropertyName = "Specialization",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             },
             new DataGridViewTextBoxColumn {
                 Name = "colLicenseNumber",
@@ -315,7 +315,7 @@ public partial class DoctorControl: UserControl
                 Name = "colDepartment",
                 HeaderText = "Department",
                 DataPropertyName = "Staff.Department.Name",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             }
         ]);
         #endregion
@@ -327,7 +327,6 @@ public partial class DoctorControl: UserControl
         tbLicenseNumber.Enabled = !con;
         tbExperinse.Enabled = !con;
         cmbSpecialization.Enabled = !con;
-        cmbDepartment.Enabled = !con;
 
         btnCancel.Enabled = !con;
         btnSubmit.Enabled = !con;
@@ -347,21 +346,106 @@ public partial class DoctorControl: UserControl
         {
             cmbCode.Text = selectedDoctor.Staff?.Code;
             tbExperinse.Text = selectedDoctor.YearsOfExperiense.ToString();
-            tbLicenseNumber.Text = selectedDoctor.LicenseNumber;
-            cmbDepartment.SelectedValue = selectedDoctor.Staff!.DepartmentId;
+            tbLicenseNumber.Text = selectedDoctor.LicenseNumber.ToString();
             cmbSpecialization.Text = selectedDoctor.Specialization;
-            dtpHiredDate.Value = selectedDoctor.CreatedAt;
+
+            if (selectedDoctor.Staff is null || selectedDoctor.Staff!.Department is null)
+            {
+                var staffCode = cmbCode.SelectedValue;
+                if (staffCode is null) return;
+
+                var staff = GlobalState.Staffs
+                    .FirstOrDefault(s => s.Code == staffCode.ToString());
+                selectedDoctor.Staff = staff!;
+                var department = GlobalState.Departments
+                    .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
+                selectedDoctor.Staff!.Department = department;
+            }
+            cmbDepartment.Text = selectedDoctor.Staff!.Department!.Name;
         }
     }
     #endregion
 
     #region Methods
+    private async Task LoadDoctorsAsync()
+    {
+        btnRefresh.Enabled = false;
+        dgvDoctor.Enabled = false;
+        try
+        {
+            var doctors = await _docRepo.GetAllWithStaffsAsync();
+
+            GlobalState.Doctors.Clear();
+            foreach (var doctor in doctors)
+            {
+                GlobalState.Doctors.Add(doctor.ToDto());
+            }
+
+            OnDgvDoctorSelectionChanged(this, EventArgs.Empty);
+            _bsDoctor.ResetBindings(false);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading doctors: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            btnRefresh.Enabled = true;
+            dgvDoctor.Enabled = true;
+        }
+    }
+    private async Task<bool> CreateDoctorAsync()
+    {
+        if (cmbCode.SelectedItem == null)
+        {
+            MessageBox.Show("Please select a doctor code.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+        if (cmbSpecialization.SelectedItem == null)
+        {
+            MessageBox.Show("Please select a specialization.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+
+        var code = cmbCode.SelectedItem.ToString();
+        var specialization = (Specialization)cmbSpecialization.SelectedItem;
+        var staff = GlobalState.Staffs.FirstOrDefault(s => s.Code == code);
+        if (staff is null)
+        {
+            MessageBox.Show("Selected staff not found.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+        //if (dgvDoctor.CurrentRow.DataBoundItem is not DoctorDto dto) return;
+        var department = GlobalState.Departments
+                            .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
+        staff.Department = department;
+        var dto = new Doctor
+        {
+            DoctorId = Guid.NewGuid().ToString(),
+            Code = code!,
+            YearsOfExperiense = int.Parse(tbExperinse.Text.Trim()),
+            LicenseNumber = int.Parse(tbLicenseNumber.Text.Trim()),
+            Specialization = specialization.ToString(),
+            StaffId = staff!.StaffId,
+        };
+        var doctor = await _repo
+                        .CreateAsync(dto);
+        doctor.Staff = staff.ToEntity();
+        var doctorDto = doctor.ToDto();
+        doctorDto.Staff = staff;
+
+        GlobalState.Doctors.Add(doctorDto);
+
+        IsNew = false;
+        _bsDoctor.ResetBindings(false);
+        return doctorDto != null;
+    }
     private async Task<bool> UpdateDoctorAsync(string id)
     {
         var code = cmbCode.SelectedItem!.ToString()!;
         var staff = GlobalState.Staffs.FirstOrDefault(s => s.Code == code);
         var yearsOfExperiense = int.Parse(tbExperinse.Text.Trim());
-        var licenseNumber = tbLicenseNumber.Text.Trim();
+        var licenseNumber = int.Parse(tbLicenseNumber.Text.Trim());
         var specialization = cmbSpecialization.SelectedItem!.ToString()!;
         var row = dgvDoctor.CurrentRow.DataBoundItem as DoctorDto;
 
@@ -392,51 +476,6 @@ public partial class DoctorControl: UserControl
         _bsDoctor.ResetBindings(false);
         cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
         return d != null;
-    }
-    private async Task<bool> CreateDoctorAsync()
-    {
-        if (cmbCode.SelectedItem == null)
-        {
-            MessageBox.Show("Please select a doctor code.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return false;
-        }
-        if (cmbSpecialization.SelectedItem == null)
-        {
-            MessageBox.Show("Please select a specialization.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return false;
-        }
-
-        var code = cmbCode.SelectedItem.ToString();
-        var specialization = (Specialization)cmbSpecialization.SelectedItem;
-        var staff = GlobalState.Staffs.FirstOrDefault(s => s.Code == code);
-        if (staff is null)
-        {
-            MessageBox.Show("Selected staff not found.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return false;
-        }
-        //if (dgvDoctor.CurrentRow.DataBoundItem is not DoctorDto dto) return;
-        var department = GlobalState.Departments
-                            .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
-        staff.Department = department;
-        var dto = new Doctor
-        {
-            DoctorId = staff!.StaffId,
-            Code = code!,
-            YearsOfExperiense = int.Parse(tbExperinse.Text.Trim()),
-            LicenseNumber = tbLicenseNumber.Text.Trim(),
-            Specialization = specialization.ToString(),
-        };
-        var doctor = await _repo
-                        .CreateAsync(dto);
-        doctor.Staff = staff.ToEntity();
-        var doctorDto = doctor.ToDto();
-        doctorDto.Staff = staff;
-        
-        GlobalState.Doctors.Add(doctorDto);
-
-        IsNew = false;
-        _bsDoctor.ResetBindings(false);
-        return doctorDto != null;
     }
     #endregion
 }

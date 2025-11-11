@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            TableLayoutPanel controlPanel;
             cmbCode = new ComboBox();
             lbCode = new Label();
             lbName = new Label();
@@ -54,45 +53,16 @@
             btnCancel = new Button();
             dgvDoctor = new DataGridView();
             btnRefresh = new Button();
-            controlPanel = new TableLayoutPanel();
-            controlPanel.SuspendLayout();
+            tableLayoutPanel1 = new TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)dgvDoctor).BeginInit();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // controlPanel
-            // 
-            controlPanel.ColumnCount = 6;
-            controlPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 130F));
-            controlPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            controlPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 130F));
-            controlPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            controlPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
-            controlPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            controlPanel.Controls.Add(cmbCode, 1, 0);
-            controlPanel.Controls.Add(lbCode, 0, 0);
-            controlPanel.Controls.Add(lbName, 0, 1);
-            controlPanel.Controls.Add(cmbSpecialization, 1, 1);
-            controlPanel.Controls.Add(label1, 2, 0);
-            controlPanel.Controls.Add(tbLicenseNumber, 3, 0);
-            controlPanel.Controls.Add(label2, 2, 1);
-            controlPanel.Controls.Add(tbExperinse, 3, 1);
-            controlPanel.Controls.Add(label3, 4, 0);
-            controlPanel.Controls.Add(dtpHiredDate, 5, 0);
-            controlPanel.Controls.Add(label9, 4, 1);
-            controlPanel.Controls.Add(cmbDepartment, 5, 1);
-            controlPanel.Location = new Point(20, 25);
-            controlPanel.Name = "controlPanel";
-            controlPanel.RowCount = 2;
-            controlPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            controlPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            controlPanel.Size = new Size(1158, 94);
-            controlPanel.TabIndex = 77;
             // 
             // cmbCode
             // 
             cmbCode.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCode.FormattingEnabled = true;
-            cmbCode.Location = new Point(133, 3);
+            cmbCode.Location = new Point(123, 3);
             cmbCode.Name = "cmbCode";
             cmbCode.Size = new Size(259, 26);
             cmbCode.TabIndex = 78;
@@ -121,7 +91,7 @@
             // 
             cmbSpecialization.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSpecialization.FormattingEnabled = true;
-            cmbSpecialization.Location = new Point(133, 50);
+            cmbSpecialization.Location = new Point(123, 50);
             cmbSpecialization.Name = "cmbSpecialization";
             cmbSpecialization.Size = new Size(259, 26);
             cmbSpecialization.TabIndex = 4;
@@ -129,16 +99,16 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(398, 7);
+            label1.Location = new Point(395, 7);
             label1.Margin = new Padding(3, 7, 3, 0);
             label1.Name = "label1";
-            label1.Size = new Size(122, 18);
+            label1.Size = new Size(67, 36);
             label1.TabIndex = 68;
             label1.Text = "License Number";
             // 
             // tbLicenseNumber
             // 
-            tbLicenseNumber.Location = new Point(528, 3);
+            tbLicenseNumber.Location = new Point(515, 3);
             tbLicenseNumber.Multiline = true;
             tbLicenseNumber.Name = "tbLicenseNumber";
             tbLicenseNumber.Size = new Size(259, 29);
@@ -147,7 +117,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(398, 54);
+            label2.Location = new Point(395, 54);
             label2.Margin = new Padding(3, 7, 3, 0);
             label2.Name = "label2";
             label2.Size = new Size(87, 18);
@@ -156,7 +126,7 @@
             // 
             // tbExperinse
             // 
-            tbExperinse.Location = new Point(528, 50);
+            tbExperinse.Location = new Point(515, 50);
             tbExperinse.Multiline = true;
             tbExperinse.Name = "tbExperinse";
             tbExperinse.Size = new Size(259, 29);
@@ -165,7 +135,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(793, 7);
+            label3.Location = new Point(788, 7);
             label3.Margin = new Padding(3, 7, 3, 0);
             label3.Name = "label3";
             label3.Size = new Size(84, 18);
@@ -174,7 +144,7 @@
             // 
             // dtpHiredDate
             // 
-            dtpHiredDate.Location = new Point(893, 3);
+            dtpHiredDate.Location = new Point(888, 3);
             dtpHiredDate.Name = "dtpHiredDate";
             dtpHiredDate.Size = new Size(262, 26);
             dtpHiredDate.TabIndex = 3;
@@ -182,7 +152,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(793, 54);
+            label9.Location = new Point(788, 54);
             label9.Margin = new Padding(3, 7, 3, 0);
             label9.Name = "label9";
             label9.Size = new Size(90, 18);
@@ -193,7 +163,7 @@
             // 
             cmbDepartment.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbDepartment.FormattingEnabled = true;
-            cmbDepartment.Location = new Point(893, 50);
+            cmbDepartment.Location = new Point(888, 50);
             cmbDepartment.Name = "cmbDepartment";
             cmbDepartment.Size = new Size(262, 26);
             cmbDepartment.TabIndex = 6;
@@ -301,11 +271,40 @@
             btnRefresh.Text = "Refresh";
             btnRefresh.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 6;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.Controls.Add(cmbDepartment, 5, 1);
+            tableLayoutPanel1.Controls.Add(dtpHiredDate, 5, 0);
+            tableLayoutPanel1.Controls.Add(label3, 4, 0);
+            tableLayoutPanel1.Controls.Add(label9, 4, 1);
+            tableLayoutPanel1.Controls.Add(tbExperinse, 3, 1);
+            tableLayoutPanel1.Controls.Add(tbLicenseNumber, 3, 0);
+            tableLayoutPanel1.Controls.Add(label1, 2, 0);
+            tableLayoutPanel1.Controls.Add(label2, 2, 1);
+            tableLayoutPanel1.Controls.Add(cmbSpecialization, 1, 1);
+            tableLayoutPanel1.Controls.Add(cmbCode, 1, 0);
+            tableLayoutPanel1.Controls.Add(lbCode, 0, 0);
+            tableLayoutPanel1.Controls.Add(lbName, 0, 1);
+            tableLayoutPanel1.Location = new Point(25, 25);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.Size = new Size(1159, 94);
+            tableLayoutPanel1.TabIndex = 78;
+            // 
             // DoctorControl
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(controlPanel);
+            Controls.Add(tableLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(textBox1);
             Controls.Add(btnDelete);
@@ -318,9 +317,9 @@
             Margin = new Padding(4);
             Name = "DoctorControl";
             Size = new Size(1200, 700);
-            controlPanel.ResumeLayout(false);
-            controlPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDoctor).EndInit();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -351,7 +350,7 @@
         private Label lbCode;
         private DataGridView dgvDoctor;
         private Button btnRefresh;
-        private TableLayoutPanel controlPanel;
         private ComboBox cmbCode;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }

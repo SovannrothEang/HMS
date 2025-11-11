@@ -39,20 +39,26 @@
             btnNew = new Button();
             btnSubmit = new Button();
             btnCancel = new Button();
-            tbDescription = new TextBox();
-            lbDescription = new Label();
-            tbName = new TextBox();
-            lbName = new Label();
-            lbCode = new Label();
-            tbCode = new TextBox();
             dgvDept = new DataGridView();
             btnRefresh = new Button();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            tbCode = new TextBox();
+            lbCode = new Label();
+            lbName = new Label();
+            tbName = new TextBox();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            tbDescription = new TextBox();
+            lbDescription = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvDept).BeginInit();
+            flowLayoutPanel1.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(774, 107);
+            btnUpdate.Location = new Point(774, 164);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(99, 38);
             btnUpdate.TabIndex = 14;
@@ -61,7 +67,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(541, 107);
+            btnDelete.Location = new Point(541, 164);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(99, 38);
             btnDelete.TabIndex = 13;
@@ -70,7 +76,7 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(25, 107);
+            textBox1.Location = new Point(25, 164);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(391, 38);
@@ -103,7 +109,7 @@
             // 
             // btnNew
             // 
-            btnNew.Location = new Point(658, 107);
+            btnNew.Location = new Point(658, 164);
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(99, 38);
             btnNew.TabIndex = 11;
@@ -112,7 +118,7 @@
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(1079, 107);
+            btnSubmit.Location = new Point(1079, 164);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(99, 38);
             btnSubmit.TabIndex = 10;
@@ -121,63 +127,12 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(974, 107);
+            btnCancel.Location = new Point(974, 164);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
             btnCancel.TabIndex = 9;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // tbDescription
-            // 
-            tbDescription.Location = new Point(429, 12);
-            tbDescription.Multiline = true;
-            tbDescription.Name = "tbDescription";
-            tbDescription.Size = new Size(414, 84);
-            tbDescription.TabIndex = 6;
-            // 
-            // lbDescription
-            // 
-            lbDescription.AutoSize = true;
-            lbDescription.Location = new Point(335, 15);
-            lbDescription.Name = "lbDescription";
-            lbDescription.Size = new Size(88, 18);
-            lbDescription.TabIndex = 7;
-            lbDescription.Text = "Description";
-            // 
-            // tbName
-            // 
-            tbName.Location = new Point(81, 61);
-            tbName.Multiline = true;
-            tbName.Name = "tbName";
-            tbName.Size = new Size(228, 29);
-            tbName.TabIndex = 4;
-            // 
-            // lbName
-            // 
-            lbName.AutoSize = true;
-            lbName.Location = new Point(25, 64);
-            lbName.Name = "lbName";
-            lbName.Size = new Size(50, 18);
-            lbName.TabIndex = 5;
-            lbName.Text = "Name";
-            // 
-            // lbCode
-            // 
-            lbCode.AutoSize = true;
-            lbCode.Location = new Point(25, 25);
-            lbCode.Name = "lbCode";
-            lbCode.Size = new Size(47, 18);
-            lbCode.TabIndex = 3;
-            lbCode.Text = "Code";
-            // 
-            // tbCode
-            // 
-            tbCode.Location = new Point(81, 22);
-            tbCode.Multiline = true;
-            tbCode.Name = "tbCode";
-            tbCode.Size = new Size(228, 29);
-            tbCode.TabIndex = 2;
             // 
             // dgvDept
             // 
@@ -186,40 +141,129 @@
             dgvDept.AllowUserToResizeColumns = false;
             dgvDept.AllowUserToResizeRows = false;
             dgvDept.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDept.Location = new Point(25, 151);
+            dgvDept.Location = new Point(25, 208);
             dgvDept.MultiSelect = false;
             dgvDept.Name = "dgvDept";
             dgvDept.ReadOnly = true;
             dgvDept.RowHeadersVisible = false;
-            dgvDept.Size = new Size(1156, 518);
+            dgvDept.Size = new Size(1156, 461);
             dgvDept.TabIndex = 1;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(426, 107);
+            btnRefresh.Location = new Point(426, 164);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(99, 38);
             btnRefresh.TabIndex = 0;
             btnRefresh.Text = "Refresh";
             btnRefresh.UseVisualStyleBackColor = true;
             // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(tableLayoutPanel1);
+            flowLayoutPanel1.Controls.Add(tableLayoutPanel2);
+            flowLayoutPanel1.Location = new Point(25, 25);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(1153, 133);
+            flowLayoutPanel1.TabIndex = 16;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(tbCode, 1, 0);
+            tableLayoutPanel1.Controls.Add(lbCode, 0, 0);
+            tableLayoutPanel1.Controls.Add(lbName, 0, 1);
+            tableLayoutPanel1.Controls.Add(tbName, 1, 1);
+            tableLayoutPanel1.Location = new Point(3, 3);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(388, 105);
+            tableLayoutPanel1.TabIndex = 0;
+            // 
+            // tbCode
+            // 
+            tbCode.Location = new Point(197, 3);
+            tbCode.Multiline = true;
+            tbCode.Name = "tbCode";
+            tbCode.Size = new Size(188, 29);
+            tbCode.TabIndex = 6;
+            // 
+            // lbCode
+            // 
+            lbCode.AutoSize = true;
+            lbCode.Location = new Point(3, 7);
+            lbCode.Margin = new Padding(3, 7, 3, 0);
+            lbCode.Name = "lbCode";
+            lbCode.Size = new Size(47, 18);
+            lbCode.TabIndex = 7;
+            lbCode.Text = "Code";
+            // 
+            // lbName
+            // 
+            lbName.AutoSize = true;
+            lbName.Location = new Point(3, 59);
+            lbName.Margin = new Padding(3, 7, 3, 0);
+            lbName.Name = "lbName";
+            lbName.Size = new Size(50, 18);
+            lbName.TabIndex = 9;
+            lbName.Text = "Name";
+            // 
+            // tbName
+            // 
+            tbName.Location = new Point(197, 55);
+            tbName.Multiline = true;
+            tbName.Name = "tbName";
+            tbName.Size = new Size(188, 29);
+            tbName.TabIndex = 8;
+            // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 2;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.Controls.Add(tbDescription, 1, 0);
+            tableLayoutPanel2.Controls.Add(lbDescription, 0, 0);
+            tableLayoutPanel2.Location = new Point(397, 3);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.Size = new Size(470, 105);
+            tableLayoutPanel2.TabIndex = 1;
+            // 
+            // tbDescription
+            // 
+            tbDescription.Location = new Point(103, 3);
+            tbDescription.Multiline = true;
+            tbDescription.Name = "tbDescription";
+            tbDescription.Size = new Size(364, 81);
+            tbDescription.TabIndex = 6;
+            // 
+            // lbDescription
+            // 
+            lbDescription.AutoSize = true;
+            lbDescription.Location = new Point(3, 7);
+            lbDescription.Margin = new Padding(3, 7, 3, 0);
+            lbDescription.Name = "lbDescription";
+            lbDescription.Size = new Size(88, 18);
+            lbDescription.TabIndex = 7;
+            lbDescription.Text = "Description";
+            // 
             // DepartmentControl
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(224, 224, 224);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(btnDelete);
             Controls.Add(textBox1);
             Controls.Add(btnNew);
             Controls.Add(btnSubmit);
             Controls.Add(btnCancel);
-            Controls.Add(lbDescription);
-            Controls.Add(tbDescription);
-            Controls.Add(lbName);
-            Controls.Add(tbName);
-            Controls.Add(lbCode);
-            Controls.Add(tbCode);
             Controls.Add(dgvDept);
             Controls.Add(btnRefresh);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -229,6 +273,11 @@
             Name = "DepartmentControl";
             Size = new Size(1200, 700);
             ((System.ComponentModel.ISupportInitialize)dgvDept).EndInit();
+            flowLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            tableLayoutPanel2.ResumeLayout(false);
+            tableLayoutPanel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -246,13 +295,16 @@
         private Button btnNew;
         private Button btnSubmit;
         private Button btnCancel;
-        private TextBox tbDescription;
-        private Label lbDescription;
-        private TextBox tbName;
-        private Label lbName;
-        private Label lbCode;
-        private TextBox tbCode;
         private DataGridView dgvDept;
         private Button btnRefresh;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TextBox tbCode;
+        private Label lbCode;
+        private Label lbName;
+        private TextBox tbName;
+        private TableLayoutPanel tableLayoutPanel2;
+        private TextBox tbDescription;
+        private Label lbDescription;
     }
 }

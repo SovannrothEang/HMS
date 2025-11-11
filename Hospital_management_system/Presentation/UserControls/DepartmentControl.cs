@@ -24,6 +24,7 @@ public partial class DepartmentControl : UserControl
         dgvDept.DataSource = _bsDepartments; // bind DataGridView to BindingSource
         _bsDepartments.ResetBindings(false);
 
+        #region DGV events
         dgvDept.SelectionChanged += OnDgvDeptSelectionChanged;
         dgvDept.DataBindingComplete += (s, e) =>
         {
@@ -31,6 +32,7 @@ public partial class DepartmentControl : UserControl
                 dgvDept.Columns["colId"].Visible = false;
         };
         //this.Load += async (s, e) => await LoadDepartmentsAsync();
+        #endregion
 
         #region Click Events
         btnRefresh.Click += async (s, e) =>
@@ -175,6 +177,17 @@ public partial class DepartmentControl : UserControl
                 MessageBoxIcon.Warning);
             if (confirmResult == DialogResult.Yes)
             {
+                var staffs = GlobalState.Staffs.Where(d => d.DepartmentId == id).ToList();
+                if (staffs.Count > 0)
+                {
+                    MessageBox.Show(
+                        "This department is having staffs!",
+                        "Warning",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
                 var success = await _repo.DeleteAsync(id);
                 if (success)
                 {
@@ -257,6 +270,7 @@ public partial class DepartmentControl : UserControl
     private async Task LoadDepartmentsAsync()
     {
         dgvDept.Enabled = false;
+        btnRefresh.Enabled = false;
         try
         {
             var departments = await _repo.GetAllAsync();
@@ -276,6 +290,7 @@ public partial class DepartmentControl : UserControl
         finally
         {
             dgvDept.Enabled = true;
+            btnRefresh.Enabled = true;
         }
     }
 
