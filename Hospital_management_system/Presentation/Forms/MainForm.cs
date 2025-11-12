@@ -22,12 +22,12 @@ public partial class MainForm : Form
         InitializeComponent();
         _serviceProvider = serviceProvider;
 
-        this.Load += (s, e) =>
+        this.Load += async (s, e) =>
         {
             if (!CheckUser())
                 return;
             ActivateControl(this.btnDashboard, () => _serviceProvider.GetRequiredService<DashboardControl>());
-            _ = Task.Run(async () => await PreLoadDataAsync());
+            await PreLoadDataAsync();
         };
 
         #region Button Click Events
@@ -145,34 +145,31 @@ public partial class MainForm : Form
         try
         {
             var deptRepo = _serviceProvider.GetRequiredService<IGenericRepository<Department>>();
-            var docRepo = _serviceProvider.GetRequiredService<IDoctorRepository>();
             var staffRepo = _serviceProvider.GetRequiredService<IStaffRepository>();
-            var patientRepo = _serviceProvider.GetRequiredService<IPatientRepository>();
+            var docRepo = _serviceProvider.GetRequiredService<IDoctorRepository>();
+            var PatientRepo = _serviceProvider.GetRequiredService<IPatientRepository>();
 
-            var deptTask = deptRepo.GetAllAsync();
-            var staffTask = staffRepo.GetAllWithDepartmentsAsync();
-            var docTask = docRepo.GetAllWithStaffsAsync();
-            var patientTask = patientRepo.GetAllWithDoctorAsync();
+            var deptList = await deptRepo.GetAllAsync();
+            var staffList = await staffRepo.GetAllWithDepartmentsAsync();
+            var docList = await docRepo.GetAllWithStaffsAsync();
+            var patientRepo = await PatientRepo.GetAllWithDoctorAsync();
 
-            await Task.WhenAll(deptTask, staffTask, docTask, patientTask);
-
-            var deptDtos = deptTask.Result.Select(x => x.ToDto()).ToList();
-            var staffDtos = staffTask.Result.Select(x => x.ToDto()).ToList();
-            var doctorDtos = docTask.Result.Select(x => x.ToDto()).ToList();
-            var patientDto = patientTask.Result.Select(x => x.ToDto()).ToList();
+            var deptDtos = deptList.Select(x => x.ToDto()).ToList();
+            var staffDtos = staffList.Select(x => x.ToDto()).ToList();
+            var doctorDtos = docList.Select(x => x.ToDto()).ToList();
+            var patientDtos = patientRepo.Select(x => x.ToDto()).ToList();
 
             GlobalState.AllStaffDoctorsCodeList = new BindingList<string>([.. staffDtos
                 .Where(s => s.Position == Position.Doctor.ToString())
                 .Select(s => s.Code)]);
 
             GlobalState.DoctorsCodeList = new BindingList<string>([.. doctorDtos
-                //.Where(d => d)
                 .Select(d => d.Staff.Code)]);
 
             GlobalState.AddItems<DepartmentDto>(deptDtos, GlobalState.Departments);
             GlobalState.AddItems<StaffDto>(staffDtos, GlobalState.Staffs);
             GlobalState.AddItems<DoctorDto>(doctorDtos, GlobalState.Doctors);
-            GlobalState.AddItems<PatientDto>(patientDto, GlobalState.Patients);
+            GlobalState.AddItems<PatientDto>(patientDtos, GlobalState.Patients);
         }
         catch (Exception ex)
         {

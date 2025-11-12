@@ -29,5 +29,8 @@ public partial class LoginForm : Form
             }
 
         };
+        tbPassword.KeyDown += (s, e) => {
+            if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; btnLogin.PerformClick(); }
+        };
     }
 }
