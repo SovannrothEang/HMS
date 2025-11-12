@@ -4,7 +4,6 @@ using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
 using Hospital_management_system.Domain.ValueObjects;
 using Hospital_management_system.Presentation.State;
-using System.Windows.Forms;
 
 namespace Hospital_management_system.Presentation.UserControls;
 
@@ -13,6 +12,7 @@ public partial class DoctorControl : UserControl
     private readonly IGenericRepository<Doctor> _repo;
     private readonly IDoctorRepository _docRepo;
     private readonly BindingSource _bsDoctor = [];
+    private System.Windows.Forms.Timer? _searchTimer;
 
     private static bool IsNew = false;
 
@@ -248,13 +248,15 @@ public partial class DoctorControl : UserControl
             cmbDepartment.Text = department!.Name.ToString();
         };
         _docRepo = docRepo;
+        tbSearch.KeyUp += OnTbSearchKeyUp;
     }
 
     #region UI config
     private void LoadControlsConfiguration()
     {
         cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
-        cmbCode.SelectedIndex = -1;
+        //cmbCode.ValueMember = "Code";
+        //cmbCode.DisplayMember = "Code";
 
         cmbSpecialization.DataSource = Enum.GetValues(typeof(Specialization));
         cmbSpecialization.SelectedIndex = -1;
@@ -309,7 +311,7 @@ public partial class DoctorControl : UserControl
             new DataGridViewTextBoxColumn {
                 Name = "colYearsOfExperience",
                 HeaderText = "Experience",
-                DataPropertyName = "YearsOfExperiense",
+                DataPropertyName = "YearsOfExperience",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             },
             new DataGridViewTextBoxColumn {
@@ -345,11 +347,6 @@ public partial class DoctorControl : UserControl
 
         if (dgvDoctor.CurrentRow.DataBoundItem is DoctorDto selectedDoctor)
         {
-            cmbCode.Text = selectedDoctor.Staff?.Code;
-            tbExperinse.Text = selectedDoctor.YearsOfExperience.ToString();
-            tbLicenseNumber.Text = selectedDoctor.LicenseNumber.ToString();
-            cmbSpecialization.Text = selectedDoctor.Specialization;
-
             if (selectedDoctor.Staff is null || selectedDoctor.Staff!.Department is null)
             {
                 var staffCode = cmbCode.SelectedValue;
@@ -357,13 +354,54 @@ public partial class DoctorControl : UserControl
 
                 var staff = GlobalState.Staffs
                     .FirstOrDefault(s => s.Code == staffCode.ToString());
-                selectedDoctor.Staff = staff!;
+                if (staff is null) return;
+                selectedDoctor.Staff = staff;
                 var department = GlobalState.Departments
-                    .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
-                selectedDoctor.Staff!.Department = department;
+                    .FirstOrDefault(d => d.DepartmentId == staff.DepartmentId);
+                if (department is null) return;
+                selectedDoctor.Staff.Department = department;
             }
-            cmbDepartment.Text = selectedDoctor.Staff!.Department!.Name;
+            cmbCode.Text = selectedDoctor.Staff.Code;
+            tbExperinse.Text = selectedDoctor.YearsOfExperience.ToString();
+            tbLicenseNumber.Text = selectedDoctor.LicenseNumber.ToString();
+            cmbSpecialization.Text = selectedDoctor.Specialization;
+            cmbDepartment.Text = selectedDoctor.Staff.Department.Name;
         }
+    }
+
+    private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)
+    {
+        if (_searchTimer == null)
+        {
+            _searchTimer = new System.Windows.Forms.Timer();
+            _searchTimer.Interval = 150;
+            _searchTimer.Tick += (s, ev) =>
+            {
+                _searchTimer.Stop();
+                PerformSearch(tbSearch.Text.Trim());
+            };
+        }
+
+        // restart debounce timer on every key
+        _searchTimer.Stop();
+        _searchTimer.Start();
+    }
+
+    private void PerformSearch(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            dgvDoctor.DataSource = GlobalState.Doctors;
+            return;
+        }
+
+        dgvDoctor.DataSource = null;
+        _bsDoctor.DataSource = GlobalState.Doctors
+            .Where(d => d.Staff.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) == true
+                || d.Staff.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) == true)
+            .ToList();
+        dgvDoctor.DataSource = _bsDoctor;
+        _bsDoctor.ResetBindings(false);
     }
     #endregion
 

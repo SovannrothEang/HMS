@@ -12,6 +12,8 @@ public partial class StaffControl : UserControl
     private readonly IGenericRepository<Staff> _repo;
     private readonly IStaffRepository _staffRepo;
     private readonly BindingSource _bsStaffs = [];
+    private System.Windows.Forms.Timer? _searchTimer;
+
 
     private static bool IsNew = false;
     public StaffControl(IGenericRepository<Staff> repo, IStaffRepository staffRepo)
@@ -222,6 +224,8 @@ public partial class StaffControl : UserControl
         };
         _staffRepo = staffRepo;
         #endregion
+
+        tbSearch.KeyUp += OnTbSearchKeyUp;
     }
 
     #region UI config
@@ -378,6 +382,40 @@ public partial class StaffControl : UserControl
             tbSalary.Text = selectedStaff.Salary.ToString();
             cmbDepartment.SelectedValue = selectedStaff.DepartmentId;
         }
+    }
+    private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)
+    {
+        if (_searchTimer == null)
+        {
+            _searchTimer = new System.Windows.Forms.Timer();
+            _searchTimer.Interval = 150;
+            _searchTimer.Tick += (s, ev) =>
+            {
+                _searchTimer.Stop();
+                PerformSearch(tbSearch.Text.Trim());
+            };
+        }
+
+        // restart debounce timer on every key
+        _searchTimer.Stop();
+        _searchTimer.Start();
+    }
+
+    private void PerformSearch(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            dgvStaff.DataSource = GlobalState.Staffs;
+            return;
+        }
+
+        dgvStaff.DataSource = null;
+        _bsStaffs.DataSource = GlobalState.Staffs
+            .Where(d => d.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) == true
+                || d.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) == true)
+            .ToList();
+        dgvStaff.DataSource = _bsStaffs;
+        _bsStaffs.ResetBindings(false);
     }
     #endregion
 

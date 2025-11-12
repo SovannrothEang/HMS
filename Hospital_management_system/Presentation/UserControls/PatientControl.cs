@@ -4,7 +4,6 @@ using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
 using Hospital_management_system.Domain.ValueObjects;
 using Hospital_management_system.Presentation.State;
-using System.Windows.Forms;
 
 namespace Hospital_management_system.Presentation.UserControls;
 
@@ -14,6 +13,7 @@ public partial class PatientControl : UserControl
     private readonly IPatientRepository _patientRepo;
     private readonly BindingSource _bsPatient = [];
     private readonly BindingSource _bsDoctorCodes = [];
+    private System.Windows.Forms.Timer? _searchTimer;
 
     private static bool IsNew = false;
     public PatientControl(IGenericRepository<Patient> repo, IPatientRepository patientRepo)
@@ -170,6 +170,8 @@ public partial class PatientControl : UserControl
             DisableControls(true);
         };
         #endregion
+
+        tbSearch.KeyUp += OnTbSearchKeyUp;
     }
 
     #region UI config
@@ -309,6 +311,41 @@ public partial class PatientControl : UserControl
                 cmbDoctor.Text = doctor.Staff.Code;
             }
         }
+    }
+
+    private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)
+    {
+        if (_searchTimer == null)
+        {
+            _searchTimer = new System.Windows.Forms.Timer();
+            _searchTimer.Interval = 150;
+            _searchTimer.Tick += (s, ev) =>
+            {
+                _searchTimer.Stop();
+                PerformSearch(tbSearch.Text.Trim());
+            };
+        }
+
+        // restart debounce timer on every key
+        _searchTimer.Stop();
+        _searchTimer.Start();
+    }
+
+    private void PerformSearch(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            dgvPatient.DataSource = GlobalState.Patients;
+            return;
+        }
+
+        dgvPatient.DataSource = null;
+        _bsPatient.DataSource = GlobalState.Patients
+            .Where(d => d.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) == true
+                || d.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) == true)
+            .ToList();
+        dgvPatient.DataSource = _bsPatient;
+        _bsPatient.ResetBindings(false);
     }
     #endregion
 

@@ -191,7 +191,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 Address = "123 Main St",
                 PhoneNumber = "555-1111",
                 Email = "alice.smith@hms.com",
-                Position = Position.Nurse.ToString(),
+                Position = Position.Doctor.ToString(),
                 DepartmentId = cardiologyDepartmentId,
                 HiredDate = new DateTime(2010, 1, 1)
             },
@@ -221,7 +221,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 Address = "789 Pine Ln",
                 PhoneNumber = "555-3333",
                 Email = "charlie.brown@hms.com",
-                Position = Position.Nurse.ToString(),
+                Position = Position.Doctor.ToString(),
                 DepartmentId = pediatricsDepartmentId,
                 HiredDate = new DateTime(2015, 7, 1)
             },

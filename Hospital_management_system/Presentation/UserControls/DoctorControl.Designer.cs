@@ -41,7 +41,7 @@
             label9 = new Label();
             cmbDepartment = new ComboBox();
             btnUpdate = new Button();
-            textBox1 = new TextBox();
+            tbSearch = new TextBox();
             colUpdatedAt = new DataGridViewTextBoxColumn();
             colCreatedAt = new DataGridViewTextBoxColumn();
             colDescription = new DataGridViewTextBoxColumn();
@@ -177,13 +177,13 @@
             btnUpdate.Text = "Update";
             btnUpdate.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // tbSearch
             // 
-            textBox1.Location = new Point(20, 125);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(402, 38);
-            textBox1.TabIndex = 65;
+            tbSearch.Location = new Point(20, 125);
+            tbSearch.Multiline = true;
+            tbSearch.Name = "tbSearch";
+            tbSearch.Size = new Size(402, 38);
+            tbSearch.TabIndex = 65;
             // 
             // colUpdatedAt
             // 
@@ -306,7 +306,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tableLayoutPanel1);
             Controls.Add(btnUpdate);
-            Controls.Add(textBox1);
+            Controls.Add(tbSearch);
             Controls.Add(btnDelete);
             Controls.Add(btnNew);
             Controls.Add(btnSubmit);
@@ -335,7 +335,7 @@
         private Label label1;
         private TextBox tbLicenseNumber;
         private Button btnUpdate;
-        private TextBox textBox1;
+        private TextBox tbSearch;
         private DataGridViewTextBoxColumn colUpdatedAt;
         private DataGridViewTextBoxColumn colCreatedAt;
         private DataGridViewTextBoxColumn colDescription;

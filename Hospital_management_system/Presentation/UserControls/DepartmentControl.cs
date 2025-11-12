@@ -10,6 +10,7 @@ public partial class DepartmentControl : UserControl
 {
     private readonly IGenericRepository<Department> _repo;
     private readonly BindingSource _bsDepartments = [];
+    private System.Windows.Forms.Timer? _searchTimer;
 
     private static bool IsNew = false;
 
@@ -20,8 +21,8 @@ public partial class DepartmentControl : UserControl
         LoadControlsConfiguration();
         DisableControls(true);
 
-        _bsDepartments.DataSource = GlobalState.Departments; // set BindingSource data source
-        dgvDept.DataSource = _bsDepartments; // bind DataGridView to BindingSource
+        _bsDepartments.DataSource = GlobalState.Departments;
+        dgvDept.DataSource = _bsDepartments;
         _bsDepartments.ResetBindings(false);
 
         #region DGV events
@@ -211,7 +212,46 @@ public partial class DepartmentControl : UserControl
             }
         };
         #endregion
+
+        #region TextBox events
+        tbSearch.KeyUp += OnTbSearchKeyUp;
+        #endregion
     }
+
+    private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)
+    {
+
+        if (_searchTimer == null)
+        {
+            _searchTimer = new System.Windows.Forms.Timer();
+            _searchTimer.Interval = 150;
+            _searchTimer.Tick += (s, ev) =>
+            {
+                _searchTimer.Stop();
+                PerformSearch(tbSearch.Text.Trim());
+            };
+        }
+
+        // restart debounce timer on every key
+        _searchTimer.Stop();
+        _searchTimer.Start();
+    }
+    private void PerformSearch(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            dgvDept.DataSource = GlobalState.Departments;
+            return;
+        }
+
+        dgvDept.DataSource = null;
+        _bsDepartments.DataSource = GlobalState.Departments
+            .Where(d => d.Name.Contains(text, StringComparison.OrdinalIgnoreCase) == true)
+            .ToList();
+        dgvDept.DataSource = _bsDepartments;
+        _bsDepartments.ResetBindings(false);
+    }
+
     #region UI config
     private void LoadControlsConfiguration()
     {
@@ -275,6 +315,7 @@ public partial class DepartmentControl : UserControl
     }
     #endregion
 
+    #region Helper methods
     private async Task LoadDepartmentsAsync()
     {
         dgvDept.Enabled = false;
@@ -313,4 +354,5 @@ public partial class DepartmentControl : UserControl
             tbDescription.Text = selectedDept.Description;
         }
     }
+    #endregion
 }

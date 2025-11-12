@@ -30,7 +30,7 @@
         {
             btnUpdate = new Button();
             btnDelete = new Button();
-            textBox1 = new TextBox();
+            tbSearch = new TextBox();
             colUpdatedAt = new DataGridViewTextBoxColumn();
             colCreatedAt = new DataGridViewTextBoxColumn();
             colDescription = new DataGridViewTextBoxColumn();
@@ -74,13 +74,13 @@
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // tbSearch
             // 
-            textBox1.Location = new Point(25, 164);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(391, 38);
-            textBox1.TabIndex = 12;
+            tbSearch.Location = new Point(25, 164);
+            tbSearch.Multiline = true;
+            tbSearch.Name = "tbSearch";
+            tbSearch.Size = new Size(391, 38);
+            tbSearch.TabIndex = 12;
             // 
             // colUpdatedAt
             // 
@@ -260,7 +260,7 @@
             Controls.Add(flowLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(btnDelete);
-            Controls.Add(textBox1);
+            Controls.Add(tbSearch);
             Controls.Add(btnNew);
             Controls.Add(btnSubmit);
             Controls.Add(btnCancel);
@@ -286,7 +286,7 @@
 
         private Button btnUpdate;
         private Button btnDelete;
-        private TextBox textBox1;
+        private TextBox tbSearch;
         private DataGridViewTextBoxColumn colUpdatedAt;
         private DataGridViewTextBoxColumn colCreatedAt;
         private DataGridViewTextBoxColumn colDescription;
