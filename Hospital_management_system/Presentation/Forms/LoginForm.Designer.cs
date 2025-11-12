@@ -35,6 +35,7 @@
             label3 = new Label();
             tbPassword = new TextBox();
             tableLayoutPanel1 = new TableLayoutPanel();
+            btnLogin = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -52,17 +53,19 @@
             // 
             // tbUsername
             // 
-            tbUsername.Location = new Point(3, 53);
-            tbUsername.Multiline = true;
+            tbUsername.Font = new Font("Arial", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbUsername.Location = new Point(3, 55);
             tbUsername.Name = "tbUsername";
-            tbUsername.Size = new Size(359, 39);
+            tbUsername.Size = new Size(359, 32);
             tbUsername.TabIndex = 1;
             // 
             // pictureBox1
             // 
+            pictureBox1.Image = Properties.Resources.logo;
             pictureBox1.Location = new Point(25, 25);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(300, 300);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
             // 
@@ -81,7 +84,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Arial", 15.75F);
-            label3.Location = new Point(4, 108);
+            label3.Location = new Point(4, 112);
             label3.Margin = new Padding(4, 8, 4, 0);
             label3.Name = "label3";
             label3.Size = new Size(103, 24);
@@ -90,10 +93,11 @@
             // 
             // tbPassword
             // 
-            tbPassword.Location = new Point(3, 153);
-            tbPassword.Multiline = true;
+            tbPassword.Font = new Font("Arial", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbPassword.Location = new Point(3, 159);
             tbPassword.Name = "tbPassword";
-            tbPassword.Size = new Size(359, 39);
+            tbPassword.PasswordChar = '*';
+            tbPassword.Size = new Size(359, 32);
             tbPassword.TabIndex = 5;
             // 
             // tableLayoutPanel1
@@ -104,15 +108,28 @@
             tableLayoutPanel1.Controls.Add(tbPassword, 0, 3);
             tableLayoutPanel1.Controls.Add(tbUsername, 0, 1);
             tableLayoutPanel1.Controls.Add(label3, 0, 2);
-            tableLayoutPanel1.Location = new Point(390, 95);
+            tableLayoutPanel1.Controls.Add(btnLogin, 0, 4);
+            tableLayoutPanel1.Location = new Point(398, 65);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 4;
+            tableLayoutPanel1.RowCount = 5;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel1.Size = new Size(374, 200);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Size = new Size(374, 260);
             tableLayoutPanel1.TabIndex = 6;
+            // 
+            // btnLogin
+            // 
+            btnLogin.Font = new Font("Arial", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLogin.Location = new Point(3, 211);
+            btnLogin.Name = "btnLogin";
+            btnLogin.Size = new Size(116, 46);
+            btnLogin.TabIndex = 6;
+            btnLogin.Text = "Login";
+            btnLogin.UseVisualStyleBackColor = true;
             // 
             // LoginForm
             // 
@@ -123,8 +140,12 @@
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "LoginForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "LoginForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
@@ -142,5 +163,6 @@
         private Label label3;
         private TextBox tbPassword;
         private TableLayoutPanel tableLayoutPanel1;
+        private Button btnLogin;
     }
 }

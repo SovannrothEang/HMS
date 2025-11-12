@@ -5,7 +5,7 @@ namespace Hospital_management_system.Presentation.State;
 
 public static class GlobalState
 {
-    //public static int CurrentStaffs { get; set; }
+    public static string CurrentUsername { get; set; } = null!;
     //public static int CurrentDoctors { get; set; }
     //public static int CurrentPatients { get; set; }
 

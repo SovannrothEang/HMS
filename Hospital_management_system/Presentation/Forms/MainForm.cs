@@ -3,6 +3,7 @@ using Hospital_management_system.Application.Mapper;
 using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
 using Hospital_management_system.Domain.ValueObjects;
+using Hospital_management_system.Presentation.Forms;
 using Hospital_management_system.Presentation.State;
 using Hospital_management_system.Presentation.UserControls;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,15 +16,18 @@ public partial class MainForm : Form
     private readonly IServiceProvider _serviceProvider;
     private UserControl? _currentControl;
     private Button _activeButton = null!;
+
     public MainForm(IServiceProvider serviceProvider)
     {
         InitializeComponent();
         _serviceProvider = serviceProvider;
 
-        this.Load += async (s, e) =>
+        this.Load += (s, e) =>
         {
+            if (!CheckUser())
+                return;
             ActivateControl(this.btnDashboard, () => _serviceProvider.GetRequiredService<DashboardControl>());
-            await PreLoadDataAsync();
+            _ = Task.Run(async () => await PreLoadDataAsync());
         };
 
         #region Button Click Events
@@ -59,6 +63,32 @@ public partial class MainForm : Form
         //    }
         //};
         #endregion
+    }
+
+    private bool CheckUser()
+    {
+        if (!string.IsNullOrEmpty(GlobalState.CurrentUsername))
+            return true;
+
+        this.Hide();
+        using (var login = _serviceProvider.GetRequiredService<LoginForm>())
+        {
+            bool success = false;
+            login.LoginSucceeded += (s, e) => success = true;
+            login.FormClosed += (s, e) =>
+            {
+                if (string.IsNullOrEmpty(GlobalState.CurrentUsername))
+                    this.Close();
+            };
+            login.ShowDialog();
+            if (!success)
+            {
+                System.Windows.Forms.Application.Exit();
+                return false;
+            }
+        }
+        this.Show();
+        return true;
     }
     #region Helper Methods
     private void ActivateControl(Button btn, Func<UserControl> controlFactory)
@@ -114,29 +144,22 @@ public partial class MainForm : Form
     {
         try
         {
-            #region Departments
             var deptRepo = _serviceProvider.GetRequiredService<IGenericRepository<Department>>();
-            var deptList = await deptRepo.GetAllAsync();
-            var deptDtos = deptList.Select(x => x.ToDto()).ToList();
-            #endregion
-
-            #region Staffs
-            var staffRepo = _serviceProvider.GetRequiredService<IStaffRepository>();
-            var staffList = await staffRepo.GetAllWithDepartmentsAsync();
-            var staffDtos = staffList.Select(x => x.ToDto()).ToList();
-            #endregion
-
-            #region Doctors
             var docRepo = _serviceProvider.GetRequiredService<IDoctorRepository>();
-            var docList = await docRepo.GetAllWithStaffsAsync();
-            var doctorDtos = docList.Select(x => x.ToDto()).ToList();
-            #endregion
+            var staffRepo = _serviceProvider.GetRequiredService<IStaffRepository>();
+            var patientRepo = _serviceProvider.GetRequiredService<IPatientRepository>();
 
-            #region Patients
-            var PatietnRepo = _serviceProvider.GetRequiredService<IPatientRepository>();
-            var patientRepo = await PatietnRepo.GetAllWithDoctorAsync();
-            var patientDto = patientRepo.Select(x => x.ToDto()).ToList();
-            #endregion
+            var deptTask = deptRepo.GetAllAsync();
+            var staffTask = staffRepo.GetAllWithDepartmentsAsync();
+            var docTask = docRepo.GetAllWithStaffsAsync();
+            var patientTask = patientRepo.GetAllWithDoctorAsync();
+
+            await Task.WhenAll(deptTask, staffTask, docTask, patientTask);
+
+            var deptDtos = deptTask.Result.Select(x => x.ToDto()).ToList();
+            var staffDtos = staffTask.Result.Select(x => x.ToDto()).ToList();
+            var doctorDtos = docTask.Result.Select(x => x.ToDto()).ToList();
+            var patientDto = patientTask.Result.Select(x => x.ToDto()).ToList();
 
             GlobalState.AllStaffDoctorsCodeList = new BindingList<string>([.. staffDtos
                 .Where(s => s.Position == Position.Doctor.ToString())

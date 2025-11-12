@@ -76,5 +76,6 @@ public class Staff : Person
     #region Navigation Prop
     public virtual Department Department { get; set; } = null!;
     public virtual Doctor? Doctor { get; set; }
+    public virtual User? User { get; set; }
     #endregion
 }

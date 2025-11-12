@@ -23,7 +23,7 @@ public static class ServiceConfigurator
         });
 
         services.AddSingleton<MainForm>();
-        //services.AddTransient<LoginForm>();
+        services.AddTransient<LoginForm>();
 
         services.AddTransient<DashboardControl>();
         services.AddTransient<DepartmentControl>();

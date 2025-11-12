@@ -10,6 +10,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Staff> Staffs { get; set; }
+    public DbSet<User> Users { get; set; }
 
     public override Task<int> SaveChangesAsync(
         CancellationToken cancellationToken = default)
@@ -63,10 +64,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasColumnName("name")
                 .HasColumnType("varchar(255)")
                 .UseCollation("SQL_Latin1_General_CP850_BIN");
+            buildAction.HasIndex(d => d.Code)
+                .IsUnique()
+                .HasFilter("[is_deleted] = 0 AND [code] <> ''");
             buildAction
                 .HasIndex(d => d.Name)
                 .IsUnique()
                 .HasFilter("[is_deleted] = 0 AND [name] <> ''");
+
         });
         #endregion
         
@@ -76,7 +81,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             buildAction
                 .HasIndex(d => d.LicenseNumber)
                 .IsUnique()
-                .HasFilter("[is_deleted] = 0");
+                .HasFilter("[is_deleted] = 0 AND [license_number] <> ''");
             buildAction
                 .HasIndex(d => d.StaffId)
                 .IsUnique()
@@ -157,6 +162,29 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             });
         });
         #endregion
+
+        modelBuilder.Entity<User>(buildAction =>
+        {
+            buildAction.HasIndex(u => u.Code).IsUnique().HasFilter("[is_deleted] = 0");
+            buildAction.HasIndex(u => u.StaffId).IsUnique().HasFilter("[is_deleted] = 0");
+            buildAction
+                .HasOne(u => u.Staff)
+                .WithOne(s => s.User)
+                .HasForeignKey<User>(s => s.StaffId);
+
+            buildAction.ToTable(t =>
+            {
+                t.HasCheckConstraint(
+                    "CHK_CODE_NOT_EMPTY",
+                    $"LTRIM(RTRIM(ISNULL([{nameof(User.Code)}], ''))) <> ''"
+                );
+                t.HasCheckConstraint(
+                    "CHK_NAME_NOT_EMPTY",
+                    $"LTRIM(RTRIM({nameof(User.Username)})) <> ''"
+                );
+            });
+        });
+            
 
         #region Seed data
         var cardiologyDepartmentId = Guid.NewGuid().ToString();
