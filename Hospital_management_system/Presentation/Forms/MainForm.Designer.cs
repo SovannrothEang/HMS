@@ -43,7 +43,7 @@
             // 
             // panelSidebar
             // 
-            panelSidebar.BackColor = SystemColors.ButtonShadow;
+            panelSidebar.BackColor = Color.Silver;
             panelSidebar.Controls.Add(pictureBox1);
             panelSidebar.Controls.Add(btnPatient);
             panelSidebar.Controls.Add(btnStaff);
@@ -72,12 +72,12 @@
             btnPatient.BackColor = Color.White;
             btnPatient.FlatStyle = FlatStyle.Flat;
             btnPatient.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnPatient.Location = new Point(12, 364);
+            btnPatient.Location = new Point(12, 421);
             btnPatient.Margin = new Padding(4);
             btnPatient.Name = "btnPatient";
-            btnPatient.Padding = new Padding(10, 0, 0, 0);
+            btnPatient.Padding = new Padding(15, 0, 0, 0);
             btnPatient.Size = new Size(174, 49);
-            btnPatient.TabIndex = 3;
+            btnPatient.TabIndex = 4;
             btnPatient.Text = "Patient";
             btnPatient.TextAlign = ContentAlignment.MiddleLeft;
             btnPatient.UseVisualStyleBackColor = false;
@@ -87,12 +87,12 @@
             btnStaff.BackColor = Color.White;
             btnStaff.FlatStyle = FlatStyle.Flat;
             btnStaff.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnStaff.Location = new Point(12, 421);
+            btnStaff.Location = new Point(12, 364);
             btnStaff.Margin = new Padding(4);
             btnStaff.Name = "btnStaff";
-            btnStaff.Padding = new Padding(10, 0, 0, 0);
+            btnStaff.Padding = new Padding(15, 0, 0, 0);
             btnStaff.Size = new Size(174, 49);
-            btnStaff.TabIndex = 4;
+            btnStaff.TabIndex = 3;
             btnStaff.Text = "Staff";
             btnStaff.TextAlign = ContentAlignment.MiddleLeft;
             btnStaff.UseVisualStyleBackColor = false;
@@ -105,7 +105,7 @@
             btnDepartment.Location = new Point(12, 250);
             btnDepartment.Margin = new Padding(4);
             btnDepartment.Name = "btnDepartment";
-            btnDepartment.Padding = new Padding(10, 0, 0, 0);
+            btnDepartment.Padding = new Padding(15, 0, 0, 0);
             btnDepartment.Size = new Size(174, 49);
             btnDepartment.TabIndex = 1;
             btnDepartment.Text = "Department";
@@ -120,7 +120,7 @@
             btnDoctor.Location = new Point(12, 307);
             btnDoctor.Margin = new Padding(4);
             btnDoctor.Name = "btnDoctor";
-            btnDoctor.Padding = new Padding(10, 0, 0, 0);
+            btnDoctor.Padding = new Padding(15, 0, 0, 0);
             btnDoctor.Size = new Size(174, 49);
             btnDoctor.TabIndex = 2;
             btnDoctor.Text = "Doctor";
@@ -135,7 +135,7 @@
             btnDashboard.Location = new Point(12, 193);
             btnDashboard.Margin = new Padding(4);
             btnDashboard.Name = "btnDashboard";
-            btnDashboard.Padding = new Padding(10, 0, 0, 0);
+            btnDashboard.Padding = new Padding(15, 0, 0, 0);
             btnDashboard.Size = new Size(174, 49);
             btnDashboard.TabIndex = 0;
             btnDashboard.Text = "Dashboard";

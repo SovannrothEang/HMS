@@ -232,7 +232,10 @@ public partial class StaffControl : UserControl
     private void LoadControlsConfiguration()
     {
         dtpDob.Format = DateTimePickerFormat.Custom;
-        dtpDob.Value = DateTime.Now;
+        dtpDob.CustomFormat = "dd/MM/yyyy";
+
+        dtpHireDate.Format = DateTimePickerFormat.Custom;
+        dtpHireDate.CustomFormat = "dd/MM/yyyy";
 
         cmbGender.DataSource = Enum.GetValues(typeof(PersonGender));
         //cmbGender.SelectedIndex = 0;
@@ -352,6 +355,7 @@ public partial class StaffControl : UserControl
         tbEmail.Enabled = !con;
         cmbPosition.Enabled = !con;
         tbSalary.Enabled = !con;
+        dtpHireDate.Enabled = !con;
         cmbDepartment.Enabled = !con;
 
         btnCancel.Enabled = !con;
@@ -380,6 +384,14 @@ public partial class StaffControl : UserControl
             tbEmail.Text = selectedStaff.Email;
             cmbPosition.Text = selectedStaff.Position;
             tbSalary.Text = selectedStaff.Salary.ToString();
+            if (selectedStaff.HiredDate < dtpHireDate.MinDate)
+            {
+                dtpHireDate.Value = dtpHireDate.MinDate;
+            }
+            else
+            {
+                dtpHireDate.Value = selectedStaff.HiredDate;
+            }
             cmbDepartment.SelectedValue = selectedStaff.DepartmentId;
         }
     }
@@ -400,7 +412,6 @@ public partial class StaffControl : UserControl
         _searchTimer.Stop();
         _searchTimer.Start();
     }
-
     private void PerformSearch(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
@@ -463,6 +474,7 @@ public partial class StaffControl : UserControl
                             Address = tbAddress.Text.Trim(),
                             Email = tbEmail.Text.Trim(),
                             Position = cmbPosition.Text,
+                            HiredDate = dtpHireDate.Value.Date,
                             Salary = decimal.Parse(tbSalary.Text.Trim()),
                             DepartmentId = cmbDepartment.SelectedValue!.ToString()!
                         });
@@ -480,14 +492,14 @@ public partial class StaffControl : UserControl
         var code = tbCode.Text.Trim();
         var firstName = tbFirstName.Text.Trim();
         var lastName = tbLastName.Text.Trim();
-        //var gender = Enum.GetName(typeof(Gender), cmbGender.SelectedItem!);
         var gender = (PersonGender)cmbGender.SelectedItem!;
-        var dob = DateTime.Parse(dtpDob.Value.ToString());
+        var dob = dtpDob.Value.Date;
         var phoneNumber = tbPhoneNumber.Text.Trim();
         var address = tbAddress.Text.Trim();
         var email = tbEmail.Text.Trim();
         var position = cmbPosition.Text;
         var salary = decimal.Parse(tbSalary.Text.Trim());
+        var hiredDate = dtpHireDate.Value.Date;
         var departmentId = cmbDepartment.SelectedValue!.ToString();
 
         var staff = await _repo
@@ -503,6 +515,7 @@ public partial class StaffControl : UserControl
                             Address = address,
                             Email = email,
                             Position = position,
+                            HiredDate = hiredDate,
                             Salary = salary,
                             DepartmentId = departmentId!
                         });
@@ -518,6 +531,7 @@ public partial class StaffControl : UserControl
             s.Address = address;
             s.Email = email;
             s.Position = position;
+            s.HiredDate = hiredDate;
             s.Salary = salary;
             s.DepartmentId = departmentId!;
             var department = GlobalState.Departments

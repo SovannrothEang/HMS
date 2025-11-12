@@ -10,6 +10,7 @@ public static class DoctorMapper
         return new DoctorDto()
         {
             DoctorId = entity.DoctorId,
+            Code = entity.Code,
             LicenseNumber = entity.LicenseNumber,
             YearsOfExperience = entity.YearsOfExperience,
             Specialization = entity.Specialization,
@@ -26,6 +27,7 @@ public static class DoctorMapper
         return new Doctor()
         {
             DoctorId = dto.DoctorId,
+            Code = dto.Code,
             LicenseNumber = dto.LicenseNumber,
             YearsOfExperience = dto.YearsOfExperience,
             Specialization = dto.Specialization,

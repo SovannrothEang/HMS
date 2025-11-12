@@ -58,7 +58,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(774, 164);
+            btnUpdate.Location = new Point(632, 173);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(99, 38);
             btnUpdate.TabIndex = 14;
@@ -67,7 +67,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(541, 164);
+            btnDelete.Location = new Point(527, 173);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(99, 38);
             btnDelete.TabIndex = 13;
@@ -76,7 +76,7 @@
             // 
             // tbSearch
             // 
-            tbSearch.Location = new Point(25, 164);
+            tbSearch.Location = new Point(25, 173);
             tbSearch.Multiline = true;
             tbSearch.Name = "tbSearch";
             tbSearch.Size = new Size(391, 38);
@@ -109,16 +109,16 @@
             // 
             // btnNew
             // 
-            btnNew.Location = new Point(658, 164);
+            btnNew.Location = new Point(737, 173);
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(99, 38);
             btnNew.TabIndex = 11;
-            btnNew.Text = "Add New";
+            btnNew.Text = "New";
             btnNew.UseVisualStyleBackColor = true;
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(1079, 164);
+            btnSubmit.Location = new Point(1143, 173);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(99, 38);
             btnSubmit.TabIndex = 10;
@@ -127,7 +127,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(974, 164);
+            btnCancel.Location = new Point(1038, 173);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
             btnCancel.TabIndex = 9;
@@ -140,18 +140,20 @@
             dgvDept.AllowUserToDeleteRows = false;
             dgvDept.AllowUserToResizeColumns = false;
             dgvDept.AllowUserToResizeRows = false;
+            dgvDept.BackgroundColor = Color.LightGray;
             dgvDept.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDept.Location = new Point(25, 208);
+            dgvDept.Location = new Point(25, 229);
             dgvDept.MultiSelect = false;
             dgvDept.Name = "dgvDept";
             dgvDept.ReadOnly = true;
             dgvDept.RowHeadersVisible = false;
-            dgvDept.Size = new Size(1250, 461);
+            dgvDept.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDept.Size = new Size(1250, 440);
             dgvDept.TabIndex = 1;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(426, 164);
+            btnRefresh.Location = new Point(422, 173);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(99, 38);
             btnRefresh.TabIndex = 0;
@@ -160,6 +162,7 @@
             // 
             // flowLayoutPanel1
             // 
+            flowLayoutPanel1.BackColor = Color.LightGray;
             flowLayoutPanel1.Controls.Add(tableLayoutPanel1);
             flowLayoutPanel1.Controls.Add(tableLayoutPanel2);
             flowLayoutPanel1.Location = new Point(25, 25);
@@ -170,8 +173,8 @@
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20.547945F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 79.45206F));
             tableLayoutPanel1.Controls.Add(tbCode, 1, 0);
             tableLayoutPanel1.Controls.Add(lbCode, 0, 0);
             tableLayoutPanel1.Controls.Add(lbName, 0, 1);
@@ -181,15 +184,15 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(388, 105);
+            tableLayoutPanel1.Size = new Size(493, 105);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // tbCode
             // 
-            tbCode.Location = new Point(197, 3);
+            tbCode.Location = new Point(104, 3);
             tbCode.Multiline = true;
             tbCode.Name = "tbCode";
-            tbCode.Size = new Size(188, 29);
+            tbCode.Size = new Size(235, 29);
             tbCode.TabIndex = 6;
             // 
             // lbCode
@@ -214,10 +217,10 @@
             // 
             // tbName
             // 
-            tbName.Location = new Point(197, 55);
+            tbName.Location = new Point(104, 55);
             tbName.Multiline = true;
             tbName.Name = "tbName";
-            tbName.Size = new Size(188, 29);
+            tbName.Size = new Size(235, 29);
             tbName.TabIndex = 8;
             // 
             // tableLayoutPanel2
@@ -227,11 +230,11 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.Controls.Add(tbDescription, 1, 0);
             tableLayoutPanel2.Controls.Add(lbDescription, 0, 0);
-            tableLayoutPanel2.Location = new Point(397, 3);
+            tableLayoutPanel2.Location = new Point(502, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Size = new Size(470, 105);
+            tableLayoutPanel2.Size = new Size(575, 105);
             tableLayoutPanel2.TabIndex = 1;
             // 
             // tbDescription
@@ -239,7 +242,7 @@
             tbDescription.Location = new Point(103, 3);
             tbDescription.Multiline = true;
             tbDescription.Name = "tbDescription";
-            tbDescription.Size = new Size(364, 81);
+            tbDescription.Size = new Size(469, 81);
             tbDescription.TabIndex = 6;
             // 
             // lbDescription
@@ -256,7 +259,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(224, 224, 224);
+            BackColor = Color.WhiteSmoke;
             Controls.Add(flowLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(btnDelete);

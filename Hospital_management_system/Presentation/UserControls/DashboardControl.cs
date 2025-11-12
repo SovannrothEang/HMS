@@ -9,10 +9,11 @@ public partial class DashboardControl: UserControl
         InitializeComponent();
         
         GlobalState.DataUpdated += OnDataUpdated;
-        //this.Load += (s, e) =>
-        //{
-        //    OnDataUpdated();
-        //};
+        this.Load += (s, e) =>
+        {
+            OnDataUpdated();
+        };
+        OnDataUpdated();
     }
 
     private void OnDataUpdated()

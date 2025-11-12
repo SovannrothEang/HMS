@@ -64,13 +64,15 @@
             cmbPosition = new ComboBox();
             cmbDepartment = new ComboBox();
             tableLayoutPanel1 = new TableLayoutPanel();
+            label10 = new Label();
+            dtpHireDate = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)dgvStaff).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(751, 194);
+            btnUpdate.Location = new Point(643, 204);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(99, 38);
             btnUpdate.TabIndex = 28;
@@ -79,7 +81,7 @@
             // 
             // tbSearch
             // 
-            tbSearch.Location = new Point(25, 194);
+            tbSearch.Location = new Point(25, 204);
             tbSearch.Multiline = true;
             tbSearch.Name = "tbSearch";
             tbSearch.Size = new Size(402, 38);
@@ -112,7 +114,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(541, 194);
+            btnDelete.Location = new Point(538, 204);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(99, 38);
             btnDelete.TabIndex = 27;
@@ -121,16 +123,16 @@
             // 
             // btnNew
             // 
-            btnNew.Location = new Point(646, 194);
+            btnNew.Location = new Point(748, 204);
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(99, 38);
             btnNew.TabIndex = 25;
-            btnNew.Text = "Add New";
+            btnNew.Text = "New";
             btnNew.UseVisualStyleBackColor = true;
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(1139, 194);
+            btnSubmit.Location = new Point(1139, 204);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(99, 38);
             btnSubmit.TabIndex = 13;
@@ -139,7 +141,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(1034, 194);
+            btnCancel.Location = new Point(1034, 204);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
             btnCancel.TabIndex = 12;
@@ -189,18 +191,20 @@
             dgvStaff.AllowUserToResizeColumns = false;
             dgvStaff.AllowUserToResizeRows = false;
             dgvStaff.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvStaff.BackgroundColor = Color.LightGray;
             dgvStaff.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStaff.Location = new Point(25, 238);
+            dgvStaff.Location = new Point(25, 261);
             dgvStaff.MultiSelect = false;
             dgvStaff.Name = "dgvStaff";
             dgvStaff.ReadOnly = true;
             dgvStaff.RowHeadersVisible = false;
-            dgvStaff.Size = new Size(1250, 437);
+            dgvStaff.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvStaff.Size = new Size(1250, 414);
             dgvStaff.TabIndex = 16;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(436, 194);
+            btnRefresh.Location = new Point(433, 204);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(99, 38);
             btnRefresh.TabIndex = 15;
@@ -373,6 +377,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.BackColor = Color.LightGray;
             tableLayoutPanel1.ColumnCount = 6;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
@@ -380,6 +385,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.Controls.Add(label10, 4, 3);
             tableLayoutPanel1.Controls.Add(lbCode, 0, 0);
             tableLayoutPanel1.Controls.Add(tbSalary, 5, 2);
             tableLayoutPanel1.Controls.Add(cmbPosition, 5, 1);
@@ -402,6 +408,7 @@
             tableLayoutPanel1.Controls.Add(label5, 2, 1);
             tableLayoutPanel1.Controls.Add(tbEmail, 3, 2);
             tableLayoutPanel1.Controls.Add(cmbGender, 1, 3);
+            tableLayoutPanel1.Controls.Add(dtpHireDate, 5, 3);
             tableLayoutPanel1.Location = new Point(25, 25);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 4;
@@ -412,11 +419,28 @@
             tableLayoutPanel1.Size = new Size(1250, 163);
             tableLayoutPanel1.TabIndex = 47;
             // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(835, 127);
+            label10.Margin = new Padding(3, 7, 3, 0);
+            label10.Name = "label10";
+            label10.Size = new Size(75, 18);
+            label10.TabIndex = 48;
+            label10.Text = "Hire Date";
+            // 
+            // dtpHireDate
+            // 
+            dtpHireDate.Location = new Point(955, 123);
+            dtpHireDate.Name = "dtpHireDate";
+            dtpHireDate.Size = new Size(257, 26);
+            dtpHireDate.TabIndex = 47;
+            // 
             // StaffControl
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.LightGray;
+            BackColor = Color.WhiteSmoke;
             Controls.Add(tableLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(tbSearch);
@@ -477,5 +501,7 @@
         private ComboBox cmbPosition;
         private ComboBox cmbDepartment;
         private TableLayoutPanel tableLayoutPanel1;
+        private Label label10;
+        private DateTimePicker dtpHireDate;
     }
 }

@@ -25,6 +25,7 @@ public partial class MainForm : Form
             ActivateControl(this.btnDashboard, () => _serviceProvider.GetRequiredService<DashboardControl>());
             await PreLoadDataAsync();
         };
+
         #region Button Click Events
         btnDashboard.Click += (s, e) =>
         {

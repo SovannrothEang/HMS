@@ -37,7 +37,7 @@
             label2 = new Label();
             tbExperinse = new TextBox();
             label3 = new Label();
-            dtpHiredDate = new DateTimePicker();
+            dtpHireDate = new DateTimePicker();
             label9 = new Label();
             cmbDepartment = new ComboBox();
             btnUpdate = new Button();
@@ -138,16 +138,16 @@
             label3.Location = new Point(849, 7);
             label3.Margin = new Padding(3, 7, 3, 0);
             label3.Name = "label3";
-            label3.Size = new Size(84, 18);
+            label3.Size = new Size(75, 18);
             label3.TabIndex = 70;
-            label3.Text = "Hired Date";
+            label3.Text = "Hire Date";
             // 
-            // dtpHiredDate
+            // dtpHireDate
             // 
-            dtpHiredDate.Location = new Point(949, 3);
-            dtpHiredDate.Name = "dtpHiredDate";
-            dtpHiredDate.Size = new Size(262, 26);
-            dtpHiredDate.TabIndex = 3;
+            dtpHireDate.Location = new Point(949, 3);
+            dtpHireDate.Name = "dtpHireDate";
+            dtpHireDate.Size = new Size(262, 26);
+            dtpHireDate.TabIndex = 3;
             // 
             // label9
             // 
@@ -170,7 +170,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(773, 125);
+            btnUpdate.Location = new Point(643, 150);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(99, 38);
             btnUpdate.TabIndex = 67;
@@ -179,7 +179,7 @@
             // 
             // tbSearch
             // 
-            tbSearch.Location = new Point(20, 125);
+            tbSearch.Location = new Point(25, 150);
             tbSearch.Multiline = true;
             tbSearch.Name = "tbSearch";
             tbSearch.Size = new Size(402, 38);
@@ -212,7 +212,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(563, 125);
+            btnDelete.Location = new Point(538, 150);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(99, 38);
             btnDelete.TabIndex = 66;
@@ -221,16 +221,16 @@
             // 
             // btnNew
             // 
-            btnNew.Location = new Point(668, 125);
+            btnNew.Location = new Point(748, 150);
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(99, 38);
             btnNew.TabIndex = 64;
-            btnNew.Text = "Add New";
+            btnNew.Text = "New";
             btnNew.UseVisualStyleBackColor = true;
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(1137, 125);
+            btnSubmit.Location = new Point(1142, 150);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(99, 38);
             btnSubmit.TabIndex = 59;
@@ -239,7 +239,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(1032, 125);
+            btnCancel.Location = new Point(1037, 150);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
             btnCancel.TabIndex = 58;
@@ -253,18 +253,20 @@
             dgvDoctor.AllowUserToResizeColumns = false;
             dgvDoctor.AllowUserToResizeRows = false;
             dgvDoctor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvDoctor.BackgroundColor = Color.LightGray;
             dgvDoctor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDoctor.Location = new Point(20, 169);
+            dgvDoctor.Location = new Point(25, 219);
             dgvDoctor.MultiSelect = false;
             dgvDoctor.Name = "dgvDoctor";
             dgvDoctor.ReadOnly = true;
             dgvDoctor.RowHeadersVisible = false;
-            dgvDoctor.Size = new Size(1255, 510);
+            dgvDoctor.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDoctor.Size = new Size(1250, 460);
             dgvDoctor.TabIndex = 61;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(428, 125);
+            btnRefresh.Location = new Point(433, 150);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(99, 38);
             btnRefresh.TabIndex = 60;
@@ -273,6 +275,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.BackColor = Color.LightGray;
             tableLayoutPanel1.ColumnCount = 6;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
@@ -281,7 +284,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel1.Controls.Add(cmbDepartment, 5, 1);
-            tableLayoutPanel1.Controls.Add(dtpHiredDate, 5, 0);
+            tableLayoutPanel1.Controls.Add(dtpHireDate, 5, 0);
             tableLayoutPanel1.Controls.Add(label3, 4, 0);
             tableLayoutPanel1.Controls.Add(label9, 4, 1);
             tableLayoutPanel1.Controls.Add(tbExperinse, 3, 1);
@@ -304,6 +307,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.WhiteSmoke;
             Controls.Add(tableLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(tbSearch);
@@ -328,7 +332,7 @@
 
         private ComboBox cmbDepartment;
         private ComboBox cmbSpecialization;
-        private DateTimePicker dtpHiredDate;
+        private DateTimePicker dtpHireDate;
         private Label label9;
         private Label label3;
         private Label label2;

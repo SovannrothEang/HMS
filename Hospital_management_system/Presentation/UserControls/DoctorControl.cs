@@ -24,7 +24,7 @@ public partial class DoctorControl : UserControl
         #region UI
         InitializeComponent();
         LoadControlsConfiguration();
-        dtpHiredDate.Enabled = false;
+        dtpHireDate.Enabled = false;
         cmbDepartment.Enabled = false;
         DisableControls(true);
         #endregion
@@ -36,7 +36,6 @@ public partial class DoctorControl : UserControl
         #region DataGridView Events
         dgvDoctor.DataBindingComplete += (s, e) =>
         {
-            dgvDoctor.AutoGenerateColumns = false;
             if (dgvDoctor.Columns.Contains("colId"))
                 dgvDoctor.Columns["colId"].Visible = false;
         };
@@ -127,7 +126,7 @@ public partial class DoctorControl : UserControl
             tbLicenseNumber.Clear();
             cmbDepartment.SelectedIndex = -1;
             cmbSpecialization.SelectedIndex = -1;
-            dtpHiredDate.Value = DateTime.Now;
+            dtpHireDate.Value = DateTime.Now;
             cmbCode.Focus();
         };
         btnDelete.Click += async (s, e) =>
@@ -255,14 +254,13 @@ public partial class DoctorControl : UserControl
     private void LoadControlsConfiguration()
     {
         cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
-        //cmbCode.ValueMember = "Code";
-        //cmbCode.DisplayMember = "Code";
+
+        dtpHireDate.Format = DateTimePickerFormat.Custom;
+        dtpHireDate.CustomFormat = "dd/MM/yyyy";
 
         cmbSpecialization.DataSource = Enum.GetValues(typeof(Specialization));
         cmbSpecialization.SelectedIndex = -1;
         //cmbSpecialization.ValueMember = 
-
-        //cmbGender.SelectedIndex = 0;
 
         cmbDepartment.DataSource = GlobalState.Departments;
         cmbDepartment.DisplayMember = "Name";
@@ -366,9 +364,12 @@ public partial class DoctorControl : UserControl
             tbLicenseNumber.Text = selectedDoctor.LicenseNumber.ToString();
             cmbSpecialization.Text = selectedDoctor.Specialization;
             cmbDepartment.Text = selectedDoctor.Staff.Department.Name;
+
+            dtpHireDate.Value = selectedDoctor.Staff.HiredDate < dtpHireDate.MinDate
+                ? dtpHireDate.MinDate
+                : selectedDoctor.Staff.HiredDate;
         }
     }
-
     private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)
     {
         if (_searchTimer == null)
@@ -386,7 +387,6 @@ public partial class DoctorControl : UserControl
         _searchTimer.Stop();
         _searchTimer.Start();
     }
-
     private void PerformSearch(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
@@ -458,17 +458,16 @@ public partial class DoctorControl : UserControl
         var department = GlobalState.Departments
                             .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
         staff.Department = department;
-        var dto = new Doctor
-        {
-            DoctorId = Guid.NewGuid().ToString(),
-            Code = code!,
-            YearsOfExperience = int.Parse(tbExperinse.Text.Trim()),
-            LicenseNumber = tbLicenseNumber.Text.Trim(),
-            Specialization = specialization.ToString(),
-            StaffId = staff!.StaffId,
-        };
         var doctor = await _repo
-                        .CreateAsync(dto);
+                        .CreateAsync(new Doctor
+                        {
+                            DoctorId = Guid.NewGuid().ToString(),
+                            Code = code!,
+                            YearsOfExperience = int.Parse(tbExperinse.Text.Trim()),
+                            LicenseNumber = tbLicenseNumber.Text.Trim(),
+                            Specialization = specialization.ToString(),
+                            StaffId = staff!.StaffId,
+                        });
         doctor.Staff = staff.ToEntity();
         var doctorDto = doctor.ToDto();
         doctorDto.Staff = staff;

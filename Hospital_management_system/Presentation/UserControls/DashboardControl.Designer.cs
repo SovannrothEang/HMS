@@ -103,6 +103,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.WhiteSmoke;
             Controls.Add(lbDoctor);
             Controls.Add(lbPatient);
             Controls.Add(label5);

@@ -25,7 +25,7 @@ public partial class DepartmentControl : UserControl
         dgvDept.DataSource = _bsDepartments;
         _bsDepartments.ResetBindings(false);
 
-        #region DGV events
+        #region Dgv events
         dgvDept.SelectionChanged += OnDgvDeptSelectionChanged;
         dgvDept.DataBindingComplete += (s, e) =>
         {
