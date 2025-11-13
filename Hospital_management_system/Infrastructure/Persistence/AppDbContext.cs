@@ -210,6 +210,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         var staff4Id = Guid.NewGuid().ToString();
         var staff5Id = Guid.NewGuid().ToString();
         var staff6Id = Guid.NewGuid().ToString();
+        var staff7Id = Guid.NewGuid().ToString();
 
         modelBuilder.Entity<Staff>().HasData(
             new Staff
@@ -301,6 +302,21 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 Position = Position.Administrator.ToString(),
                 DepartmentId = informationTechnologyDepartmentId,
                 HiredDate = new DateTime(2022, 4, 20)
+            },
+            new Staff
+            {
+                StaffId = staff7Id,
+                Code = "S007",
+                FirstName = "Soklumor",
+                LastName = "Tor",
+                DOB = new DateTime(2005, 1, 1),
+                Gender = PersonGender.Male,
+                Address = "202 Secret Rd",
+                PhoneNumber = "2222-2222",
+                Email = "tor.soklumor@hms.com",
+                Position = Position.IT.ToString(),
+                DepartmentId = informationTechnologyDepartmentId,
+                HiredDate = new DateTime(2022, 4, 20)
             }
         );
 
@@ -377,11 +393,20 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             new User
             {
                 UserId = Guid.NewGuid().ToString(),
-                Code = "U001",
+                Code = "S006",
                 Username = "Seyha",
                 Password = "123456",
                 StaffId = staff6Id,
-            });
+            },
+            new User
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Code = "S007",
+                Username = "Lumor",
+                Password = "admin",
+                StaffId = staff7Id,
+            }
+        );
         #endregion
         //base.OnModelCreating(modelBuilder);
     }

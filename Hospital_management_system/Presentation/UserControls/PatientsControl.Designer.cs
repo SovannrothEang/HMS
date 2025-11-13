@@ -2,7 +2,7 @@
 
 namespace Hospital_management_system.Presentation.UserControls
 {
-    partial class PatientControl
+    partial class PatientsControl
     {
         /// <summary> 
         /// Required designer variable.

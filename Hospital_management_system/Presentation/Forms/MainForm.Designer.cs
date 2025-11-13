@@ -39,6 +39,7 @@
             btnDoctor = new Button();
             btnDashboard = new Button();
             mainPanel = new Panel();
+            btnUser = new Button();
             panelSidebar.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -47,6 +48,7 @@
             // panelSidebar
             // 
             panelSidebar.BackColor = Color.Silver;
+            panelSidebar.Controls.Add(btnUser);
             panelSidebar.Controls.Add(panel1);
             panelSidebar.Controls.Add(btnLogout);
             panelSidebar.Controls.Add(pictureBox1);
@@ -191,6 +193,21 @@
             mainPanel.Size = new Size(1300, 700);
             mainPanel.TabIndex = 1;
             // 
+            // btnUser
+            // 
+            btnUser.BackColor = Color.White;
+            btnUser.FlatStyle = FlatStyle.Flat;
+            btnUser.Font = new Font("Arial", 18F, FontStyle.Bold);
+            btnUser.Location = new Point(12, 478);
+            btnUser.Margin = new Padding(4);
+            btnUser.Name = "btnUser";
+            btnUser.Padding = new Padding(15, 0, 0, 0);
+            btnUser.Size = new Size(174, 49);
+            btnUser.TabIndex = 7;
+            btnUser.Text = "User";
+            btnUser.TextAlign = ContentAlignment.MiddleLeft;
+            btnUser.UseVisualStyleBackColor = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
@@ -227,5 +244,6 @@
         private Button btnLogout;
         private Panel panel1;
         private Label lbUsername;
+        private Button btnUser;
     }
 }

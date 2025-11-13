@@ -39,19 +39,23 @@ public partial class MainForm : Form
         };
         btnDoctor.Click += (s, e) =>
         {
-            ActivateControl(this.btnDoctor, () => _serviceProvider.GetRequiredService<DoctorControl>());
+            ActivateControl(this.btnDoctor, () => _serviceProvider.GetRequiredService<DoctorsControl>());
         };
         btnDepartment.Click += (s, e) =>
         {
-            ActivateControl(this.btnDepartment, () => _serviceProvider.GetRequiredService<DepartmentControl>());
+            ActivateControl(this.btnDepartment, () => _serviceProvider.GetRequiredService<DepartmentsControl>());
         };
         btnPatient.Click += (s, e) =>
         {
-            ActivateControl(this.btnPatient, () => _serviceProvider.GetRequiredService<PatientControl>());
+            ActivateControl(this.btnPatient, () => _serviceProvider.GetRequiredService<PatientsControl>());
         };
         btnStaff.Click += (s, e) =>
         {
-            ActivateControl(this.btnStaff, () => _serviceProvider.GetRequiredService<StaffControl>());
+            ActivateControl(this.btnStaff, () => _serviceProvider.GetRequiredService<StaffsControl>());
+        };
+        btnUser.Click += (s, e) =>
+        {
+            ActivateControl(this.btnUser, () => _serviceProvider.GetRequiredService<UsersControl>());
         };
         btnLogout.Click += (s, e) =>
         {
@@ -152,17 +156,20 @@ public partial class MainForm : Form
             var deptRepo = _serviceProvider.GetRequiredService<IGenericRepository<Department>>();
             var staffRepo = _serviceProvider.GetRequiredService<IStaffRepository>();
             var docRepo = _serviceProvider.GetRequiredService<IDoctorRepository>();
-            var PatientRepo = _serviceProvider.GetRequiredService<IPatientRepository>();
+            var patientRepo = _serviceProvider.GetRequiredService<IPatientRepository>();
+            var userRepo = _serviceProvider.GetRequiredService<IUserRepository>();
 
             var deptList = await deptRepo.GetAllAsync();
             var staffList = await staffRepo.GetAllWithDepartmentsAsync();
             var docList = await docRepo.GetAllWithStaffsAsync();
-            var patientRepo = await PatientRepo.GetAllWithDoctorAsync();
+            var patientList = await patientRepo.GetAllWithDoctorAsync();
+            var userList = await userRepo.GetAllWithStaffAsync();
 
             var deptDtos = deptList.Select(x => x.ToDto()).ToList();
             var staffDtos = staffList.Select(x => x.ToDto()).ToList();
             var doctorDtos = docList.Select(x => x.ToDto()).ToList();
-            var patientDtos = patientRepo.Select(x => x.ToDto()).ToList();
+            var patientDtos = patientList.Select(x => x.ToDto()).ToList();
+            var userDtos = userList.Select(x => x.ToDto()).ToList();
 
             GlobalState.AllStaffDoctorsCodeList = new BindingList<string>([.. staffDtos
                 .Where(s => s.Position == Position.Doctor.ToString())
@@ -175,6 +182,7 @@ public partial class MainForm : Form
             GlobalState.AddItems<StaffDto>(staffDtos, GlobalState.Staffs);
             GlobalState.AddItems<DoctorDto>(doctorDtos, GlobalState.Doctors);
             GlobalState.AddItems<PatientDto>(patientDtos, GlobalState.Patients);
+            GlobalState.AddItems<UserDto>(userDtos, GlobalState.Users);
         }
         catch (Exception ex)
         {

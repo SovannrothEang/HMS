@@ -74,7 +74,7 @@ namespace Hospital_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            DepartmentId = "1642e3af-542f-46f0-9bcc-c1f1b7550386",
+                            DepartmentId = "4aa491b1-97cb-4189-8e03-d4ea8c27af6d",
                             Code = "CAD",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Heart and Cardiovascular Department",
@@ -84,7 +84,7 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            DepartmentId = "dedf8e44-dce2-482b-8b88-ec68b384a14e",
+                            DepartmentId = "80655e05-0aa7-4feb-860e-32ac14a19864",
                             Code = "PED",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Children Health Department",
@@ -94,7 +94,7 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            DepartmentId = "1077b6fa-06fa-4974-b36e-a75638ba6ea4",
+                            DepartmentId = "2883fe52-f4ca-4ce2-9999-6c0280668b2f",
                             Code = "ORTH",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Bone and Joint Department",
@@ -104,7 +104,7 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            DepartmentId = "91c6b605-97c1-4657-971c-e2e47c02a517",
+                            DepartmentId = "4e795955-b97a-4f02-b6bd-334df9f79e47",
                             Code = "GM",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "General Health Department",
@@ -114,7 +114,7 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            DepartmentId = "2a5d58b7-8fb8-4ad0-aa8c-6ad25d8d8cbb",
+                            DepartmentId = "d3200872-4f52-4982-b1a4-0ed85ee3f927",
                             Code = "EMG",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Emergency Department",
@@ -124,7 +124,7 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            DepartmentId = "38caf774-3b85-4d0d-8a08-ba7e14b8687e",
+                            DepartmentId = "63347532-a564-4e23-a5d9-c7de4ef82da0",
                             Code = "IT",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Information Technology",
@@ -201,27 +201,27 @@ namespace Hospital_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            DoctorId = "a9b3dcc7-09bd-43a0-ab07-9d88b8337cda",
+                            DoctorId = "f23d761d-82be-42e1-8bc8-19392ed61b62",
                             Code = "S001",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             IsDeleted = false,
                             LicenseNumber = "LIC-CARD-001",
                             Specialization = "Cardiology",
-                            StaffId = "648c2a64-16fc-400e-a974-f14b8e6a44fd",
+                            StaffId = "991d5722-d08f-4206-b782-80067da7c4b2",
                             StoppedWork = false,
                             YearsOfExperience = 15
                         },
                         new
                         {
-                            DoctorId = "ca00c556-1ac1-4a2f-a894-2b1e766a090a",
+                            DoctorId = "7f760449-40eb-4483-8a34-095bc94c4b46",
                             Code = "S003",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             IsDeleted = false,
                             LicenseNumber = "LIC-PED-001",
                             Specialization = "Pediatrics",
-                            StaffId = "cabb4ffb-aeaa-453e-9742-12bb0a00c693",
+                            StaffId = "cb842b1f-e86c-46f0-9176-c7cf53f32d1a",
                             StoppedWork = false,
                             YearsOfExperience = 10
                         });
@@ -317,12 +317,12 @@ namespace Hospital_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            PatientId = "11e49000-bd3f-4e65-ac10-a7efc086f591",
+                            PatientId = "23da1e1f-96fd-446e-9568-473762b2049d",
                             Address = "303 River St",
                             Code = "P001",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOB = "1960-03-10 00:00:00",
-                            DoctorId = "a9b3dcc7-09bd-43a0-ab07-9d88b8337cda",
+                            DoctorId = "f23d761d-82be-42e1-8bc8-19392ed61b62",
                             Email = "frank.white@example.com",
                             FirstName = "Frank",
                             Gender = 0,
@@ -334,12 +334,12 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            PatientId = "bc824852-428b-4f0a-a398-f27cd259dbcf",
+                            PatientId = "847ba0b5-b4c8-4666-9063-c047f89ed82b",
                             Address = "404 Lake Rd",
                             Code = "P002",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOB = "2018-07-01 00:00:00",
-                            DoctorId = "ca00c556-1ac1-4a2f-a894-2b1e766a090a",
+                            DoctorId = "7f760449-40eb-4483-8a34-095bc94c4b46",
                             Email = "grace.black@example.com",
                             FirstName = "Grace",
                             Gender = 1,
@@ -351,12 +351,12 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            PatientId = "36e3ed7d-9235-4d1c-be78-6bf39f7c5972",
+                            PatientId = "d2235564-74c6-4879-a5d6-8e464b062cd3",
                             Address = "505 Mountain View",
                             Code = "P003",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOB = "1990-12-25 00:00:00",
-                            DoctorId = "a9b3dcc7-09bd-43a0-ab07-9d88b8337cda",
+                            DoctorId = "f23d761d-82be-42e1-8bc8-19392ed61b62",
                             Email = "henry.green@example.com",
                             FirstName = "Henry",
                             Gender = 0,
@@ -466,12 +466,12 @@ namespace Hospital_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            StaffId = "648c2a64-16fc-400e-a974-f14b8e6a44fd",
+                            StaffId = "991d5722-d08f-4206-b782-80067da7c4b2",
                             Address = "123 Main St",
                             Code = "S001",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOB = "1980-05-15 00:00:00",
-                            DepartmentId = "1642e3af-542f-46f0-9bcc-c1f1b7550386",
+                            DepartmentId = "4aa491b1-97cb-4189-8e03-d4ea8c27af6d",
                             Email = "alice.smith@hms.com",
                             FirstName = "Alice",
                             Gender = 1,
@@ -485,12 +485,12 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            StaffId = "6fdf662c-750e-4e01-af44-5524151e6022",
+                            StaffId = "2db25790-c22a-4adb-8f3b-8e3a7b94d851",
                             Address = "456 Oak Ave",
                             Code = "S002",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOB = "1975-08-20 00:00:00",
-                            DepartmentId = "91c6b605-97c1-4657-971c-e2e47c02a517",
+                            DepartmentId = "4e795955-b97a-4f02-b6bd-334df9f79e47",
                             Email = "bob.johnson@hms.com",
                             FirstName = "Bob",
                             Gender = 0,
@@ -504,12 +504,12 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            StaffId = "cabb4ffb-aeaa-453e-9742-12bb0a00c693",
+                            StaffId = "cb842b1f-e86c-46f0-9176-c7cf53f32d1a",
                             Address = "789 Pine Ln",
                             Code = "S003",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOB = "1990-01-25 00:00:00",
-                            DepartmentId = "dedf8e44-dce2-482b-8b88-ec68b384a14e",
+                            DepartmentId = "80655e05-0aa7-4feb-860e-32ac14a19864",
                             Email = "charlie.brown@hms.com",
                             FirstName = "Charlie",
                             Gender = 0,
@@ -523,12 +523,12 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            StaffId = "89454f47-a9c4-43a5-a28e-93f85e8ec5b4",
+                            StaffId = "92c7323b-d3c2-4024-826c-2a6d4f357c1c",
                             Address = "101 Hero Way",
                             Code = "S004",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOB = "1982-11-03 00:00:00",
-                            DepartmentId = "1077b6fa-06fa-4974-b36e-a75638ba6ea4",
+                            DepartmentId = "2883fe52-f4ca-4ce2-9999-6c0280668b2f",
                             Email = "diana.prince@hms.com",
                             FirstName = "Diana",
                             Gender = 1,
@@ -542,12 +542,12 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            StaffId = "5a4748d9-6152-4844-9ba5-0001758e9032",
+                            StaffId = "bd1a58da-9479-4f52-802e-90e774249411",
                             Address = "202 Secret Rd",
                             Code = "S005",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOB = "1995-02-28 00:00:00",
-                            DepartmentId = "2a5d58b7-8fb8-4ad0-aa8c-6ad25d8d8cbb",
+                            DepartmentId = "d3200872-4f52-4982-b1a4-0ed85ee3f927",
                             Email = "eve.adams@hms.com",
                             FirstName = "Eve",
                             Gender = 1,
@@ -561,12 +561,12 @@ namespace Hospital_management_system.Migrations
                         },
                         new
                         {
-                            StaffId = "369984ef-0787-42d1-b35a-0e863eca3e8e",
+                            StaffId = "83f71025-693f-4067-9b85-84232d4bdce6",
                             Address = "202 Secret Rd",
                             Code = "S006",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DOB = "2004-01-01 00:00:00",
-                            DepartmentId = "38caf774-3b85-4d0d-8a08-ba7e14b8687e",
+                            DepartmentId = "63347532-a564-4e23-a5d9-c7de4ef82da0",
                             Email = "tola.seyha@hms.com",
                             FirstName = "Seyha",
                             Gender = 0,
@@ -576,6 +576,25 @@ namespace Hospital_management_system.Migrations
                             LastName = "Tola",
                             PhoneNumber = "1111-1111",
                             Position = "Administrator",
+                            Salary = 0m
+                        },
+                        new
+                        {
+                            StaffId = "f80785eb-4de2-4dd6-9467-f3f0df47a952",
+                            Address = "202 Secret Rd",
+                            Code = "S007",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DOB = "2005-01-01 00:00:00",
+                            DepartmentId = "63347532-a564-4e23-a5d9-c7de4ef82da0",
+                            Email = "tor.soklumor@hms.com",
+                            FirstName = "Soklumor",
+                            Gender = 0,
+                            HiredDate = new DateTime(2022, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = "Tor",
+                            PhoneNumber = "2222-2222",
+                            Position = "IT",
                             Salary = 0m
                         });
                 });
@@ -648,14 +667,25 @@ namespace Hospital_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "375dba64-2bfb-4ef8-bf42-de39e9060936",
-                            Code = "U001",
+                            UserId = "b2d43c94-c5d0-4d9c-b05f-d27c25a6aaba",
+                            Code = "S006",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             IsDeleted = false,
                             Password = "123456",
-                            StaffId = "369984ef-0787-42d1-b35a-0e863eca3e8e",
+                            StaffId = "83f71025-693f-4067-9b85-84232d4bdce6",
                             Username = "Seyha"
+                        },
+                        new
+                        {
+                            UserId = "00ea1daf-21ce-49c7-a12e-1b3e31b2257c",
+                            Code = "S007",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsDeleted = false,
+                            Password = "admin",
+                            StaffId = "f80785eb-4de2-4dd6-9467-f3f0df47a952",
+                            Username = "Lumor"
                         });
                 });
 

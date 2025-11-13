@@ -15,6 +15,14 @@ public class UserRepository (AppDbContext context) : IUserRepository
             .Where(x => x.IsDeleted == false)
             .ToListAsync();
     }
+    public async Task<IEnumerable<User>> GetAllWithStaffAsync()
+    {
+        return await _context.Users
+            .Where(x => x.IsDeleted == false)
+            .Include(x => x.Staff)
+            .ThenInclude(s => s.Department)
+            .ToListAsync();
+    }
 
     public async Task<User?> GetByUsernameAsync(string username)
     {

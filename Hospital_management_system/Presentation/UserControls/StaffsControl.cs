@@ -7,16 +7,16 @@ using Hospital_management_system.Presentation.State;
 
 namespace Hospital_management_system.Presentation.UserControls;
 
-public partial class StaffControl : UserControl
+public partial class StaffsControl : UserControl
 {
     private readonly IGenericRepository<Staff> _repo;
     private readonly IStaffRepository _staffRepo;
     private readonly BindingSource _bsStaffs = [];
     private System.Windows.Forms.Timer? _searchTimer;
 
-
     private static bool IsNew = false;
-    public StaffControl(IGenericRepository<Staff> repo, IStaffRepository staffRepo)
+
+    public StaffsControl(IGenericRepository<Staff> repo, IStaffRepository staffRepo)
     {
         _repo = repo;
         _staffRepo = staffRepo;
@@ -32,6 +32,7 @@ public partial class StaffControl : UserControl
         //{
         //    await LoadStaffsAsync();
         //};
+        tbSearch.KeyUp += OnTbSearchKeyUp;
 
         #region Dgv Events
         dgvStaff.DataBindingComplete += (s, e) =>
@@ -173,21 +174,31 @@ public partial class StaffControl : UserControl
             {
                 try
                 {
-                    await CreateStaffAsync();
-
-                    MessageBox.Show(
-                        "Successfully created",
-                        "Created staff",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
+                    if (await CreateStaffAsync())
+                    {
+                        MessageBox.Show(
+                            "Successfully created",
+                            "Create staff",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        );
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            $"Failed to create staff",
+                            "Created staff",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+                    }
                 }
                 catch (Exception ex)
                 {
                     OnDgvStaffSelectionChanged(this, EventArgs.Empty);
                     MessageBox.Show(
                         $"Failed to create, error: {ex.Message}",
-                        "Created staff",
+                        "Create staff",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );
@@ -198,21 +209,31 @@ public partial class StaffControl : UserControl
                 try
                 {
                     var id = dgvStaff.CurrentRow!.Cells["colId"].Value!.ToString()!;
-                    await UpdateStaffAsync(id);
-
-                    MessageBox.Show(
-                        "Successfully created",
-                        "Updated staff",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
+                    if (await UpdateStaffAsync(id))
+                    {
+                        MessageBox.Show(
+                            "Successfully created",
+                            "Update staff",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        );
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            $"Failed to update staff",
+                            "Update staff",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+                    }
                 }
                 catch (Exception ex)
                 {
                     OnDgvStaffSelectionChanged(this, EventArgs.Empty);
                     MessageBox.Show(
                         $"Failed to update, error: {ex.Message}",
-                        "Updated staff",
+                        "Update staff",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );
@@ -222,15 +243,15 @@ public partial class StaffControl : UserControl
             OnDgvStaffSelectionChanged(this, EventArgs.Empty);
             DisableControls(true);
         };
-        _staffRepo = staffRepo;
         #endregion
-
-        tbSearch.KeyUp += OnTbSearchKeyUp;
     }
 
     #region UI config
     private void LoadControlsConfiguration()
     {
+        dgvStaff.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        dgvStaff.DefaultCellStyle.Font = new Font("Arial", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+
         dtpDob.Format = DateTimePickerFormat.Custom;
         dtpDob.CustomFormat = "dd/MM/yyyy";
 
@@ -238,16 +259,11 @@ public partial class StaffControl : UserControl
         dtpHireDate.CustomFormat = "dd/MM/yyyy";
 
         cmbGender.DataSource = Enum.GetValues(typeof(PersonGender));
-        //cmbGender.SelectedIndex = 0;
-
         cmbPosition.DataSource = Enum.GetValues(typeof(Position));
-        cmbPosition.DisplayMember = "ToString";
-        //cmbPosition.SelectedIndex = 0;
 
         cmbDepartment.DataSource = GlobalState.Departments;
         cmbDepartment.DisplayMember = "Name";
         cmbDepartment.ValueMember = "DepartmentId";
-        //cmbDepartment.SelectedIndex = 0;
 
         dgvStaff.AutoGenerateColumns = false;
         dgvStaff.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
@@ -367,6 +383,10 @@ public partial class StaffControl : UserControl
     }
     #endregion
 
+    #region Button events
+
+    #endregion
+
     #region Events
     private void OnDgvStaffSelectionChanged(object? sender, EventArgs e)
     {
@@ -459,25 +479,27 @@ public partial class StaffControl : UserControl
             btnRefresh.Enabled = true;
         }
     }
-    private async Task CreateStaffAsync()
+    private async Task<bool> CreateStaffAsync()
     {
         var staff = await _repo
-                        .CreateAsync(new Staff
-                        {
-                            StaffId = Guid.NewGuid().ToString(),
-                            Code = tbCode.Text.Trim(),
-                            FirstName = tbFirstName.Text.Trim(),
-                            LastName = tbLastName.Text.Trim(),
-                            Gender = (PersonGender)cmbGender.SelectedItem!,
-                            DOB = DateTime.Parse(dtpDob.Value.ToString()),
-                            PhoneNumber = tbPhoneNumber.Text.Trim(),
-                            Address = tbAddress.Text.Trim(),
-                            Email = tbEmail.Text.Trim(),
-                            Position = cmbPosition.Text,
-                            HiredDate = dtpHireDate.Value.Date,
-                            Salary = decimal.Parse(tbSalary.Text.Trim()),
-                            DepartmentId = cmbDepartment.SelectedValue!.ToString()!
-                        });
+            .CreateAsync(new Staff
+            {
+                StaffId = Guid.NewGuid().ToString(),
+                Code = tbCode.Text.Trim(),
+                FirstName = tbFirstName.Text.Trim(),
+                LastName = tbLastName.Text.Trim(),
+                Gender = (PersonGender)cmbGender.SelectedItem!,
+                DOB = DateTime.Parse(dtpDob.Value.ToString()),
+                PhoneNumber = tbPhoneNumber.Text.Trim(),
+                Address = tbAddress.Text.Trim(),
+                Email = tbEmail.Text.Trim(),
+                Position = cmbPosition.Text,
+                HiredDate = dtpHireDate.Value.Date,
+                Salary = decimal.Parse(tbSalary.Text.Trim()),
+                DepartmentId = cmbDepartment.SelectedValue!.ToString()!
+            });
+        if (staff == null) return false;
+
         var staffDto = staff.ToDto();
         var department = GlobalState.Departments
                             .FirstOrDefault(d => d.DepartmentId == staff.DepartmentId);
@@ -486,8 +508,9 @@ public partial class StaffControl : UserControl
         GlobalState.Staffs.Add(staffDto);
         IsNew = false;
         _bsStaffs.ResetBindings(false);
+        return true;
     }
-    private async Task UpdateStaffAsync(string id)
+    private async Task<bool> UpdateStaffAsync(string id)
     {
         var code = tbCode.Text.Trim();
         var firstName = tbFirstName.Text.Trim();
@@ -502,44 +525,47 @@ public partial class StaffControl : UserControl
         var hiredDate = dtpHireDate.Value.Date;
         var departmentId = cmbDepartment.SelectedValue!.ToString();
 
-        var staff = await _repo
-                        .UpdateAsync(id, new Staff
-                        {
-                            StaffId = id,
-                            Code = code,
-                            FirstName = firstName,
-                            LastName = lastName,
-                            Gender = gender,
-                            DOB = dob,
-                            PhoneNumber = phoneNumber,
-                            Address = address,
-                            Email = email,
-                            Position = position,
-                            HiredDate = hiredDate,
-                            Salary = salary,
-                            DepartmentId = departmentId!
-                        });
-        var s = GlobalState.Staffs.FirstOrDefault(s => s.StaffId == id);
-        if (s != null)
-        {
-            s.Code = code;
-            s.FirstName = firstName;
-            s.LastName = lastName;
-            s.Gender = gender;
-            s.DOB = dob;
-            s.PhoneNumber = phoneNumber;
-            s.Address = address;
-            s.Email = email;
-            s.Position = position;
-            s.HiredDate = hiredDate;
-            s.Salary = salary;
-            s.DepartmentId = departmentId!;
-            var department = GlobalState.Departments
-                                .FirstOrDefault(d => d.DepartmentId == s.DepartmentId);
-            if (department != null) s.Department = department;
-        }
+        var isSuccess = await _repo
+            .UpdateAsync(id, new Staff
+            {
+                StaffId = id,
+                Code = code,
+                FirstName = firstName,
+                LastName = lastName,
+                Gender = gender,
+                DOB = dob,
+                PhoneNumber = phoneNumber,
+                Address = address,
+                Email = email,
+                Position = position,
+                HiredDate = hiredDate,
+                Salary = salary,
+                DepartmentId = departmentId!
+            });
+        if (!isSuccess) return false;
+
+        var staff = GlobalState.Staffs.FirstOrDefault(s => s.StaffId == id);
+        if (staff == null) return false;
+
+        staff.Code = code;
+        staff.FirstName = firstName;
+        staff.LastName = lastName;
+        staff.Gender = gender;
+        staff.DOB = dob;
+        staff.PhoneNumber = phoneNumber;
+        staff.Address = address;
+        staff.Email = email;
+        staff.Position = position;
+        staff.HiredDate = hiredDate;
+        staff.Salary = salary;
+        staff.DepartmentId = departmentId!;
+        var department = GlobalState.Departments
+                            .FirstOrDefault(d => d.DepartmentId == staff.DepartmentId);
+        if (department != null) staff.Department = department;
+
         IsNew = false;
         _bsStaffs.ResetBindings(false);
+        return true;
     }
     #endregion
 }

@@ -51,14 +51,14 @@ public partial class LoginForm : Form
         };
     }
 
-    private bool VerifyPassword(string password, string loginPassword)
+    private static bool VerifyPassword(string password, string loginPassword)
     {
-        return string.Compare(password, loginPassword, StringComparison.OrdinalIgnoreCase) == 0;
+        return string.Compare(password, loginPassword, StringComparison.Ordinal) == 0;
     }
     
     private void LoginSuccess()
     {
-        MessageBox.Show("Login successful!");
+        MessageBox.Show("Login successful!", "Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         LoginSucceeded?.Invoke(this, EventArgs.Empty);
 

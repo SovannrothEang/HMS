@@ -6,5 +6,6 @@ public enum Position
     Doctor,
     Administrator,
     Technician,
-    Receptionist
+    Receptionist,
+    IT
 }

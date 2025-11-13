@@ -18,7 +18,7 @@ public static class GlobalState
     public static BindingList<PatientDto> Patients { get; set; } = [];
     public static BindingList<StaffDto> Staffs { get; set; } = [];
 
-    public static IEnumerable<User> Users { get; set; } = [];
+    public static BindingList<UserDto> Users { get; set; } = [];
 
 
     public static BindingList<string> AllStaffDoctorsCodeList { get; set; } = [];

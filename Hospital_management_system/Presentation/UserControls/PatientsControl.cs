@@ -7,7 +7,7 @@ using Hospital_management_system.Presentation.State;
 
 namespace Hospital_management_system.Presentation.UserControls;
 
-public partial class PatientControl : UserControl
+public partial class PatientsControl : UserControl
 {
     private readonly IGenericRepository<Patient> _repo;
     private readonly IPatientRepository _patientRepo;
@@ -16,7 +16,7 @@ public partial class PatientControl : UserControl
     private System.Windows.Forms.Timer? _searchTimer;
 
     private static bool IsNew = false;
-    public PatientControl(IGenericRepository<Patient> repo, IPatientRepository patientRepo)
+    public PatientsControl(IGenericRepository<Patient> repo, IPatientRepository patientRepo)
     {
         _repo = repo;
         _patientRepo = patientRepo;
@@ -29,7 +29,7 @@ public partial class PatientControl : UserControl
 
         _bsDoctorCodes.DataSource = GlobalState.DoctorsCodeList;
 
-        #region Dgv events
+        #region Events
         dgvPatient.DataBindingComplete += (s, e) =>
         {
             if (dgvPatient.Columns.Contains("colId"))
@@ -51,6 +51,7 @@ public partial class PatientControl : UserControl
             dgvPatient.Columns["colDob"].DefaultCellStyle.Format = "dd/MM/yyyy";
         };
         dgvPatient.SelectionChanged += OnDgvPatientSelectionChanged;
+        tbSearch.KeyUp += OnTbSearchKeyUp;
         #endregion
 
         #region Click Events
@@ -69,7 +70,7 @@ public partial class PatientControl : UserControl
                     tbAddress.Text != string.Empty ||
                     tbSickness.Text != string.Empty)
                 {
-                    var confirmResult = MessageBox.Show("Discard new staff?",
+                    var confirmResult = MessageBox.Show("Discard new patient?",
                         "Confirm Cancel",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
@@ -120,14 +121,25 @@ public partial class PatientControl : UserControl
             {
                 try
                 {
-                    await CreatePatientAsync();
-
-                    MessageBox.Show(
-                        "Successfully created",
-                        "Created staff",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
+                    if (await CreatePatientAsync())
+                    {
+                        MessageBox.Show(
+                            "Successfully created",
+                            "Created patient",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        );
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            $"Failed to create patient",
+                            "Created patient",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -145,21 +157,31 @@ public partial class PatientControl : UserControl
                 try
                 {
                     var id = dgvPatient.CurrentRow!.Cells["colId"].Value!.ToString()!;
-                    await UpdatePatientAsync(id);
-
-                    MessageBox.Show(
-                        "Successfully created",
-                        "Updated patient",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
+                    if (await UpdatePatientAsync(id))
+                    {
+                        MessageBox.Show(
+                            "Successfully created",
+                            "Updated patient",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        );
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            $"Failed to update patient",
+                            "Updated patient",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+                    }
                 }
                 catch (Exception ex)
                 {
                     OnDgvPatientSelectionChanged(this, EventArgs.Empty);
                     MessageBox.Show(
-                        $"Failed to create, error: {ex.Message}",
-                        "Updated staff",
+                        $"Failed to update, error: {ex.Message}",
+                        "Updated patient",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );
@@ -170,13 +192,14 @@ public partial class PatientControl : UserControl
             DisableControls(true);
         };
         #endregion
-
-        tbSearch.KeyUp += OnTbSearchKeyUp;
     }
 
     #region UI config
     private void LoadControlsConfiguration()
     {
+        dgvPatient.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        dgvPatient.DefaultCellStyle.Font = new Font("Arial", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+
         dtpDob.Format = DateTimePickerFormat.Custom;
         dtpDob.CustomFormat = "dd/MM/yyyy";
         dtpDob.ShowUpDown = false;
@@ -350,41 +373,46 @@ public partial class PatientControl : UserControl
     #endregion
 
     #region Helper Methods
-    private async Task CreatePatientAsync()
+    private async Task<bool> CreatePatientAsync()
     {
         var doctorCode = cmbDoctor.SelectedValue?.ToString()!;
         var doctorDto = GlobalState.Doctors.FirstOrDefault(d => d.Staff.Code == doctorCode);
         var dto = GlobalState.Doctors.FirstOrDefault(d => d.DoctorId == doctorDto!.DoctorId);
         var patient = await _repo
-                        .CreateAsync(new Patient
-                        {
-                            PatientId = Guid.NewGuid().ToString(),
-                            Code = tbCode.Text.Trim(),
-                            FirstName = tbFirstName.Text.Trim(),
-                            LastName = tbLastName.Text.Trim(),
-                            Gender = (PersonGender)cmbGender.SelectedItem!,
-                            DOB = DateTime.Parse(dtpDob.Value.ToString()),
-                            PhoneNumber = tbPhoneNumber.Text.Trim(),
-                            Address = tbAddress.Text.Trim(),
-                            Sickness = tbSickness.Text.Trim(),
-                            //Doctor = dto!.ToEntity(dto!.Staff.ToEntity()),
-                            DoctorId = doctorDto!.DoctorId
-                        });
+            .CreateAsync(new Patient
+            {
+                PatientId = Guid.NewGuid().ToString(),
+                Code = tbCode.Text.Trim(),
+                FirstName = tbFirstName.Text.Trim(),
+                LastName = tbLastName.Text.Trim(),
+                Gender = (PersonGender)cmbGender.SelectedItem!,
+                DOB = DateTime.Parse(dtpDob.Value.ToString()),
+                PhoneNumber = tbPhoneNumber.Text.Trim(),
+                Address = tbAddress.Text.Trim(),
+                Sickness = tbSickness.Text.Trim(),
+                //Doctor = dto!.ToEntity(dto!.Staff.ToEntity()),
+                DoctorId = doctorDto!.DoctorId
+            });
+        if (patient is null) return false;
+
         var patientDto = patient.ToDto();
-        var doctor = GlobalState.Doctors
+        if (patientDto.Doctor == null)
+        {
+            var doctor = GlobalState.Doctors
                             .FirstOrDefault(d => d.DoctorId == patient.DoctorId);
-        if (doctor != null) patientDto.Doctor = doctor;
+            patientDto.Doctor = doctor;
+        }
 
         GlobalState.Patients.Add(patientDto);
         IsNew = false;
         _bsPatient.ResetBindings(false);
+        return true;
     }
-    private async Task UpdatePatientAsync(string id)
+    private async Task<bool> UpdatePatientAsync(string id)
     {
         var code = tbCode.Text.Trim();
         var firstName = tbFirstName.Text.Trim();
         var lastName = tbLastName.Text.Trim();
-        //var gender = Enum.GetName(typeof(Gender), cmbGender.SelectedItem!);
         var gender = (PersonGender)cmbGender.SelectedItem!;
         var dob = DateTime.Parse(dtpDob.Value.ToString());
         var phoneNumber = tbPhoneNumber.Text.Trim();
@@ -394,41 +422,43 @@ public partial class PatientControl : UserControl
         //var doctorDto = GlobalState.Doctors.FirstOrDefault(d => d.Staff.Code == doctorCode);
         var doctor = GlobalState.Doctors
                 .FirstOrDefault(d => d.Staff.Code == doctorCode);
-        if (doctor is null) return;
-        var patient = await _repo
-                        .UpdateAsync(id, new Patient
-                        {
-                            PatientId = id,
-                            Code = code,
-                            FirstName = firstName,
-                            LastName = lastName,
-                            Gender = gender,
-                            DOB = dob,
-                            PhoneNumber = phoneNumber,
-                            Address = address,
-                            Sickness = sickness,
-                            DoctorId = doctor.DoctorId,
-                        });
-        var p = GlobalState.Patients.FirstOrDefault(s => s.PatientId == id);
-        if (p != null)
-        {
-            p.Code = code;
-            p.FirstName = firstName;
-            p.LastName = lastName;
-            p.Gender = gender;
-            p.DOB = dob;
-            p.PhoneNumber = phoneNumber;
-            p.Address = address;
-            p.Sickness = sickness;
-            p.DoctorId = doctorCode!;
-            p.Doctor = doctor;
-            p.Doctor!.Staff = doctor.Staff!;
-            //var department = GlobalState.Departments
-            //                    .FirstOrDefault(d => d.DepartmentId == p.DepartmentId);
-        }
+        if (doctor is null) return false;
+
+        var isSuccess = await _repo
+            .UpdateAsync(id, new Patient
+            {
+                PatientId = id,
+                Code = code,
+                FirstName = firstName,
+                LastName = lastName,
+                Gender = gender,
+                DOB = dob,
+                PhoneNumber = phoneNumber,
+                Address = address,
+                Sickness = sickness,
+                DoctorId = doctor.DoctorId,
+            });
+        if (!isSuccess) return false;
+
+        var patient = GlobalState.Patients.FirstOrDefault(s => s.PatientId == id);
+        if (patient == null) return false;
+
+        patient.Code = code;
+        patient.FirstName = firstName;
+        patient.LastName = lastName;
+        patient.Gender = gender;
+        patient.DOB = dob;
+        patient.PhoneNumber = phoneNumber;
+        patient.Address = address;
+        patient.Sickness = sickness;
+        patient.DoctorId = doctorCode!;
+        patient.Doctor = doctor;
+        patient.Doctor!.Staff = doctor.Staff!;
+
         IsNew = false;
         _bsPatient.ResetBindings(false);
         OnDgvPatientSelectionChanged(this, EventArgs.Empty);
+        return true;
     }
     private async Task LoadPatientsAsync()
     {
