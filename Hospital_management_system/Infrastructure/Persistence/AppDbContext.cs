@@ -165,6 +165,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         modelBuilder.Entity<User>(buildAction =>
         {
+            buildAction.HasIndex(u => u.Username).IsUnique().HasFilter("[is_deleted] = 0");
             buildAction.HasIndex(u => u.Code).IsUnique().HasFilter("[is_deleted] = 0");
             buildAction.HasIndex(u => u.StaffId).IsUnique().HasFilter("[is_deleted] = 0");
             buildAction
@@ -192,13 +193,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         var orthopedicsDepartmentId = Guid.NewGuid().ToString();
         var generalMedicineDepartmentId = Guid.NewGuid().ToString();
         var emergencyDepartmentId = Guid.NewGuid().ToString();
+        var informationTechnologyDepartmentId = Guid.NewGuid().ToString();
 
         modelBuilder.Entity<Department>().HasData(
            new Department { Code = "CAD", DepartmentId = cardiologyDepartmentId, Name = "Cardiology", Description = "Heart and Cardiovascular Department" },
            new Department { Code = "PED", DepartmentId = pediatricsDepartmentId, Name = "Pediatrics", Description = "Children Health Department" },
            new Department { Code = "ORTH", DepartmentId = orthopedicsDepartmentId, Name = "Orthopedics", Description = "Bone and Joint Department" },
            new Department { Code = "GM", DepartmentId = generalMedicineDepartmentId, Name = "General Medicine", Description = "General Health Department" },
-           new Department { Code = "EMG", DepartmentId = emergencyDepartmentId, Name = "Emergency", Description = "Emergency Department" }
+           new Department { Code = "EMG", DepartmentId = emergencyDepartmentId, Name = "Emergency", Description = "Emergency Department" },
+           new Department { Code = "IT", DepartmentId = informationTechnologyDepartmentId, Name = "IT", Description = "Information Technology" }
         );
 
         var staff1Id = Guid.NewGuid().ToString();
@@ -206,6 +209,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         var staff3Id = Guid.NewGuid().ToString();
         var staff4Id = Guid.NewGuid().ToString();
         var staff5Id = Guid.NewGuid().ToString();
+        var staff6Id = Guid.NewGuid().ToString();
 
         modelBuilder.Entity<Staff>().HasData(
             new Staff
@@ -234,7 +238,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 Address = "456 Oak Ave",
                 PhoneNumber = "555-2222",
                 Email = "bob.johnson@hms.com",
-                Position = Position.Administrator.ToString(),
+                Position = Position.Nurse.ToString(),
                 DepartmentId = generalMedicineDepartmentId,
                 HiredDate = new DateTime(2005, 3, 10)
             },
@@ -282,6 +286,21 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 Position = Position.Receptionist.ToString(),
                 DepartmentId = emergencyDepartmentId,
                 HiredDate = new DateTime(2018, 4, 20)
+            },
+            new Staff
+            {
+                StaffId = staff6Id,
+                Code = "S006",
+                FirstName = "Seyha",
+                LastName = "Tola",
+                DOB = new DateTime(2004, 1, 1),
+                Gender = PersonGender.Male,
+                Address = "202 Secret Rd",
+                PhoneNumber = "1111-1111",
+                Email = "tola.seyha@hms.com",
+                Position = Position.Administrator.ToString(),
+                DepartmentId = informationTechnologyDepartmentId,
+                HiredDate = new DateTime(2022, 4, 20)
             }
         );
 
@@ -353,6 +372,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 DoctorId = doctor1Id,
             }
         );
+
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Code = "U001",
+                Username = "Seyha",
+                Password = "123456",
+                StaffId = staff6Id,
+            });
         #endregion
         //base.OnModelCreating(modelBuilder);
     }

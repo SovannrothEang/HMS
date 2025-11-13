@@ -24,10 +24,12 @@ public partial class MainForm : Form
 
         this.Load += async (s, e) =>
         {
+            this.Opacity = 0;
+            await PreLoadDataAsync();
             if (!CheckUser())
                 return;
+            this.Opacity = 1;
             ActivateControl(this.btnDashboard, () => _serviceProvider.GetRequiredService<DashboardControl>());
-            await PreLoadDataAsync();
         };
 
         #region Button Click Events
@@ -51,20 +53,23 @@ public partial class MainForm : Form
         {
             ActivateControl(this.btnStaff, () => _serviceProvider.GetRequiredService<StaffControl>());
         };
-        //btnExit.Click += (s, e) =>
-        //{
-        //    var confirmResult = MessageBox.Show("Are you sure you want to exit?",
-        //                "Confirm Exit",
-        //                MessageBoxButtons.YesNo,
-        //                MessageBoxIcon.Question);
-        //    if (confirmResult == DialogResult.Yes)
-        //    {
-        //        System.Windows.Forms.Application.Exit();
-        //    }
-        //};
+        btnLogout.Click += (s, e) =>
+        {
+            var confirmResult = MessageBox.Show("Are you sure you want to logout?",
+                        "Confirm Logout",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+            if (confirmResult == DialogResult.Yes)
+            {
+                GlobalState.CurrentUsername = string.Empty;
+                if (!CheckUser())
+                    return;
+            }
+        };
         #endregion
     }
 
+    #region Helper Methods
     private bool CheckUser()
     {
         if (!string.IsNullOrEmpty(GlobalState.CurrentUsername))
@@ -87,10 +92,10 @@ public partial class MainForm : Form
                 return false;
             }
         }
+        lbUsername.Text = GlobalState.CurrentUsername;
         this.Show();
         return true;
     }
-    #region Helper Methods
     private void ActivateControl(Button btn, Func<UserControl> controlFactory)
     {
         ResetButtonStyle(_activeButton);

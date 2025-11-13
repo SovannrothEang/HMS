@@ -35,6 +35,7 @@ public static class ServiceConfigurator
         services.AddScoped<IDoctorRepository, DoctorRepository>();
         services.AddScoped<IStaffRepository, StaffRepository>();
         services.AddScoped<IPatientRepository, PatientRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

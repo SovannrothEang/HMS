@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             panelSidebar = new Panel();
+            panel1 = new Panel();
+            lbUsername = new Label();
+            btnLogout = new Button();
             pictureBox1 = new PictureBox();
             btnPatient = new Button();
             btnStaff = new Button();
@@ -37,12 +40,15 @@
             btnDashboard = new Button();
             mainPanel = new Panel();
             panelSidebar.SuspendLayout();
+            panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panelSidebar
             // 
             panelSidebar.BackColor = Color.Silver;
+            panelSidebar.Controls.Add(panel1);
+            panelSidebar.Controls.Add(btnLogout);
             panelSidebar.Controls.Add(pictureBox1);
             panelSidebar.Controls.Add(btnPatient);
             panelSidebar.Controls.Add(btnStaff);
@@ -55,6 +61,41 @@
             panelSidebar.Name = "panelSidebar";
             panelSidebar.Size = new Size(194, 700);
             panelSidebar.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.White;
+            panel1.Controls.Add(lbUsername);
+            panel1.Location = new Point(12, 578);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(174, 53);
+            panel1.TabIndex = 0;
+            // 
+            // lbUsername
+            // 
+            lbUsername.AutoSize = true;
+            lbUsername.BackColor = Color.Transparent;
+            lbUsername.Font = new Font("Arial", 22F);
+            lbUsername.Location = new Point(14, 9);
+            lbUsername.Name = "lbUsername";
+            lbUsername.Size = new Size(147, 35);
+            lbUsername.TabIndex = 1;
+            lbUsername.Text = "username";
+            lbUsername.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // btnLogout
+            // 
+            btnLogout.BackColor = Color.Red;
+            btnLogout.FlatStyle = FlatStyle.Flat;
+            btnLogout.Font = new Font("Arial", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLogout.ForeColor = Color.White;
+            btnLogout.Location = new Point(12, 638);
+            btnLogout.Margin = new Padding(4);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(174, 49);
+            btnLogout.TabIndex = 6;
+            btnLogout.Text = "Logout";
+            btnLogout.UseVisualStyleBackColor = false;
             // 
             // pictureBox1
             // 
@@ -167,6 +208,8 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "HMS";
             panelSidebar.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
@@ -181,5 +224,8 @@
         private Button btnStaff;
         private Button btnPatient;
         private PictureBox pictureBox1;
+        private Button btnLogout;
+        private Panel panel1;
+        private Label lbUsername;
     }
 }

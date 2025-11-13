@@ -1,4 +1,5 @@
 ﻿using Hospital_management_system.Application.DTOs;
+using Hospital_management_system.Domain.Entities;
 using System.ComponentModel;
 
 namespace Hospital_management_system.Presentation.State;
@@ -6,8 +7,7 @@ namespace Hospital_management_system.Presentation.State;
 public static class GlobalState
 {
     public static string CurrentUsername { get; set; } = null!;
-    //public static int CurrentDoctors { get; set; }
-    //public static int CurrentPatients { get; set; }
+    public static StaffDto CurrentStaffInfo { get; set; } = null!;
 
     // Events
     public static event Action DataUpdated = null!;
@@ -17,6 +17,9 @@ public static class GlobalState
     public static BindingList<DoctorDto> Doctors { get; set; } = [];
     public static BindingList<PatientDto> Patients { get; set; } = [];
     public static BindingList<StaffDto> Staffs { get; set; } = [];
+
+    public static IEnumerable<User> Users { get; set; } = [];
+
 
     public static BindingList<string> AllStaffDoctorsCodeList { get; set; } = [];
     public static BindingList<string> DoctorsCodeList { get; set; } = [];

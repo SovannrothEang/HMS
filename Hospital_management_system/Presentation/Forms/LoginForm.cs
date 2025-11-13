@@ -1,27 +1,44 @@
-﻿using Hospital_management_system.Presentation.State;
+﻿using Hospital_management_system.Domain.Entities;
+using Hospital_management_system.Domain.Repositories;
+using Hospital_management_system.Presentation.State;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace Hospital_management_system.Presentation.Forms;
 
 public partial class LoginForm : Form
 {
+    private readonly IServiceProvider _serviceProvider;
     public event EventHandler? LoginSucceeded;
 
-    public LoginForm()
+    public LoginForm(IServiceProvider serviceProvider)
     {
+        _serviceProvider = serviceProvider;
         InitializeComponent();
-        btnLogin.Click += (s, e) =>
+        var userRepo = _serviceProvider.GetRequiredService<IUserRepository>();
+        //this.Load += async (s, e) =>
+        //{
+        //    GlobalState.Users = await userRepo.GetAll();
+        //};
+        btnLogin.Click += async (s, e) =>
         {
             var username = tbUsername.Text.Trim();
             var password = tbPassword.Text.Trim();
 
-            if (username.ToLower() == "admin" && password == "123123")
+            var user = await userRepo.GetByUsernameAsync(username);
+            if (user != null
+                && VerifyPassword(user.Password, password))
             {
                 GlobalState.CurrentUsername = username;
-                MessageBox.Show("Login successful!");
+                GlobalState.CurrentStaffInfo = GlobalState.Staffs
+                    .First(s => s.StaffId == user.StaffId);
 
-                LoginSucceeded?.Invoke(this, EventArgs.Empty);
-
-                this.Close();
+                LoginSuccess();
+            }
+            else if (username.ToLower() == "admin" && password == "123123")
+            {
+                GlobalState.CurrentUsername = username;
+                LoginSuccess();
             }
             else
             {
@@ -32,5 +49,19 @@ public partial class LoginForm : Form
         tbPassword.KeyDown += (s, e) => {
             if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; btnLogin.PerformClick(); }
         };
+    }
+
+    private bool VerifyPassword(string password, string loginPassword)
+    {
+        return string.Compare(password, loginPassword, StringComparison.OrdinalIgnoreCase) == 0;
+    }
+    
+    private void LoginSuccess()
+    {
+        MessageBox.Show("Login successful!");
+
+        LoginSucceeded?.Invoke(this, EventArgs.Empty);
+
+        this.Close();
     }
 }
