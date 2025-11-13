@@ -27,7 +27,7 @@ public partial class LoginForm : Form
 
             var user = await userRepo.GetByUsernameAsync(username);
             if (user != null
-                && VerifyPassword(user.Password, password))
+                && string.Equals(user.Password, password, StringComparison.Ordinal))
             {
                 GlobalState.CurrentUsername = username;
                 GlobalState.CurrentStaffInfo = GlobalState.Staffs
@@ -35,7 +35,8 @@ public partial class LoginForm : Form
 
                 LoginSuccess();
             }
-            else if (username.ToLower() == "admin" && password == "123123")
+            else if (username.Equals("admin", StringComparison.CurrentCultureIgnoreCase)
+                && string.Equals(password, "admin", StringComparison.Ordinal))
             {
                 GlobalState.CurrentUsername = username;
                 LoginSuccess();
@@ -51,11 +52,6 @@ public partial class LoginForm : Form
         };
     }
 
-    private static bool VerifyPassword(string password, string loginPassword)
-    {
-        return string.Compare(password, loginPassword, StringComparison.Ordinal) == 0;
-    }
-    
     private void LoginSuccess()
     {
         MessageBox.Show("Login successful!", "Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
