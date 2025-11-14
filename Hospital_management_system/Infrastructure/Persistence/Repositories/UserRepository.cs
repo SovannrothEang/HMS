@@ -8,19 +8,12 @@ public class UserRepository (AppDbContext context) : IUserRepository
 {
     private readonly AppDbContext _context = context;
 
-    public async Task<IEnumerable<User>> GetAllAsync()
-    {
-        return await _context.Users
-            .AsNoTracking()
-            .Where(x => x.IsDeleted == false)
-            .ToListAsync();
-    }
     public async Task<IEnumerable<User>> GetAllWithStaffAsync()
     {
         return await _context.Users
             .Where(x => x.IsDeleted == false)
             .Include(x => x.Staff)
-            .ThenInclude(s => s.Department)
+            .ThenInclude(s => s!.Department)
             .ToListAsync();
     }
 

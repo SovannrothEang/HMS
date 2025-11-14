@@ -12,6 +12,7 @@ public class PatientRepository(AppDbContext context) : IPatientRepository
     {
         return await _context.Patients
             .AsNoTracking()
+            .Where(p => p.IsDeleted == false)
             .Include(p => p.Doctor)
             .ThenInclude(d => d.Staff)
             .ThenInclude(s => s.Department)

@@ -12,7 +12,7 @@ public class StaffDto : BaseDtoEntity
     public string? PhoneNumber { get; set; }
     public string? Address { get; set; }
     public string? Email { get; set; }
-    public string Position { get; set; } = string.Empty;
+    public Position Position { get; set; }
     public DateTime HiredDate { get; set; }
     public decimal Salary { get; set; }
     public string DepartmentId { get; set; } = string.Empty;

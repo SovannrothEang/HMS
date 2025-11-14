@@ -9,5 +9,5 @@ public class DoctorDto : BaseDtoEntity
     public bool StoppedWork { get; set; }
     public string StaffId { get; set; } = string.Empty;
 
-    public StaffDto Staff { get; set; } = null!;
+    public StaffDto? Staff { get; set; } = null!;
 }

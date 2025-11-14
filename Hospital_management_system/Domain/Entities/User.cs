@@ -6,7 +6,7 @@ namespace Hospital_management_system.Domain.Entities;
 public class User : BaseEntity
 {
     #region - Fields
-    private string _user_id = null!;
+    private string _userId = null!;
     private string _username = null!;
     private string _password = null!;
     private string _staff_id = null!;
@@ -16,13 +16,13 @@ public class User : BaseEntity
     [Column("user_id", TypeName = "varchar(150)")]
     public string UserId
     {
-        get => _user_id;
+        get => _userId;
         set
         {
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException(nameof(value));
 
-            _user_id = value;
+            _userId = value;
         }
     }
     [Column("username", TypeName = "varchar(150)")]
@@ -63,5 +63,5 @@ public class User : BaseEntity
     }
     #endregion
 
-    public virtual Staff Staff { get; set; } = null!;
+    public virtual Staff? Staff { get; set; } = null!;
 }

@@ -7,6 +7,7 @@ namespace Hospital_management_system.Domain.Entities;
 
 public abstract class Person : BaseEntity
 {
+
     #region - Fields
     private string _firstname = null!;
     private string _lastname = null!;

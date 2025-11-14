@@ -18,7 +18,6 @@ public partial class LoginForm : Form
         var userRepo = _serviceProvider.GetRequiredService<IUserRepository>();
         //this.Load += async (s, e) =>
         //{
-        //    GlobalState.Users = await userRepo.GetAll();
         //};
         btnLogin.Click += async (s, e) =>
         {

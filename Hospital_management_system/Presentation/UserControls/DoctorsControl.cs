@@ -46,15 +46,17 @@ public partial class DoctorsControl : UserControl
             if (row == null) return;
 
             if (row.DataBoundItem is not DoctorDto doctor) return;
+            var staff = GlobalState.Staffs.FirstOrDefault(s => s.StaffId == doctor.StaffId);
+            if (staff is null) return;
 
             if (dgvDoctor.Columns.Contains("colCode"))
-                row.Cells["colCode"].Value = doctor.Staff?.Code ?? string.Empty;
+                row.Cells["colCode"].Value = staff.Code;
             if (dgvDoctor.Columns.Contains("colFirstName"))
-                row.Cells["colFirstName"].Value = doctor.Staff?.FirstName ?? string.Empty;
+                row.Cells["colFirstName"].Value = staff.FirstName;
             if (dgvDoctor.Columns.Contains("colLastName"))
-                row.Cells["colLastName"].Value = doctor.Staff?.LastName ?? string.Empty;
+                row.Cells["colLastName"].Value = staff.LastName;
             if (dgvDoctor.Columns.Contains("colDepartment"))
-                row.Cells["colDepartment"].Value = doctor.Staff?.Department?.Name ?? string.Empty;
+                row.Cells["colDepartment"].Value = staff.Department!.Name;
         };
         dgvDoctor.SelectionChanged += OnDgvDoctorSelectionChanged;
         tbSearch.KeyUp += OnTbSearchKeyUp;
@@ -65,8 +67,12 @@ public partial class DoctorsControl : UserControl
 
             var staff = GlobalState.Staffs
                 .FirstOrDefault(s => s.Code == staffCode.ToString());
+            if (staff == null) return;
+
             var department = GlobalState.Departments
                 .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
+            if (department == null) return;
+
             cmbDepartment.Text = department!.Name.ToString();
         };
         #endregion
@@ -106,17 +112,30 @@ public partial class DoctorsControl : UserControl
                 }
             }
 
-            cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
+            cmbCode.DataSource = null;
+            cmbCode.DataSource = GlobalState.Staffs
+                .Where(s => s.Position == Position.Doctor)
+                .Select(s => s.Code)
+                .ToList();
             DisableControls(true);
         };
         btnUpdate.Click += (s, e) =>
         {
+            if (dgvDoctor.CurrentRow == null)
+            {
+                if (dgvDoctor.Rows.Count > 0)
+                {
+                    dgvDoctor.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a doctor to update.", "No Doctor Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+
             DisableControls(false);
-
             cmbCode.Enabled = false;
-            var dto = dgvDoctor.CurrentRow.DataBoundItem as DoctorDto;
-            cmbCode.Text = dto!.Staff!.Code.ToString();
-
             IsNew = false;
             cmbCode.Focus();
         };
@@ -124,13 +143,14 @@ public partial class DoctorsControl : UserControl
         {
             DisableControls(false);
 
-            var unassignedDoctors = GlobalState.Staffs
-                .Where(s => s.Position == Position.Doctor.ToString() &&
-                            !GlobalState.Doctors.Any(d => d.StaffId == s.StaffId))
+            var allDoctor = GlobalState.Doctors.Select(s => s.StaffId).ToList();
+            cmbCode.DataSource = null;
+            cmbCode.DataSource = GlobalState.Staffs
+                .Where(s => s.Position == Position.Doctor
+                    && allDoctor.Contains(s.StaffId) == false)
                 .Select(s => s.Code)
                 .ToList();
-
-            cmbCode.DataSource = unassignedDoctors;
+            cmbCode.SelectedIndex = -1;
 
             IsNew = true;
             cmbCode.SelectedIndex = -1;
@@ -143,8 +163,19 @@ public partial class DoctorsControl : UserControl
         };
         btnDelete.Click += async (s, e) =>
         {
-            if (dgvDoctor.CurrentRow == null) return;
-            var id = dgvDoctor.CurrentRow.Cells["colId"].Value!.ToString()!;
+            if (dgvDoctor.CurrentRow == null)
+            {
+                if (dgvDoctor.Rows.Count > 0)
+                {
+                    dgvDoctor.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a doctor to update.", "No Doctor Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            var id = dgvDoctor.CurrentRow!.Cells["colId"].Value!.ToString()!;
             var confirmResult = MessageBox.Show("Are you sure to delete this doctor?",
                 "Confirm Delete",
                 MessageBoxButtons.YesNo,
@@ -168,14 +199,14 @@ public partial class DoctorsControl : UserControl
                     if (success)
                     {
                         var doctor = GlobalState.Doctors
-                            .FirstOrDefault(x => x.DoctorId == id);
-                        if (doctor != null)
-                        {
-                            GlobalState.Doctors.Remove(doctor);
-                            var doctorCode = GlobalState.DoctorsCodeList.FirstOrDefault(d => d == doctor.Staff.Code);
-                            if (doctorCode != null)
-                                GlobalState.DoctorsCodeList.Remove(doctorCode);
-                        }
+                            .FirstOrDefault(x => x.DoctorId == id) ?? throw new ArgumentException(nameof(id));
+                        GlobalState.Doctors.Remove(doctor);
+                        cmbCode.DataSource = null;
+                        cmbCode.DataSource = GlobalState.Staffs
+                            .Where(s => s.Position == Position.Doctor
+                                && GlobalState.Doctors.Any(d => d.StaffId != s.StaffId))
+                            .Select(s => s.Code)
+                            .ToList();
                     }
                     else
                     {
@@ -193,9 +224,9 @@ public partial class DoctorsControl : UserControl
         };
         btnSubmit.Click += async (s, e) =>
         {
-            if (IsNew)
+            try
             {
-                try
+                if (IsNew)
                 {
                     if (await CreateDoctorAsync())
                     {
@@ -216,26 +247,13 @@ public partial class DoctorsControl : UserControl
                         );
                     }
                 }
-                catch (Exception ex)
-                {
-                    OnDgvDoctorSelectionChanged(this, EventArgs.Empty);
-                    MessageBox.Show(
-                        $"Failed to create, error: {ex.Message}",
-                        "Create doctor",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-            }
-            else
-            {
-                try
+                else
                 {
                     var id = dgvDoctor.CurrentRow!.Cells["colId"].Value!.ToString()!;
                     if (await UpdateDoctorAsync(id))
                     {
                         MessageBox.Show(
-                            "Successfully created",
+                            "Successfully updated",
                             "Update doctor",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
@@ -251,9 +269,20 @@ public partial class DoctorsControl : UserControl
                         );
                     }
                 }
-                catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                if (IsNew)
                 {
-                    OnDgvDoctorSelectionChanged(this, EventArgs.Empty);
+                    MessageBox.Show(
+                        $"Failed to create, error: {ex.Message}",
+                        "Create doctor",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+                else
+                {
                     MessageBox.Show(
                         $"Failed to update, error: {ex.Message}",
                         "Update doctor",
@@ -262,10 +291,18 @@ public partial class DoctorsControl : UserControl
                     );
                 }
             }
-
-            cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
-            OnDgvDoctorSelectionChanged(this, EventArgs.Empty);
-            DisableControls(true);
+            finally
+            {
+                cmbCode.DataSource = null;
+                cmbCode.DataSource = GlobalState.Staffs
+                    .Where(s => s.Position == Position.Doctor
+                        && GlobalState.Doctors.Any(d => d.StaffId != s.StaffId))
+                    .Select(s => s.Code)
+                    .ToList();
+                IsNew = false;
+                OnDgvDoctorSelectionChanged(this, EventArgs.Empty);
+                DisableControls(true);
+            }
         };
         #endregion
     }
@@ -276,14 +313,18 @@ public partial class DoctorsControl : UserControl
         dgvDoctor.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
         dgvDoctor.DefaultCellStyle.Font = new Font("Arial", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
 
-        cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList.ToList();
+        var doctors = GlobalState.Doctors.Select(d => d.StaffId).ToList();
+        cmbCode.DataSource = null;
+        cmbCode.DataSource = GlobalState.Staffs
+            .Where(s => s.Position == Position.Doctor)
+            .Select(s => s.Code)
+            .ToList();
 
         dtpHireDate.Format = DateTimePickerFormat.Custom;
         dtpHireDate.CustomFormat = "dd/MM/yyyy";
 
         cmbSpecialization.DataSource = Enum.GetValues(typeof(Specialization));
         cmbSpecialization.SelectedIndex = -1;
-        //cmbSpecialization.ValueMember = 
 
         cmbDepartment.DataSource = GlobalState.Departments;
         cmbDepartment.DisplayMember = "Name";
@@ -358,6 +399,7 @@ public partial class DoctorsControl : UserControl
         btnNew.Enabled = con;
         btnDelete.Enabled = con;
         btnUpdate.Enabled = con;
+        dgvDoctor.Enabled = con;
     }
     #endregion
 
@@ -375,14 +417,18 @@ public partial class DoctorsControl : UserControl
 
                 var staff = GlobalState.Staffs
                     .FirstOrDefault(s => s.Code == staffCode.ToString());
-                if (staff is null) return;
                 selectedDoctor.Staff = staff;
                 var department = GlobalState.Departments
                     .FirstOrDefault(d => d.DepartmentId == staff.DepartmentId);
-                if (department is null) return;
-                selectedDoctor.Staff.Department = department;
             }
-            cmbCode.Text = selectedDoctor.Staff.Code;
+            selectedDoctor.Staff ??= GlobalState.Staffs
+                    .FirstOrDefault(s => s.Code == selectedDoctor.Code);
+            if (selectedDoctor.Staff is null) return;
+            selectedDoctor.Staff.Department ??= GlobalState.Departments
+                    .FirstOrDefault(d => d.DepartmentId == selectedDoctor.Staff.DepartmentId);
+            if (selectedDoctor.Staff.Department is null) return;
+
+            cmbCode.Text = selectedDoctor.Code;
             tbExperinse.Text = selectedDoctor.YearsOfExperience.ToString();
             tbLicenseNumber.Text = selectedDoctor.LicenseNumber.ToString();
             cmbSpecialization.Text = selectedDoctor.Specialization;
@@ -420,8 +466,8 @@ public partial class DoctorsControl : UserControl
 
         dgvDoctor.DataSource = null;
         _bsDoctor.DataSource = GlobalState.Doctors
-            .Where(d => d.Staff.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) == true
-                || d.Staff.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) == true)
+            .Where(d => d.Staff?.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) == true
+                || d.Staff?.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) == true)
             .ToList();
         dgvDoctor.DataSource = _bsDoctor;
         _bsDoctor.ResetBindings(false);
@@ -458,47 +504,42 @@ public partial class DoctorsControl : UserControl
     }
     private async Task<bool> CreateDoctorAsync()
     {
-        if (cmbCode.SelectedItem == null)
+        if (cmbCode.Text is not String code)
         {
             MessageBox.Show("Please select a doctor code.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
-        if (cmbSpecialization.SelectedItem == null)
+        if (cmbSpecialization.Text is not String specialization)
         {
             MessageBox.Show("Please select a specialization.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
 
-        var code = cmbCode.SelectedItem as string;
-        var specialization = (Specialization)cmbSpecialization.SelectedItem;
         var staff = GlobalState.Staffs.FirstOrDefault(s => s.Code == code);
         if (staff is null)
         {
             MessageBox.Show("Selected staff not found.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
-        //if (dgvDoctor.CurrentRow.DataBoundItem is not DoctorDto dto) return;
         var department = GlobalState.Departments
-                            .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
-        staff.Department = department;
-        var doctor = await _repo
-            .CreateAsync(new Doctor
-            {
-                DoctorId = Guid.NewGuid().ToString(),
-                Code = code!,
-                YearsOfExperience = int.Parse(tbExperinse.Text.Trim()),
-                LicenseNumber = tbLicenseNumber.Text.Trim(),
-                Specialization = specialization.ToString(),
-                StaffId = staff!.StaffId,
-            });
-        doctor.Staff = staff.ToEntity();
+            .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
+
+        var newDoctor = new Doctor
+        {
+            DoctorId = Guid.NewGuid().ToString(),
+            Code = code,
+            YearsOfExperience = int.Parse(tbExperinse.Text.Trim()),
+            LicenseNumber = tbLicenseNumber.Text.Trim(),
+            Specialization = specialization.ToString(),
+            StaffId = staff.StaffId,
+        };
+        var doctor = await _repo.CreateAsync(newDoctor);
         var doctorDto = doctor.ToDto();
 
-        if (doctorDto.Staff != null) doctorDto.Staff = staff;
-        if (doctorDto.Staff!.Department != null) doctorDto.Staff!.Department = department;
+        doctorDto.Staff ??= staff;
+        doctorDto.Staff.Department ??= department;
 
         GlobalState.Doctors.Add(doctorDto);
-        GlobalState.DoctorsCodeList.Add(doctorDto.Staff.Code);
 
         IsNew = false;
         _bsDoctor.ResetBindings(false);
@@ -506,12 +547,15 @@ public partial class DoctorsControl : UserControl
     }
     private async Task<bool> UpdateDoctorAsync(string id)
     {
-        var code = cmbCode.SelectedItem!.ToString()!;
-        var staff = GlobalState.Staffs.FirstOrDefault(s => s.Code == code);
+        if (cmbCode.Text is not String code)
+            return false;
+        if (cmbSpecialization.Text is not String specialization)
+            return false;
+
+        var staff = GlobalState.Staffs.FirstOrDefault(s => s.Code == code)
+            ?? throw new ArgumentNullException(nameof(id)); ;
         var yearsOfExperiense = int.Parse(tbExperinse.Text.Trim());
         var licenseNumber = tbLicenseNumber.Text.Trim();
-        var specialization = cmbSpecialization.SelectedItem!.ToString()!;
-        var row = dgvDoctor.CurrentRow.DataBoundItem as DoctorDto;
 
         var isSuccess = await _repo
             .UpdateAsync(id, new Doctor
@@ -520,27 +564,25 @@ public partial class DoctorsControl : UserControl
                 Code = code,
                 YearsOfExperience = yearsOfExperiense,
                 LicenseNumber = licenseNumber,
-                StoppedWork = row!.StoppedWork,
                 Specialization = specialization,
+                StaffId = staff.StaffId,
             });
-        if (!isSuccess) return false;
+        if (!isSuccess)
+            throw new Exception("Error occurs while trying to update in database!");
 
-        var doctor = GlobalState.Doctors.FirstOrDefault(d => d.DoctorId == id);
-        if (doctor == null) return false;
+        var doctor = GlobalState.Doctors.FirstOrDefault(d => d.DoctorId == id)
+            ?? throw new ArgumentNullException(nameof(id)); ;
 
+        doctor.Code = code;
         doctor.YearsOfExperience = yearsOfExperiense;
         doctor.LicenseNumber = licenseNumber;
-        doctor.StoppedWork = row.StoppedWork;
         doctor.Specialization = specialization;
-
-        if (staff != null) doctor.Staff = staff;
-        var department = GlobalState.Departments
-                            .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
-        if (department != null) doctor.Staff!.Department = department;
+        doctor.Staff ??= staff;
+        doctor.Staff.Department ??= GlobalState.Departments
+            .FirstOrDefault(d => d.DepartmentId == staff!.DepartmentId);
 
         IsNew = false;
         _bsDoctor.ResetBindings(false);
-        cmbCode.DataSource = GlobalState.AllStaffDoctorsCodeList;
         return true;
     }
     #endregion

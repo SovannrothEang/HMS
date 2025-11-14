@@ -29,14 +29,26 @@ public partial class MainForm : Form
             if (!CheckUser())
                 return;
             this.Opacity = 1;
+            if (string.Equals(GlobalState.CurrentUsername, "admin", StringComparison.Ordinal))
+            {
+                btnUser.Visible = true;
+            }
+            else if (GlobalState.CurrentStaffInfo.Position == Position.IT)
+            {
+                btnUser.Visible = true;
+            }
+            else
+            {
+                btnUser.Visible = false;
+            }
             ActivateControl(this.btnDashboard, () => _serviceProvider.GetRequiredService<DashboardControl>());
         };
 
         #region Button Click Events
         btnDashboard.Click += (s, e) =>
-        {
-            ActivateControl(this.btnDashboard, () => _serviceProvider.GetRequiredService<DashboardControl>());
-        };
+            {
+                ActivateControl(this.btnDashboard, () => _serviceProvider.GetRequiredService<DashboardControl>());
+            };
         btnDoctor.Click += (s, e) =>
         {
             ActivateControl(this.btnDoctor, () => _serviceProvider.GetRequiredService<DoctorsControl>());
@@ -66,6 +78,7 @@ public partial class MainForm : Form
             if (confirmResult == DialogResult.Yes)
             {
                 GlobalState.CurrentUsername = string.Empty;
+                this.Refresh();
                 if (!CheckUser())
                     return;
             }
@@ -170,13 +183,6 @@ public partial class MainForm : Form
             var doctorDtos = docList.Select(x => x.ToDto()).ToList();
             var patientDtos = patientList.Select(x => x.ToDto()).ToList();
             var userDtos = userList.Select(x => x.ToDto()).ToList();
-
-            GlobalState.AllStaffDoctorsCodeList = new BindingList<string>([.. staffDtos
-                .Where(s => s.Position == Position.Doctor.ToString())
-                .Select(s => s.Code)]);
-
-            GlobalState.DoctorsCodeList = new BindingList<string>([.. doctorDtos
-                .Select(d => d.Staff.Code)]);
 
             GlobalState.AddItems<DepartmentDto>(deptDtos, GlobalState.Departments);
             GlobalState.AddItems<StaffDto>(staffDtos, GlobalState.Staffs);

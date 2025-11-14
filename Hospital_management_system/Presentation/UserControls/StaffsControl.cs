@@ -34,7 +34,7 @@ public partial class StaffsControl : UserControl
         //};
         tbSearch.KeyUp += OnTbSearchKeyUp;
 
-        #region Dgv Events
+        #region Events
         dgvStaff.DataBindingComplete += (s, e) =>
         {
             if (dgvStaff.Columns.Contains("colId"))
@@ -42,10 +42,14 @@ public partial class StaffsControl : UserControl
         };
         dgvStaff.CellFormatting += (s, e) =>
         {
-            StaffDto? staff = dgvStaff.Rows[e.RowIndex].DataBoundItem as StaffDto;
+            if (e.RowIndex < 0 || e.RowIndex >= dgvStaff.Rows.Count) return;
+            var row = dgvStaff.Rows[e.RowIndex];
+            if (row == null) return;
+
+            if (row.DataBoundItem is not StaffDto staff) return;
+            var department = GlobalState.Departments.FirstOrDefault(d => d.DepartmentId == staff.DepartmentId);
             //dgvStaff.Rows[e.RowIndex].Cells["colDob"].Value = staff?.DOB.ToShortDateString();
-            dgvStaff.Rows[e.RowIndex].Cells["colDepartment"].Value = staff?.Department?.Name;
-            dgvStaff.Columns["colDob"].DefaultCellStyle.Format = "dd/MM/yyyy";
+            dgvStaff.Rows[e.RowIndex].Cells["colDepartment"].Value = department?.Name;
         };
         dgvStaff.SelectionChanged += OnDgvStaffSelectionChanged;
         #endregion
@@ -110,14 +114,38 @@ public partial class StaffsControl : UserControl
         };
         btnUpdate.Click += (s, e) =>
         {
+            if (dgvStaff.CurrentRow == null)
+            {
+                if (dgvStaff.Rows.Count > 0)
+                {
+                    dgvStaff.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a staff to update.", "No Staff Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+
             IsNew = false;
             DisableControls(false);
             tbCode.Focus();
         };
         btnDelete.Click += async (s, e) =>
         {
-            if (dgvStaff.CurrentRow == null) return;
-            var id = dgvStaff.CurrentRow.Cells["colId"].Value!.ToString()!;
+            if (dgvStaff.CurrentRow == null)
+            {
+                if (dgvStaff.Rows.Count > 0)
+                {
+                    dgvStaff.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a staff to update.", "No Staff Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            var id = dgvStaff.CurrentRow!.Cells["colId"].Value!.ToString()!;
             var confirmResult = MessageBox.Show("Are you sure to delete this staff?",
                 "Confirm Delete",
                 MessageBoxButtons.YesNo,
@@ -138,6 +166,24 @@ public partial class StaffsControl : UserControl
                         );
                         return;
                     }
+                    MessageBox.Show(
+                        "There is a record of doctor with this staff",
+                        "Warning",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+                var isUser = GlobalState.Users.FirstOrDefault(u => u.StaffId == id);
+                if (isUser is not null)
+                {
+                    MessageBox.Show(
+                        "There is a record of user with this staff",
+                        "Warning",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
                 }
                 try
                 {
@@ -212,7 +258,7 @@ public partial class StaffsControl : UserControl
                     if (await UpdateStaffAsync(id))
                     {
                         MessageBox.Show(
-                            "Successfully created",
+                            "Successfully updated",
                             "Update staff",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
@@ -244,6 +290,8 @@ public partial class StaffsControl : UserControl
             DisableControls(true);
         };
         #endregion
+
+        dgvStaff.Columns["colDob"].DefaultCellStyle.Format = "dd/MM/yyyy";
     }
 
     #region UI config
@@ -380,6 +428,7 @@ public partial class StaffsControl : UserControl
         btnNew.Enabled = con;
         btnDelete.Enabled = con;
         btnUpdate.Enabled = con;
+        dgvStaff.Enabled = con;
     }
     #endregion
 
@@ -402,7 +451,7 @@ public partial class StaffsControl : UserControl
             tbPhoneNumber.Text = selectedStaff.PhoneNumber;
             tbAddress.Text = selectedStaff.Address;
             tbEmail.Text = selectedStaff.Email;
-            cmbPosition.Text = selectedStaff.Position;
+            cmbPosition.Text = selectedStaff.Position.ToString();
             tbSalary.Text = selectedStaff.Salary.ToString();
             if (selectedStaff.HiredDate < dtpHireDate.MinDate)
             {
@@ -555,7 +604,7 @@ public partial class StaffsControl : UserControl
         staff.PhoneNumber = phoneNumber;
         staff.Address = address;
         staff.Email = email;
-        staff.Position = position;
+        staff.Position = Enum.Parse<Position>(position, true);
         staff.HiredDate = hiredDate;
         staff.Salary = salary;
         staff.DepartmentId = departmentId!;

@@ -6,5 +6,5 @@ public class UserDto : BaseDtoEntity
     public string Username { get; set; } = null!;
     public string StaffId { get; set; } = null!;
 
-    public StaffDto Staff { get; set; } = null!;
+    public StaffDto? Staff { get; set; } = null!;
 }

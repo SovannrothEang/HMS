@@ -73,14 +73,38 @@ public partial class UsersControl : UserControl
         };
         btnUpdate.Click += (s, e) =>
         {
+            if (dgvUser.CurrentRow == null)
+            {
+                if (dgvUser.Rows.Count > 0)
+                {
+                    dgvUser.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a user to update.", "No User Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+
             IsNew = false;
             DisableControls(false);
             tbUsername.Focus();
         };
         btnDelete.Click += async (s, e) =>
         {
-            if (dgvUser.CurrentRow == null) return;
-            var id = dgvUser.CurrentRow.Cells["colId"].Value!.ToString()!;
+            if (dgvUser.CurrentRow == null)
+            {
+                if (dgvUser.Rows.Count > 0)
+                {
+                    dgvUser.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a user to update.", "No User Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            var id = dgvUser.CurrentRow!.Cells["colId"].Value!.ToString()!;
             var confirmResult = MessageBox.Show("Are you sure to delete this user?",
                 "Confirm Delete",
                 MessageBoxButtons.YesNo,
@@ -148,7 +172,7 @@ public partial class UsersControl : UserControl
             {
                 try
                 {
-                    if (!await CreateAsync())
+                    if (await CreateAsync())
                     {
                         MessageBox.Show(
                             "Successfully created",
@@ -186,7 +210,7 @@ public partial class UsersControl : UserControl
                     if (await UpdateAsync(id))
                     {
                         MessageBox.Show(
-                            "Successfully created",
+                            "Successfully updated",
                             "Update staff",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
@@ -237,7 +261,11 @@ public partial class UsersControl : UserControl
         dgvUser.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
         dgvUser.DefaultCellStyle.Font = new Font("Arial", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
 
-        cmbCode.DataSource = GlobalState.Staffs.Select(x => x.Code).ToList();
+        var users = GlobalState.Users.Select(u => u.StaffId).ToList();
+        cmbCode.DataSource = GlobalState.Staffs
+            .Where(s => users.Contains(s.StaffId) == false)
+            .Select(s => s.Code)
+            .ToList();
 
         dtpDob.Format = DateTimePickerFormat.Custom;
         dtpDob.CustomFormat = "dd/MM/yyyy";
@@ -346,6 +374,7 @@ public partial class UsersControl : UserControl
         btnNew.Enabled = con;
         btnDelete.Enabled = con;
         btnUpdate.Enabled = con;
+        dgvUser.Enabled = con;
     }
     #endregion
 
@@ -368,7 +397,7 @@ public partial class UsersControl : UserControl
             dtpDob.Value = selectedUser.Staff.DOB;
             tbPhoneNumber.Text = selectedUser.Staff.PhoneNumber;
             tbEmail.Text = selectedUser.Staff.Email;
-            cmbPosition.Text = selectedUser.Staff.Position;
+            cmbPosition.Text = selectedUser.Staff.Position.ToString();
             if (selectedUser.Staff.DOB < dtpDob.MinDate)
             {
                 dtpDob.Value = dtpDob.MinDate;
@@ -394,28 +423,28 @@ public partial class UsersControl : UserControl
         tbPhoneNumber.Text = staff.PhoneNumber;
         tbEmail.Text = staff.Email;
         cmbDepartment.Text = staff.Department.Name;
-        cmbPosition.Text = staff.Position;
+        cmbPosition.Text = staff.Position.ToString();
     }
     private void DgvUserCellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
     {
+        if (e.RowIndex < 0 || e.RowIndex >= dgvUser.Rows.Count) return;
         var row = dgvUser.Rows[e.RowIndex];
         if (row is null) return;
 
-        if (dgvUser.Rows[e.RowIndex].DataBoundItem is not UserDto user) return;
+        if (row.DataBoundItem is not UserDto user) return;
         var staff = GlobalState.Staffs.FirstOrDefault(s => s.StaffId == user.StaffId);
         if (staff is null) return;
-        user.Staff ??= staff;
 
         //dgvStaff.Rows[e.RowIndex].Cells["colDob"].Value = staff?.DOB.ToShortDateString();
-        row.Cells["colFirstName"].Value = user.Staff.FirstName;
-        row.Cells["colLastName"].Value = user.Staff.LastName;
-        row.Cells["colGender"].Value = user.Staff.Gender;
-        row.Cells["colDob"].Value = user.Staff.DOB;
-        row.Cells["colAddress"].Value = user.Staff.Address;
-        row.Cells["colPhone"].Value = user.Staff.PhoneNumber;
-        row.Cells["colEmail"].Value = user.Staff.Email;
-        row.Cells["colPosition"].Value = user.Staff.Position;
-        row.Cells["colDepartment"].Value = user.Staff.Department!.Name;
+        row.Cells["colFirstName"].Value = staff.FirstName;
+        row.Cells["colLastName"].Value = staff.LastName;
+        row.Cells["colGender"].Value = staff.Gender;
+        row.Cells["colDob"].Value = staff.DOB;
+        row.Cells["colAddress"].Value = staff.Address;
+        row.Cells["colPhone"].Value = staff.PhoneNumber;
+        row.Cells["colEmail"].Value = staff.Email;
+        row.Cells["colPosition"].Value = staff.Position;
+        row.Cells["colDepartment"].Value = staff.Department!.Name;
     }
 
     private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)
@@ -447,8 +476,8 @@ public partial class UsersControl : UserControl
         _bsUser.DataSource = GlobalState.Users
             .Where(u => u.Code.Contains(text, StringComparison.OrdinalIgnoreCase) == true
                 || u.Username.Contains(text, StringComparison.OrdinalIgnoreCase) == true 
-                || u.Staff.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) == true
-                || u.Staff.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) == true)
+                || u.Staff?.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) == true
+                || u.Staff?.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) == true)
             .ToList();
         dgvUser.DataSource = _bsUser;
         _bsUser.ResetBindings(false);
@@ -489,15 +518,34 @@ public partial class UsersControl : UserControl
         var code = cmbCode.Text.Trim();
         var staff = GlobalState.Staffs.FirstOrDefault(s => s.Code == code);
         if (staff == null) return false;
+        var username = tbUsername.Text.Trim();
+        var password = tbPassword.Text.Trim();
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            MessageBox.Show("Username and password are required.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+
+        var existingUser = await _userRepo.GetByUsernameAsync(username);
+        if (existingUser != null)
+        {
+            MessageBox.Show("Username already exists. Please choose a different username.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+
+        var newUser = new User
+        {
+            UserId = Guid.NewGuid().ToString(),
+            StaffId = staff.StaffId,
+            Code = code,
+            Username = username,
+            Password = password,
+        };
+
         var user = await _repo
-            .CreateAsync(new User
-            {
-                UserId = Guid.NewGuid().ToString(),
-                StaffId = staff.StaffId,
-                Code = code,
-                Username = tbUsername.Text.Trim(),
-                Password = tbPassword.Text.Trim(),
-            });
+            .CreateAsync(newUser);
+        if (user == null) return false;
+
         var userDto = user.ToDto();
         userDto.Staff = staff;
         var department = GlobalState.Departments
@@ -512,8 +560,8 @@ public partial class UsersControl : UserControl
     private async Task<bool> UpdateAsync(string id)
     {
         var code = cmbCode.Text.Trim();
-        var username = tbFirstName.Text.Trim();
-        var password = tbLastName.Text.Trim();
+        var username = tbUsername.Text.Trim();
+        var password = tbPassword.Text.Trim();
         var staff = GlobalState.Staffs.FirstOrDefault(s => s.Code == code)
             ?? throw new ArgumentNullException(nameof(id));
         var isSuccess = await _repo

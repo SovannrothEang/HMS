@@ -1,5 +1,6 @@
 ﻿using Hospital_management_system.Application.DTOs;
 using Hospital_management_system.Domain.Entities;
+using Hospital_management_system.Domain.ValueObjects;
 
 namespace Hospital_management_system.Application.Mapper;
 
@@ -18,7 +19,7 @@ public static class StaffMapper
             PhoneNumber = dto.PhoneNumber,
             Address = dto.Address,
             Email = dto.Email,
-            Position = dto.Position,
+            Position = dto.Position.ToString(),
             HiredDate = dto.HiredDate,
             Salary = dto.Salary,
             DepartmentId = dto.DepartmentId
@@ -38,7 +39,7 @@ public static class StaffMapper
             PhoneNumber = entity.PhoneNumber,
             Address = entity.Address,
             Email = entity.Email,
-            Position = entity.Position,
+            Position = Enum.Parse<Position>(entity.Position, true),
             HiredDate = entity.HiredDate,
             Salary = entity.Salary,
             DepartmentId = entity.DepartmentId,

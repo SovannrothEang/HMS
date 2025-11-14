@@ -13,7 +13,7 @@ public static class UserMapper
             Code = entity.Code,
             Username = entity.Username,
             StaffId = entity.StaffId,
-            Staff = entity.Staff.ToDto(),
+            Staff = entity.Staff?.ToDto(),
             CreatedAt = entity.CreatedAt,
             UpdatedAt = entity.UpdatedAt,
         };

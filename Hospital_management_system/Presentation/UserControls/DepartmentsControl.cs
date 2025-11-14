@@ -31,11 +31,6 @@ public partial class DepartmentsControl : UserControl
             if (dgvDept.Columns.Contains("colId"))
                 dgvDept.Columns["colId"].Visible = false;
         };
-        dgvDept.CellFormatting += (s, e) =>
-        {
-            dgvDept.Columns["colCreatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy";
-            dgvDept.Columns["colUpdatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy";
-        };
         //this.Load += async (s, e) => await LoadDepartmentsAsync();
         tbSearch.KeyUp += OnTbSearchKeyUp;
         #endregion
@@ -88,6 +83,18 @@ public partial class DepartmentsControl : UserControl
         };
         btnUpdate.Click += (s, e) =>
         {
+            if (dgvDept.CurrentRow == null)
+            {
+                if (dgvDept.Rows.Count > 0)
+                {
+                    dgvDept.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a department to update.", "No Department Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
             IsNew = false;
             DisableControls(false);
             tbCode.Focus();
@@ -131,7 +138,7 @@ public partial class DepartmentsControl : UserControl
                         MessageBoxIcon.Information
                     );
                 }
-                else
+                else    
                 {
                     var id = dgvDept.CurrentRow!.Cells["colId"].Value!.ToString()!;
                     var isSuccess = await _repo.UpdateAsync(id, new Department
@@ -184,7 +191,7 @@ public partial class DepartmentsControl : UserControl
                 if (IsNew)
                 {
                     MessageBox.Show(
-                        $"Failed to update, error: {ex.Message}",
+                        $"Failed to create, error: {ex.Message}",
                         "Updated department",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information
@@ -193,7 +200,7 @@ public partial class DepartmentsControl : UserControl
                 else
                 {
                     MessageBox.Show(
-                        $"Failed to create, error: {ex.Message}",
+                        $"Failed to update, error: {ex.Message}",
                         "Created department",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information
@@ -208,8 +215,19 @@ public partial class DepartmentsControl : UserControl
         };
         btnDelete.Click += async (s, e) =>
         {
-            if (dgvDept.CurrentRow == null) return;
-            var id = dgvDept.CurrentRow.Cells["colId"].Value!.ToString()!;
+            if (dgvDept.CurrentRow == null)
+            {
+                if (dgvDept.Rows.Count > 0)
+                {
+                    dgvDept.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a department to update.", "No Department Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            var id = dgvDept.CurrentRow!.Cells["colId"].Value!.ToString()!;
             var confirmResult = MessageBox.Show("Are you sure to delete this department?", 
                 "Confirm Delete", 
                 MessageBoxButtons.YesNo, 
@@ -300,6 +318,9 @@ public partial class DepartmentsControl : UserControl
             }
         ]);
         #endregion
+
+        dgvDept.Columns["colCreatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy";
+        dgvDept.Columns["colUpdatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy";
     }
     private void DisableControls(bool con)
     {
@@ -313,6 +334,7 @@ public partial class DepartmentsControl : UserControl
         btnNew.Enabled = con;
         btnDelete.Enabled = con;
         btnUpdate.Enabled = con;
+        dgvDept.Enabled = con;
     }
     #endregion
 

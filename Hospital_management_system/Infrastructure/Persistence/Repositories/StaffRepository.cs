@@ -11,8 +11,8 @@ public class StaffRepository (AppDbContext context) : IStaffRepository
     {
         return await _context.Staffs
             .AsNoTracking()
+            .Where(s => s.IsDeleted == false)
             .Include(s => s.Department)
-            .Where(e => EF.Property<bool>(e, "IsDeleted") == false)
             .ToListAsync();
     }
 }

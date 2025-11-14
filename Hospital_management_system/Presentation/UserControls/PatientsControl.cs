@@ -27,29 +27,19 @@ public partial class PatientsControl : UserControl
         _bsPatient.DataSource = GlobalState.Patients;
         dgvPatient.DataSource = _bsPatient;
 
-        _bsDoctorCodes.DataSource = GlobalState.DoctorsCodeList;
+        _bsDoctorCodes.DataSource = GlobalState.Doctors
+            .Select(s => s.Code)
+            .ToList(); ;
 
         #region Events
         dgvPatient.DataBindingComplete += (s, e) =>
         {
             if (dgvPatient.Columns.Contains("colId"))
                 dgvPatient.Columns["colId"].Visible = false;
+            if (dgvPatient.Columns.Contains("colDoctorId"))
+                dgvPatient.Columns["colDoctorId"].Visible = false;
         };
-        dgvPatient.CellFormatting += (s ,e) => {
-            if (e.RowIndex < 0 || e.RowIndex >= dgvPatient.Rows.Count) return;
-            var row = dgvPatient.Rows[e.RowIndex];
-            if (row == null) return;
-
-            var patient = row.DataBoundItem as PatientDto;
-
-            if (patient != null)
-                patient.Doctor = GlobalState.Doctors.First(x => x.DoctorId == patient.DoctorId);
-
-            if (dgvPatient.Columns.Contains("colDoctor"))
-                row.Cells["colDoctor"].Value = patient?.Doctor?.Staff?.Code ?? string.Empty;
-
-            dgvPatient.Columns["colDob"].DefaultCellStyle.Format = "dd/MM/yyyy";
-        };
+        dgvPatient.CellFormatting += DgvPatientCellFormatting;
         dgvPatient.SelectionChanged += OnDgvPatientSelectionChanged;
         tbSearch.KeyUp += OnTbSearchKeyUp;
         #endregion
@@ -111,9 +101,69 @@ public partial class PatientsControl : UserControl
         };
         btnUpdate.Click += (s, e) =>
         {
+            if (dgvPatient.CurrentRow == null)
+            {
+                if (dgvPatient.Rows.Count > 0)
+                {
+                    dgvPatient.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a patient to update.", "No Patient Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+
             IsNew = false;
             DisableControls(false);
             tbCode.Focus();
+        };
+        btnDelete.Click += async (s, e) =>
+        {
+            if (dgvPatient.CurrentRow == null)
+            {
+                if (dgvPatient.Rows.Count > 0)
+                {
+                    dgvPatient.Rows[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Please select a patient to update.", "No Patient Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            var id = dgvPatient.CurrentRow!.Cells["colId"].Value!.ToString()!;
+            var confirmResult = MessageBox.Show("Are you sure to delete this patient?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+            if (confirmResult == DialogResult.Yes)
+            {
+                try
+                {
+                    var success = await _repo.DeleteAsync(id);
+                    if (success)
+                    {
+                        var patient = GlobalState.Patients
+                            .FirstOrDefault(x => x.PatientId== id);
+                        if (patient != null)
+                        {
+                            GlobalState.Patients.Remove(patient);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to delete this patient.", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    _bsPatient.ResetBindings(false);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting patient: {ex.Message}", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         };
         btnSubmit.Click += async (s, e) =>
         {
@@ -129,7 +179,6 @@ public partial class PatientsControl : UserControl
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
                         );
-                        return;
                     }
                     else
                     {
@@ -156,11 +205,21 @@ public partial class PatientsControl : UserControl
             {
                 try
                 {
-                    var id = dgvPatient.CurrentRow!.Cells["colId"].Value!.ToString()!;
-                    if (await UpdatePatientAsync(id))
+                    PatientDto? dto = _bsPatient.Current as PatientDto;
+
+                    if (dto == null && dgvPatient.SelectedRows.Count > 0)
+                        dto = dgvPatient.SelectedRows[0].DataBoundItem as PatientDto;
+
+                    if (dto == null || string.IsNullOrEmpty(dto.DoctorId))
+                    {
+                        MessageBox.Show("No patient selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (await UpdatePatientAsync(dto.PatientId, dto))
                     {
                         MessageBox.Show(
-                            "Successfully created",
+                            "Successfully updated",
                             "Updated patient",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information
@@ -218,6 +277,11 @@ public partial class PatientsControl : UserControl
             new DataGridViewTextBoxColumn {
                 Name = "colId",
                 DataPropertyName = "PatientId",
+                Visible = false
+            },
+            new DataGridViewTextBoxColumn {
+                Name = "colDoctorId",
+                DataPropertyName = "Doctor.DoctorId",
                 Visible = false
             },
             new DataGridViewTextBoxColumn {
@@ -290,6 +354,8 @@ public partial class PatientsControl : UserControl
 
         dgvPatient.Columns["colSickness"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
         #endregion
+
+        dgvPatient.Columns["colDob"].DefaultCellStyle.Format = "dd/MM/yyyy";
     }
     private void DisableControls(bool con)
     {
@@ -309,6 +375,7 @@ public partial class PatientsControl : UserControl
         btnNew.Enabled = con;
         btnDelete.Enabled = con;
         btnUpdate.Enabled = con;
+        dgvPatient.Enabled = con;
     }
     #endregion
 
@@ -335,6 +402,18 @@ public partial class PatientsControl : UserControl
             }
         }
     }
+    private void DgvPatientCellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
+    {
+        if (e.RowIndex < 0 || e.RowIndex >= dgvPatient.Rows.Count) return;
+        var row = dgvPatient.Rows[e.RowIndex];
+
+        if (row?.DataBoundItem is not PatientDto patient) return;
+
+        var doctor = GlobalState.Doctors.FirstOrDefault(x => x.DoctorId == patient.DoctorId);
+
+        if (dgvPatient.Columns.Contains("colDoctor"))
+            row.Cells["colDoctor"].Value = doctor?.Code ?? string.Empty;
+    }
 
     private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)
     {
@@ -353,7 +432,6 @@ public partial class PatientsControl : UserControl
         _searchTimer.Stop();
         _searchTimer.Start();
     }
-
     private void PerformSearch(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
@@ -396,21 +474,21 @@ public partial class PatientsControl : UserControl
         if (patient is null) return false;
 
         var patientDto = patient.ToDto();
-        if (patientDto.Doctor == null)
-        {
-            var doctor = GlobalState.Doctors
+
+        patientDto.Doctor ??= GlobalState.Doctors
                             .FirstOrDefault(d => d.DoctorId == patient.DoctorId);
-            patientDto.Doctor = doctor;
-        }
 
         GlobalState.Patients.Add(patientDto);
         IsNew = false;
         _bsPatient.ResetBindings(false);
         return true;
     }
-    private async Task<bool> UpdatePatientAsync(string id)
+    private async Task<bool> UpdatePatientAsync(string id, PatientDto? dto = null)
     {
-        var code = tbCode.Text.Trim();
+        var row = dto ?? GlobalState.Patients.FirstOrDefault(d => d.PatientId == id);
+        if (row == null) return false;
+
+        var code = tbCode.Text.Trim() ?? row.Code;
         var firstName = tbFirstName.Text.Trim();
         var lastName = tbLastName.Text.Trim();
         var gender = (PersonGender)cmbGender.SelectedItem!;
@@ -418,7 +496,8 @@ public partial class PatientsControl : UserControl
         var phoneNumber = tbPhoneNumber.Text.Trim();
         var address = tbAddress.Text.Trim();
         var sickness = tbSickness.Text.Trim();
-        var doctorCode = cmbDoctor.SelectedItem?.ToString()!;
+        var doctorCode = cmbDoctor.SelectedItem?.ToString()!
+            ?? row.Doctor!.Code ?? string.Empty;
         //var doctorDto = GlobalState.Doctors.FirstOrDefault(d => d.Staff.Code == doctorCode);
         var doctor = GlobalState.Doctors
                 .FirstOrDefault(d => d.Staff.Code == doctorCode);
@@ -451,9 +530,8 @@ public partial class PatientsControl : UserControl
         patient.PhoneNumber = phoneNumber;
         patient.Address = address;
         patient.Sickness = sickness;
-        patient.DoctorId = doctorCode!;
+        patient.DoctorId = doctor.DoctorId;
         patient.Doctor = doctor;
-        patient.Doctor!.Staff = doctor.Staff!;
 
         IsNew = false;
         _bsPatient.ResetBindings(false);

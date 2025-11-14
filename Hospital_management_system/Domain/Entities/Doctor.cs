@@ -86,7 +86,7 @@ public class Doctor : BaseEntity
     #endregion
 
     #region + Navigation Props
-    public virtual Staff Staff { get; set; } = null!;
+    public virtual Staff? Staff { get; set; } = null!;
     public virtual ICollection<Patient> Patients { get; set; } = [];
     #endregion
 }

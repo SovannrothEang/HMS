@@ -20,10 +20,6 @@ public static class GlobalState
 
     public static BindingList<UserDto> Users { get; set; } = [];
 
-
-    public static BindingList<string> AllStaffDoctorsCodeList { get; set; } = [];
-    public static BindingList<string> DoctorsCodeList { get; set; } = [];
-
     public static void AddItems<T>(IEnumerable<T> items, BindingList<T> list)
     where T : BaseDtoEntity
     {
