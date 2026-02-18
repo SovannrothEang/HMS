@@ -153,7 +153,7 @@ namespace Hospital_management_system.Presentation.Forms
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(4);
             MaximizeBox = false;
             MaximumSize = new Size(863, 463);

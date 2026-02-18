@@ -1,4 +1,4 @@
-﻿namespace Hospital_management_system
+namespace Hospital_management_system
 {
     partial class MainForm
     {
@@ -216,7 +216,7 @@
             Controls.Add(mainPanel);
             Controls.Add(panelSidebar);
             Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(4);
             MaximizeBox = false;
             MaximumSize = new Size(1510, 739);
