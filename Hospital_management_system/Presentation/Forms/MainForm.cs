@@ -28,19 +28,9 @@ public partial class MainForm : Form
             await PreLoadDataAsync();
             if (!CheckUser())
                 return;
+            
             this.Opacity = 1;
-            if (string.Equals(GlobalState.CurrentUsername, "admin", StringComparison.Ordinal))
-            {
-                btnUser.Visible = true;
-            }
-            else if (GlobalState.CurrentStaffInfo.Position == Position.IT)
-            {
-                btnUser.Visible = true;
-            }
-            else
-            {
-                btnUser.Visible = false;
-            }
+            ApplyPermissions();
             ActivateControl(this.btnDashboard, () => _serviceProvider.GetRequiredService<DashboardControl>());
         };
 
@@ -69,7 +59,7 @@ public partial class MainForm : Form
         {
             ActivateControl(this.btnUser, () => _serviceProvider.GetRequiredService<UsersControl>());
         };
-        btnLogout.Click += (s, e) =>
+        btnLogout.Click += async (s, e) =>
         {
             var confirmResult = MessageBox.Show("Are you sure you want to logout?",
                         "Confirm Logout",
@@ -77,16 +67,35 @@ public partial class MainForm : Form
                         MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
-                GlobalState.CurrentUsername = string.Empty;
-                this.Refresh();
+                GlobalState.ClearAllData();
+                await PreLoadDataAsync();
                 if (!CheckUser())
                     return;
+                
+                ApplyPermissions();
+                ActivateControl(this.btnDashboard, () => _serviceProvider.GetRequiredService<DashboardControl>());
             }
         };
         #endregion
     }
 
     #region Helper Methods
+    private void ApplyPermissions()
+    {
+        if (string.Equals(GlobalState.CurrentUsername.ToLower(), "admin", StringComparison.Ordinal))
+        {
+            btnUser.Visible = true;
+        }
+        else if (GlobalState.CurrentStaffInfo != null && GlobalState.CurrentStaffInfo.Position == Position.IT)
+        {
+            btnUser.Visible = true;
+        }
+        else
+        {
+            btnUser.Visible = false;
+        }
+    }
+
     private bool CheckUser()
     {
         if (!string.IsNullOrEmpty(GlobalState.CurrentUsername))
@@ -183,6 +192,12 @@ public partial class MainForm : Form
             var doctorDtos = docList.Select(x => x.ToDto()).ToList();
             var patientDtos = patientList.Select(x => x.ToDto()).ToList();
             var userDtos = userList.Select(x => x.ToDto()).ToList();
+
+            GlobalState.Departments.Clear();
+            GlobalState.Staffs.Clear();
+            GlobalState.Doctors.Clear();
+            GlobalState.Patients.Clear();
+            GlobalState.Users.Clear();
 
             GlobalState.AddItems<DepartmentDto>(deptDtos, GlobalState.Departments);
             GlobalState.AddItems<StaffDto>(staffDtos, GlobalState.Staffs);

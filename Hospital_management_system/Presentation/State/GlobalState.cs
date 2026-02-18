@@ -1,4 +1,4 @@
-﻿using Hospital_management_system.Application.DTOs;
+using Hospital_management_system.Application.DTOs;
 using Hospital_management_system.Domain.Entities;
 using System.ComponentModel;
 
@@ -28,6 +28,18 @@ public static class GlobalState
         {
             list.Add(item);
         }
+        DataUpdated?.Invoke();
+    }
+
+    public static void ClearAllData()
+    {
+        Departments.Clear();
+        Doctors.Clear();
+        Patients.Clear();
+        Staffs.Clear();
+        Users.Clear();
+        CurrentUsername = string.Empty;
+        CurrentStaffInfo = null!;
         DataUpdated?.Invoke();
     }
 }

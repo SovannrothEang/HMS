@@ -1,4 +1,4 @@
-﻿using Hospital_management_system.Domain.Entities;
+using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
 using Hospital_management_system.Presentation.State;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,6 +48,10 @@ public partial class LoginForm : Form
         };
         tbPassword.KeyDown += (s, e) => {
             if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; btnLogin.PerformClick(); }
+        };
+        cbShowPassword.CheckedChanged += (s, e) =>
+        {
+            tbPassword.PasswordChar = cbShowPassword.Checked ? '\0' : '*';
         };
     }
 

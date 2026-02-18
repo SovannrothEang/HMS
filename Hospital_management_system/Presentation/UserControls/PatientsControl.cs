@@ -40,7 +40,16 @@ public partial class PatientsControl : UserControl, IDisposable
             if (dgvPatient.Rows[e.RowIndex].DataBoundItem is not PatientDto patient) return;
 
             if (dgvPatient.Columns[e.ColumnIndex].Name == "colDoctor")
-                e.Value = patient.Doctor?.Code;
+            {
+                if (patient.Doctor?.Staff != null)
+                {
+                    e.Value = $"{patient.Doctor.Staff.FirstName} {patient.Doctor.Staff.LastName}";
+                }
+                else
+                {
+                    e.Value = patient.Doctor?.Code;
+                }
+            }
         };
         tbSearch.KeyUp += OnTbSearchKeyUp;
         #endregion
