@@ -3,7 +3,7 @@ using Hospital_management_system.Domain.Entities;
 using Hospital_management_system.Domain.Repositories;
 using Hospital_management_system.Infrastructure.Persistence;
 
-namespace Hospital_management_system.Application.Departments.Commands;
+namespace Hospital_management_system.Application.Commands.Departments;
 
 public record CreateDepartmentCommand(string Code, string Name, string Description) : IRequest<Result<string>>;
 

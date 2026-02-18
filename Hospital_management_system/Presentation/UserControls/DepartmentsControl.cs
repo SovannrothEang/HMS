@@ -1,22 +1,23 @@
-﻿using Hospital_management_system.Application.DTOs;
+using Hospital_management_system.Application.Common;
+using Hospital_management_system.Application.Commands.Departments;
+using Hospital_management_system.Application.Queries.Departments;
+using Hospital_management_system.Application.DTOs;
 using Hospital_management_system.Application.Mapper;
-using Hospital_management_system.Domain.Entities;
-using Hospital_management_system.Domain.Repositories;
 using Hospital_management_system.Presentation.State;
 
 namespace Hospital_management_system.Presentation.UserControls;
 
-public partial class DepartmentsControl : UserControl
+public partial class DepartmentsControl : UserControl, IDisposable
 {
-    private readonly IGenericRepository<Department> _repo;
+    private readonly IMediator _mediator;
     private readonly BindingSource _bsDepartments = [];
     private System.Windows.Forms.Timer? _searchTimer;
 
     private static bool IsNew = false;
 
-    public DepartmentsControl(IGenericRepository<Department> repo)
+    public DepartmentsControl(IMediator mediator)
     {
-        _repo = repo;
+        _mediator = mediator;
         InitializeComponent();
         LoadControlsConfiguration();
         DisableControls(true);
@@ -31,7 +32,6 @@ public partial class DepartmentsControl : UserControl
             if (dgvDept.Columns.Contains("colId"))
                 dgvDept.Columns["colId"].Visible = false;
         };
-        //this.Load += async (s, e) => await LoadDepartmentsAsync();
         tbSearch.KeyUp += OnTbSearchKeyUp;
         #endregion
 
@@ -103,168 +103,69 @@ public partial class DepartmentsControl : UserControl
         {
             var code = tbCode.Text.Trim();
             var name = tbName.Text.Trim();
-            var description = tbDescription?.Text.Trim();
+            var description = tbDescription?.Text.Trim() ?? string.Empty;
 
-            try
+            if (IsNew)
             {
-                if (IsNew)
+                var command = new CreateDepartmentCommand(code, name, description);
+                var result = await _mediator.SendAsync(command);
+
+                if (result.IsFailure)
                 {
-                    var department = await _repo
-                        .CreateAsync(new Department
-                        {
-                            DepartmentId = Guid.NewGuid().ToString(),
-                            Code = code,
-                            Name = name,
-                            Description = description
-                        });
-                    if (department == null)
-                    {
-                        MessageBox.Show(
-                            $"Failed to create department",
-                            "Create department",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error
-                        );
-                        return;
-                    }
-                    GlobalState.Departments.Add(department.ToDto());
-                    IsNew = false;
-                    _bsDepartments.ResetBindings(false);
-
-                    MessageBox.Show(
-                        "Successfully created",
-                        "Created department",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
+                    MessageBox.Show(result.Error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
-                else    
-                {
-                    var id = dgvDept.CurrentRow!.Cells["colId"].Value!.ToString()!;
-                    var isSuccess = await _repo.UpdateAsync(id, new Department
-                        {
-                            DepartmentId = id,
-                            Code = code,
-                            Name = name,
-                            Description = description
-                        });
-                    if (!isSuccess)
-                    {
-                        MessageBox.Show(
-                            $"Failed to update department",
-                            "Update department",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error
-                        );
-                        return;
-                    }
 
-                    var department = GlobalState.Departments.FirstOrDefault(x => x.DepartmentId == id);
-                    if (department == null)
-                    {
-                        MessageBox.Show(
-                            $"Failed to update department",
-                            "Update department",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error
-                        );
-                        return;
-                    }
-
-                    department.Code = code;
-                    department.Name = name;
-                    department.Description = description;
-
-                    IsNew = false;
-                    _bsDepartments.ResetBindings(false);
-
-                    MessageBox.Show(
-                        "Successfully updated",
-                        "Updated department",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                }
+                // Refresh state - in real MVP, the presenter would do this
+                await LoadDepartmentsAsync();
+                
+                IsNew = false;
+                MessageBox.Show("Successfully created", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex)
+            else    
             {
-                if (IsNew)
+                var command = new UpdateDepartmentCommand(code, name, description);
+                var result = await _mediator.SendAsync(command);
+
+                if (result.IsFailure)
                 {
-                    MessageBox.Show(
-                        $"Failed to create, error: {ex.Message}",
-                        "Updated department",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
+                    MessageBox.Show(result.Error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
-                else
-                {
-                    MessageBox.Show(
-                        $"Failed to update, error: {ex.Message}",
-                        "Created department",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                }
+
+                await LoadDepartmentsAsync();
+                
+                IsNew = false;
+                MessageBox.Show("Successfully updated", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            finally
-            {
-                OnDgvDeptSelectionChanged(this, EventArgs.Empty);
-                DisableControls(true);
-            }
+
+            OnDgvDeptSelectionChanged(this, EventArgs.Empty);
+            DisableControls(true);
         };
         btnDelete.Click += async (s, e) =>
         {
-            if (dgvDept.CurrentRow == null)
-            {
-                if (dgvDept.Rows.Count > 0)
-                {
-                    dgvDept.Rows[0].Selected = true;
-                }
-                else
-                {
-                    MessageBox.Show("Please select a department to update.", "No Department Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-            }
-            var id = dgvDept.CurrentRow!.Cells["colId"].Value!.ToString()!;
+            if (dgvDept.CurrentRow == null) return;
+            
+            var code = dgvDept.CurrentRow.Cells["colCode"].Value!.ToString()!;
             var confirmResult = MessageBox.Show("Are you sure to delete this department?", 
                 "Confirm Delete", 
                 MessageBoxButtons.YesNo, 
                 MessageBoxIcon.Warning);
+
             if (confirmResult == DialogResult.Yes)
             {
-                var staffs = GlobalState.Staffs.Where(d => d.DepartmentId == id).ToList();
-                if (staffs.Count > 0)
+                var command = new DeleteDepartmentCommand(code);
+                var result = await _mediator.SendAsync(command);
+
+                if (result.IsFailure)
                 {
-                    MessageBox.Show(
-                        "This department is having staffs!",
-                        "Warning",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
+                    MessageBox.Show(result.Error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                var success = await _repo.DeleteAsync(id);
-                if (success)
-                {
-                    var d = GlobalState.Departments.FirstOrDefault(x => x.DepartmentId == id);
-                    if (d != null)
-                    {
-                        GlobalState.Departments.Remove(d);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Failed to delete the department.", "Error", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                _bsDepartments.ResetBindings(false);
+
+                await LoadDepartmentsAsync();
             }
         };
-        #endregion
-
-        #region TextBox events
         #endregion
     }
 
@@ -279,7 +180,6 @@ public partial class DepartmentsControl : UserControl
 
         dgvDept.AutoGenerateColumns = false;
 
-        #region Columns
         dgvDept.Columns.AddRange([
             new DataGridViewTextBoxColumn {
                 Name = "colId",
@@ -317,7 +217,6 @@ public partial class DepartmentsControl : UserControl
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             }
         ]);
-        #endregion
 
         dgvDept.Columns["colCreatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy";
         dgvDept.Columns["colUpdatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy";
@@ -341,7 +240,6 @@ public partial class DepartmentsControl : UserControl
     #region Events
     private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)
     {
-
         if (_searchTimer == null)
         {
             _searchTimer = new System.Windows.Forms.Timer();
@@ -353,7 +251,6 @@ public partial class DepartmentsControl : UserControl
             };
         }
 
-        // restart debounce timer on every key
         _searchTimer.Stop();
         _searchTimer.Start();
     }
@@ -361,22 +258,19 @@ public partial class DepartmentsControl : UserControl
     {
         if (string.IsNullOrWhiteSpace(text))
         {
-            dgvDept.DataSource = GlobalState.Departments;
-            return;
+            _bsDepartments.DataSource = GlobalState.Departments;
         }
-
-        dgvDept.DataSource = null;
-        _bsDepartments.DataSource = GlobalState.Departments
-            .Where(d => d.Name.Contains(text, StringComparison.OrdinalIgnoreCase) == true)
-            .ToList();
-        dgvDept.DataSource = _bsDepartments;
+        else
+        {
+            _bsDepartments.DataSource = GlobalState.Departments
+                .Where(d => d.Name.Contains(text, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
         _bsDepartments.ResetBindings(false);
     }
     private void OnDgvDeptSelectionChanged(object? sender, EventArgs e)
     {
-        if (dgvDept.CurrentRow == null) return;
-
-        if (dgvDept.CurrentRow.DataBoundItem is DepartmentDto selectedDept)
+        if (dgvDept.CurrentRow?.DataBoundItem is DepartmentDto selectedDept)
         {
             tbCode.Text = selectedDept.Code;
             tbName.Text = selectedDept.Name;
@@ -392,7 +286,8 @@ public partial class DepartmentsControl : UserControl
         btnRefresh.Enabled = false;
         try
         {
-            var departments = await _repo.GetAllAsync();
+            var query = new GetDepartmentsQuery();
+            var departments = await _mediator.SendAsync(query);
 
             GlobalState.Departments.Clear();
             foreach (var department in departments)
@@ -413,4 +308,10 @@ public partial class DepartmentsControl : UserControl
         }
     }
     #endregion
+
+    public new void Dispose()
+    {
+        _searchTimer?.Dispose();
+        base.Dispose();
+    }
 }

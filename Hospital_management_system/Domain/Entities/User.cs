@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
+using Hospital_management_system.Domain.Constants;
 
 namespace Hospital_management_system.Domain.Entities;
 
-[Table("tbl_users")]
+[Table(TableNames.Users)]
 public class User : BaseEntity
 {
     #region - Fields

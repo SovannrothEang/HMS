@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hospital_management_system.Domain.Constants;
 
 namespace Hospital_management_system.Domain.Entities;
 
-[Table("tbl_patients")]
+[Table(TableNames.Patients)]
 public class Patient : Person
 {
     #region - Fields
