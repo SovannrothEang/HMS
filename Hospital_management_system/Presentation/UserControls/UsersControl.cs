@@ -133,7 +133,7 @@ public partial class UsersControl : UserControl, IDisposable
             {
                 var user = dgvUser.CurrentRow?.DataBoundItem as UserDto;
                 if (user == null) return;
-                result = await _mediator.SendAsync(new UpdateUserCommand(user.UserId, code, username, password, user.StaffId, true));
+                result = await _mediator.SendAsync(new UpdateUserCommand(user.UserId, user.Code, username, password, user.StaffId, true));
             }
 
             if (result.IsSuccess)

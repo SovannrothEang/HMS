@@ -140,7 +140,7 @@ public partial class DoctorsControl : UserControl, IDisposable
             {
                 var doctor = dgvDoctor.CurrentRow?.DataBoundItem as DoctorDto;
                 if (doctor == null) return;
-                result = await _mediator.SendAsync(new UpdateDoctorCommand(doctor.DoctorId, code, specialization, license, experience, false, doctor.StaffId));
+                result = await _mediator.SendAsync(new UpdateDoctorCommand(doctor.DoctorId, doctor.Code, specialization, license, experience, false, doctor.StaffId));
             }
 
             if (result.IsSuccess)
