@@ -15,7 +15,8 @@ public class StaffRepository : DapperRepository<Staff>, IStaffRepository
     public async Task<IEnumerable<Staff>> GetAllWithDepartmentsAsync()
     {
         string sql = $@"
-            SELECT s.*, d.* 
+            SELECT s.*, 
+                   d.department_id AS split_dept, d.* 
             FROM {TableNames.Staffs} s
             LEFT JOIN {TableNames.Departments} d ON s.department_id = d.department_id
             WHERE s.is_deleted = 0";
@@ -28,13 +29,14 @@ public class StaffRepository : DapperRepository<Staff>, IStaffRepository
                 staff.Department = department;
                 return staff;
             },
-            splitOn: "department_id");
+            splitOn: "split_dept");
 
         return staffList;
     }
 
     public async Task<int> AddAsync(Staff staff)
     {
+        staff.UpdatedAt = null;
         string sql = $@"
             INSERT INTO {TableNames.Staffs} (
                 staff_id, code, firstname, lastname, dob, gender, 
@@ -52,6 +54,7 @@ public class StaffRepository : DapperRepository<Staff>, IStaffRepository
 
     public async Task<int> UpdateAsync(Staff staff)
     {
+        staff.UpdatedAt = DateTime.UtcNow.AddHours(7);
         string sql = $@"
             UPDATE {TableNames.Staffs} SET 
                 firstname = @FirstName, 

@@ -15,7 +15,10 @@ public class DoctorRepository : DapperRepository<Doctor>, IDoctorRepository
     public async Task<IEnumerable<Doctor>> GetAllWithStaffsAsync()
     {
         string sql = $@"
-            SELECT d.*, s.*, dept.*
+            SELECT d.*, 
+                   d.[years_of_experience ] AS YearsOfExperience,
+                   s.staff_id AS split_staff, s.*, 
+                   dept.department_id AS split_dept, dept.*
             FROM {TableNames.Doctors} d
             JOIN {TableNames.Staffs} s ON d.staff_id = s.staff_id
             LEFT JOIN {TableNames.Departments} dept ON s.department_id = dept.department_id
@@ -32,17 +35,18 @@ public class DoctorRepository : DapperRepository<Doctor>, IDoctorRepository
                 }
                 return doctor;
             },
-            splitOn: "staff_id,department_id");
+            splitOn: "split_staff,split_dept");
 
         return doctorList;
     }
 
     public async Task<int> AddAsync(Doctor doctor)
     {
+        doctor.UpdatedAt = null;
         string sql = $@"
             INSERT INTO {TableNames.Doctors} (
                 doctor_id, code, specialization, license_number, 
-                years_of_experience, stopped_work, staff_id, 
+                [years_of_experience ], stopped_work, staff_id, 
                 is_active, is_deleted, created_at
             ) VALUES (
                 @DoctorId, @Code, @Specialization, @LicenseNumber, 
@@ -56,11 +60,12 @@ public class DoctorRepository : DapperRepository<Doctor>, IDoctorRepository
 
     public async Task<int> UpdateAsync(Doctor doctor)
     {
+        doctor.UpdatedAt = DateTime.UtcNow.AddHours(7);
         string sql = $@"
             UPDATE {TableNames.Doctors} SET 
                 specialization = @Specialization, 
                 license_number = @LicenseNumber, 
-                years_of_experience = @YearsOfExperience, 
+                [years_of_experience ] = @YearsOfExperience, 
                 stopped_work = @StoppedWork, 
                 staff_id = @StaffId, 
                 is_active = @IsActive, 

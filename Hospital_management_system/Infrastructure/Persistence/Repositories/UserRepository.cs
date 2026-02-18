@@ -15,7 +15,9 @@ public class UserRepository : DapperRepository<User>, IUserRepository
     public async Task<IEnumerable<User>> GetAllWithStaffAsync()
     {
         string sql = $@"
-            SELECT u.*, s.*, d.*
+            SELECT u.*, 
+                   s.staff_id AS split_staff, s.*, 
+                   d.department_id AS split_dept, d.*
             FROM {TableNames.Users} u
             JOIN {TableNames.Staffs} s ON u.staff_id = s.staff_id
             LEFT JOIN {TableNames.Departments} d ON s.department_id = d.department_id
@@ -33,7 +35,7 @@ public class UserRepository : DapperRepository<User>, IUserRepository
                 }
                 return user;
             },
-            splitOn: "staff_id,department_id");
+            splitOn: "split_staff,split_dept");
 
         return userList;
     }
@@ -47,6 +49,7 @@ public class UserRepository : DapperRepository<User>, IUserRepository
 
     public async Task<int> AddAsync(User user)
     {
+        user.UpdatedAt = null;
         string sql = $@"
             INSERT INTO {TableNames.Users} (
                 user_id, code, username, password, staff_id, 
@@ -62,6 +65,7 @@ public class UserRepository : DapperRepository<User>, IUserRepository
 
     public async Task<int> UpdateAsync(User user)
     {
+        user.UpdatedAt = DateTime.UtcNow.AddHours(7);
         string sql = $@"
             UPDATE {TableNames.Users} SET 
                 username = @Username, 

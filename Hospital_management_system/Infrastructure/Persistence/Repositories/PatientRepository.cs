@@ -15,7 +15,10 @@ public class PatientRepository : DapperRepository<Patient>, IPatientRepository
     public async Task<IEnumerable<Patient>> GetAllWithDoctorAsync()
     {
         string sql = $@"
-            SELECT p.*, d.*, s.*, dept.*
+            SELECT p.*, 
+                   d.doctor_id AS split_doc, d.*, 
+                   s.staff_id AS split_staff, s.*, 
+                   dept.department_id AS split_dept, dept.*
             FROM {TableNames.Patients} p
             JOIN {TableNames.Doctors} d ON p.doctor_id = d.doctor_id
             JOIN {TableNames.Staffs} s ON d.staff_id = s.staff_id
@@ -38,13 +41,14 @@ public class PatientRepository : DapperRepository<Patient>, IPatientRepository
                 }
                 return patient;
             },
-            splitOn: "doctor_id,staff_id,department_id");
+            splitOn: "split_doc,split_staff,split_dept");
 
         return patientList;
     }
 
     public async Task<int> AddAsync(Patient patient)
     {
+        patient.UpdatedAt = null;
         string sql = $@"
             INSERT INTO {TableNames.Patients} (
                 patient_id, code, firstname, lastname, dob, gender, 
@@ -62,6 +66,7 @@ public class PatientRepository : DapperRepository<Patient>, IPatientRepository
 
     public async Task<int> UpdateAsync(Patient patient)
     {
+        patient.UpdatedAt = DateTime.UtcNow.AddHours(7);
         string sql = $@"
             UPDATE {TableNames.Patients} SET 
                 firstname = @FirstName, 

@@ -7,23 +7,25 @@ namespace Hospital_management_system.Infrastructure.Persistence.Repositories;
 
 public class DepartmentRepository : DapperRepository<Department>, IDepartmentRepository
 {
-    public DepartmentRepository(IDbConnectionFactory connectionFactory) 
+    public DepartmentRepository(IDbConnectionFactory connectionFactory)
         : base(connectionFactory, TableNames.Departments)
     {
     }
 
     public async Task<int> AddAsync(Department department)
     {
+        department.UpdatedAt = null;
         string sql = $@"
-            INSERT INTO {TableNames.Departments} (code, name, description, is_active, is_deleted, created_at)
-            VALUES (@Code, @Name, @Description, @IsActive, @IsDeleted, @CreatedAt)";
-        
+            INSERT INTO {TableNames.Departments} (department_id, code, name, description, is_active, is_deleted, created_at)
+            VALUES (@DepartmentId, @Code, @Name, @Description, @IsActive, @IsDeleted, @CreatedAt)";
+
         using var connection = _connectionFactory.CreateConnection();
         return await connection.ExecuteAsync(sql, department);
     }
 
     public async Task<int> UpdateAsync(Department department)
     {
+        department.UpdatedAt = DateTime.UtcNow.AddHours(7);
         string sql = $@"
             UPDATE {TableNames.Departments} 
             SET name = @Name, 
@@ -39,7 +41,7 @@ public class DepartmentRepository : DapperRepository<Department>, IDepartmentRep
     public async Task<int> DeleteAsync(string code)
     {
         string sql = $"UPDATE {TableNames.Departments} SET is_deleted = 1 WHERE code = @Code";
-        
+
         using var connection = _connectionFactory.CreateConnection();
         return await connection.ExecuteAsync(sql, new { Code = code });
     }

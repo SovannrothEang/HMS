@@ -166,7 +166,7 @@ public partial class MainForm : Form
     {
         try
         {
-            var deptRepo = _serviceProvider.GetRequiredService<IGenericRepository<Department>>();
+            var deptRepo = _serviceProvider.GetRequiredService<IDepartmentRepository>();
             var staffRepo = _serviceProvider.GetRequiredService<IStaffRepository>();
             var docRepo = _serviceProvider.GetRequiredService<IDoctorRepository>();
             var patientRepo = _serviceProvider.GetRequiredService<IPatientRepository>();

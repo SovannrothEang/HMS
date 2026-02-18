@@ -34,6 +34,14 @@ public partial class PatientsControl : UserControl, IDisposable
             if (dgvPatient.Columns.Contains("colDoctorId")) dgvPatient.Columns["colDoctorId"].Visible = false;
         };
         dgvPatient.SelectionChanged += OnDgvPatientSelectionChanged;
+        dgvPatient.CellFormatting += (s, e) =>
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= dgvPatient.Rows.Count) return;
+            if (dgvPatient.Rows[e.RowIndex].DataBoundItem is not PatientDto patient) return;
+
+            if (dgvPatient.Columns[e.ColumnIndex].Name == "colDoctor")
+                e.Value = patient.Doctor?.Code;
+        };
         tbSearch.KeyUp += OnTbSearchKeyUp;
         #endregion
 
@@ -167,7 +175,7 @@ public partial class PatientsControl : UserControl, IDisposable
         tbFirstName.Text = patient.FirstName;
         tbLastName.Text = patient.LastName;
         cmbGender.Text = patient.Gender.ToString();
-        dtpDob.Value = patient.DOB;
+        dtpDob.Value = patient.DOB < dtpDob.MinDate ? dtpDob.MinDate : patient.DOB;
         tbPhoneNumber.Text = patient.PhoneNumber;
         tbAddress.Text = patient.Address;
         tbSickness.Text = patient.Sickness;

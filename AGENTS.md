@@ -29,10 +29,10 @@ This document provides essential information for agentic coding agents working o
 - **Clean Architecture**: Strictly follow the 4-layer separation:
   - `Domain`: Entities, Repository Interfaces, Value Objects.
   - `Application`: DTOs, Mappers, Business Logic.
-  - `Infrastructure`: DbContext, Repository Implementations, Service Config.
+  - `Infrastructure`: Dapper, Repository Implementations, Service Config.
   - `Presentation`: WinForms Controls, State Management.
 - **File-scoped Namespaces**: Use `namespace Name.Space;` instead of block-scoped namespaces.
-- **Async First**: Use asynchronous methods (`Task`, `async/await`) for all I/O operations, especially database calls via EF Core.
+- **Async First**: Use asynchronous methods (`Task`, `async/await`) for all I/O operations, especially database calls via Dapper.
 
 ### Naming Conventions
 - **Classes/Structs/Interfaces**: `PascalCase`.
@@ -61,7 +61,7 @@ This document provides essential information for agentic coding agents working o
 - **Global Catch**: Use `try-catch` blocks in `Program.cs` or top-level UI events to handle unexpected crashes gracefully.
 - **Validation**: Implement validation in Domain entities or via dedicated validators in the Application layer.
 
-### Database (EF Core)
+### Database (Dapper)
 - **Entities**: Inherit from `BaseEntity` to ensure consistency in `Code`, `IsActive`, `IsDeleted`, and timestamps.
 - **Soft Delete**: Use the `IsDeleted` flag instead of hard-deleting records.
 - **Mappers**: Use manual extension method mappers (e.g., `ToDto()`) located in `Application/Mapper`.
@@ -73,8 +73,7 @@ This document provides essential information for agentic coding agents working o
 - **Hospital_management_system/**: Root project directory.
   - **Domain/**: Core entities and repository interfaces. No dependencies on other layers.
   - **Application/**: Data Transfer Objects (DTOs), manual mappers, and business logic interfaces.
-  - **Infrastructure/**: EF Core DbContext, repository implementations, and external service configurations.
-    - `Persistence/AppDbContext.cs`: Database configuration and entity mapping.
+  - **Infrastructure/**: Dapper repository implementations, and external service configurations.
     - `Persistence/Repositories/`: Concrete repository implementations.
     - `ServiceConfigurator.cs`: Dependency Injection (DI) registration.
   - **Presentation/**: Windows Forms controls, main form, and UI state management.
@@ -87,7 +86,7 @@ This document provides essential information for agentic coding agents working o
 ## 🛠 Tech Stack Details
 
 - **Framework**: .NET 8.0 Windows (WinForms).
-- **ORM**: Entity Framework Core 8.0.21.
+- **ORM**: Dapper.
 - **Database**: SQL Server.
 - **DI Container**: Microsoft.Extensions.DependencyInjection.
 

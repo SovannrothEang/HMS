@@ -38,6 +38,18 @@ public partial class DoctorsControl : UserControl, IDisposable
                 dgvDoctor.Columns["colId"].Visible = false;
         };
         dgvDoctor.SelectionChanged += OnDgvDoctorSelectionChanged;
+        dgvDoctor.CellFormatting += (s, e) =>
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= dgvDoctor.Rows.Count) return;
+            if (dgvDoctor.Rows[e.RowIndex].DataBoundItem is not DoctorDto doc) return;
+
+            if (dgvDoctor.Columns[e.ColumnIndex].Name == "colFirstName")
+                e.Value = doc.Staff?.FirstName;
+            else if (dgvDoctor.Columns[e.ColumnIndex].Name == "colLastName")
+                e.Value = doc.Staff?.LastName;
+            else if (dgvDoctor.Columns[e.ColumnIndex].Name == "colDepartment")
+                e.Value = doc.Staff?.Department?.Name;
+        };
         tbSearch.KeyUp += OnTbSearchKeyUp;
         cmbCode.SelectedIndexChanged += (s, e) =>
         {
@@ -187,9 +199,21 @@ public partial class DoctorsControl : UserControl, IDisposable
         cmbCode.Text = doc.Code;
         tbExperinse.Text = doc.YearsOfExperience.ToString();
         tbLicenseNumber.Text = doc.LicenseNumber;
-        cmbSpecialization.Text = doc.Specialization;
+        if (Enum.TryParse<Specialization>(doc.Specialization, true, out var spec))
+        {
+            cmbSpecialization.SelectedItem = spec;
+        }
+        else
+        {
+            cmbSpecialization.SelectedIndex = -1;
+        }
         if (doc.Staff?.Department != null) cmbDepartment.Text = doc.Staff.Department.Name;
-        if (doc.Staff != null) dtpHireDate.Value = doc.Staff.HiredDate;
+        if (doc.Staff != null)
+        {
+            dtpHireDate.Value = doc.Staff.HiredDate < dtpHireDate.MinDate 
+                ? dtpHireDate.MinDate 
+                : doc.Staff.HiredDate;
+        }
     }
 
     private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)

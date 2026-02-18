@@ -5,9 +5,9 @@ using Hospital_management_system.Infrastructure.Persistence;
 using Hospital_management_system.Infrastructure.Persistence.Repositories;
 using Hospital_management_system.Presentation.Forms;
 using Hospital_management_system.Presentation.UserControls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration; // Added
 using Microsoft.Extensions.DependencyInjection;
+using Dapper;
 
 namespace Hospital_management_system.Infrastructure;
 
@@ -15,6 +15,9 @@ public static class ServiceConfigurator
 {
     public static IServiceCollection ConfigureServices(this IServiceCollection services)
     {
+        // Global Dapper configuration
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
+
         // Get IConfiguration from the service collection
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         var connectionString = configuration.GetConnectionString("DefaultConnection") 
@@ -28,11 +31,6 @@ public static class ServiceConfigurator
         services.AddScoped<IMediator, Mediator>();
         services.RegisterHandlers();
 
-        services.AddDbContext<AppDbContext>(options =>
-        {
-            options.UseSqlServer(connectionString);
-        });
-
         services.AddSingleton<MainForm>();
         services.AddTransient<LoginForm>();
 
@@ -43,7 +41,6 @@ public static class ServiceConfigurator
         services.AddTransient<StaffsControl>();
         services.AddTransient<UsersControl>();
 
-        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IDoctorRepository, DoctorRepository>();
         services.AddScoped<IStaffRepository, StaffRepository>();

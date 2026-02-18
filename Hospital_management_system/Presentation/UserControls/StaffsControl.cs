@@ -37,6 +37,14 @@ public partial class StaffsControl : UserControl, IDisposable
                 dgvStaff.Columns["colId"].Visible = false;
         };
         dgvStaff.SelectionChanged += OnDgvStaffSelectionChanged;
+        dgvStaff.CellFormatting += (s, e) =>
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= dgvStaff.Rows.Count) return;
+            if (dgvStaff.Rows[e.RowIndex].DataBoundItem is not StaffDto staff) return;
+
+            if (dgvStaff.Columns[e.ColumnIndex].Name == "colDepartment")
+                e.Value = staff.Department?.Name;
+        };
         #endregion
 
         #region Click Events
@@ -175,14 +183,21 @@ public partial class StaffsControl : UserControl, IDisposable
         tbFirstName.Text = staff.FirstName;
         tbLastName.Text = staff.LastName;
         cmbGender.SelectedItem = staff.Gender;
-        dtpDob.Value = staff.DOB;
+        dtpDob.Value = staff.DOB < dtpDob.MinDate ? dtpDob.MinDate : staff.DOB;
         tbPhoneNumber.Text = staff.PhoneNumber;
         tbAddress.Text = staff.Address;
         tbEmail.Text = staff.Email;
-        cmbPosition.Text = staff.Position.ToString();
+        cmbPosition.SelectedItem = staff.Position;
         tbSalary.Text = staff.Salary.ToString();
-        dtpHireDate.Value = staff.HiredDate;
-        cmbDepartment.SelectedValue = staff.DepartmentId;
+        dtpHireDate.Value = staff.HiredDate < dtpHireDate.MinDate ? dtpHireDate.MinDate : staff.HiredDate;
+        if (!string.IsNullOrEmpty(staff.DepartmentId))
+        {
+            cmbDepartment.SelectedValue = staff.DepartmentId;
+        }
+        else
+        {
+            cmbDepartment.SelectedIndex = -1;
+        }
     }
 
     private void OnTbSearchKeyUp(object? sender, KeyEventArgs e)

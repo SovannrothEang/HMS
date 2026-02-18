@@ -36,6 +36,28 @@ public partial class UsersControl : UserControl, IDisposable
             if (dgvUser.Columns.Contains("colId")) dgvUser.Columns["colId"].Visible = false;
         };
         dgvUser.SelectionChanged += OnDgvUserSelectionChanged;
+        dgvUser.CellFormatting += (s, e) =>
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= dgvUser.Rows.Count) return;
+            if (dgvUser.Rows[e.RowIndex].DataBoundItem is not UserDto user) return;
+
+            if (dgvUser.Columns[e.ColumnIndex].Name == "colFirstName")
+                e.Value = user.Staff?.FirstName;
+            else if (dgvUser.Columns[e.ColumnIndex].Name == "colLastName")
+                e.Value = user.Staff?.LastName;
+            else if (dgvUser.Columns[e.ColumnIndex].Name == "colGender")
+                e.Value = user.Staff?.Gender;
+            else if (dgvUser.Columns[e.ColumnIndex].Name == "colDob")
+                e.Value = user.Staff?.DOB;
+            else if (dgvUser.Columns[e.ColumnIndex].Name == "colPhone")
+                e.Value = user.Staff?.PhoneNumber;
+            else if (dgvUser.Columns[e.ColumnIndex].Name == "colEmail")
+                e.Value = user.Staff?.Email;
+            else if (dgvUser.Columns[e.ColumnIndex].Name == "colPosition")
+                e.Value = user.Staff?.Position;
+            else if (dgvUser.Columns[e.ColumnIndex].Name == "colDepartment")
+                e.Value = user.Staff?.Department?.Name;
+        };
         cmbCode.SelectedIndexChanged += CmbCodeSelectedIndexChanged;
         tbSearch.KeyUp += OnTbSearchKeyUp;
         #endregion
@@ -183,10 +205,10 @@ public partial class UsersControl : UserControl, IDisposable
             tbFirstName.Text = user.Staff.FirstName;
             tbLastName.Text = user.Staff.LastName;
             cmbGender.SelectedItem = user.Staff.Gender;
-            dtpDob.Value = user.Staff.DOB;
+            dtpDob.Value = user.Staff.DOB < dtpDob.MinDate ? dtpDob.MinDate : user.Staff.DOB;
             tbPhoneNumber.Text = user.Staff.PhoneNumber;
             tbEmail.Text = user.Staff.Email;
-            cmbPosition.Text = user.Staff.Position.ToString();
+            cmbPosition.SelectedItem = user.Staff.Position;
             cmbDepartment.Text = user.Staff.Department?.Name ?? string.Empty;
         }
     }
@@ -199,10 +221,10 @@ public partial class UsersControl : UserControl, IDisposable
         tbFirstName.Text = staff.FirstName;
         tbLastName.Text = staff.LastName;
         cmbGender.SelectedItem = staff.Gender;
-        dtpDob.Value = staff.DOB;
+        dtpDob.Value = staff.DOB < dtpDob.MinDate ? dtpDob.MinDate : staff.DOB;
         tbPhoneNumber.Text = staff.PhoneNumber;
         tbEmail.Text = staff.Email;
-        cmbPosition.Text = staff.Position.ToString();
+        cmbPosition.SelectedItem = staff.Position;
         cmbDepartment.Text = staff.Department?.Name ?? string.Empty;
     }
 
