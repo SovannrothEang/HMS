@@ -45,6 +45,8 @@ public partial class StaffsControl : UserControl, IDisposable
 
             if (dgvStaff.Columns[e.ColumnIndex].Name == "colDepartment")
                 e.Value = staff.Department?.Name;
+            else if (dgvStaff.Columns[e.ColumnIndex].Name == "colPosition")
+                e.Value = staff.Position?.Name;
         };
         #endregion
 
@@ -185,9 +187,9 @@ public partial class StaffsControl : UserControl, IDisposable
             new DataGridViewTextBoxColumn { Name = "colDob", HeaderText = "DOB", DataPropertyName = "DOB", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
             new DataGridViewTextBoxColumn { Name = "colPhone", HeaderText = "Phone", DataPropertyName = "PhoneNumber", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
             new DataGridViewTextBoxColumn { Name = "colEmail", HeaderText = "Email", DataPropertyName = "Email", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
-            new DataGridViewTextBoxColumn { Name = "colPosition", HeaderText = "Position", DataPropertyName = "Position.Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
+            new DataGridViewTextBoxColumn { Name = "colPosition", HeaderText = "Position", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
             new DataGridViewTextBoxColumn { Name = "colSalary", HeaderText = "Salary", DataPropertyName = "Salary", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
-            new DataGridViewTextBoxColumn { Name = "colDepartment", HeaderText = "Department", DataPropertyName = "Department.Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells }
+            new DataGridViewTextBoxColumn { Name = "colDepartment", HeaderText = "Department", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells }
         ]);
         dgvStaff.Columns["colDob"].DefaultCellStyle.Format = "dd/MM/yyyy";
     }
