@@ -140,7 +140,7 @@
             dgvDept.AllowUserToDeleteRows = false;
             dgvDept.AllowUserToResizeColumns = false;
             dgvDept.AllowUserToResizeRows = false;
-            dgvDept.BackgroundColor = Color.LightGray;
+            dgvDept.BackgroundColor = Color.White;
             dgvDept.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDept.Location = new Point(25, 229);
             dgvDept.MultiSelect = false;
@@ -162,7 +162,7 @@
             // 
             // flowLayoutPanel1
             // 
-            flowLayoutPanel1.BackColor = Color.LightGray;
+            flowLayoutPanel1.BackColor = Color.FromArgb(245, 246, 250);
             flowLayoutPanel1.Controls.Add(tableLayoutPanel1);
             flowLayoutPanel1.Controls.Add(tableLayoutPanel2);
             flowLayoutPanel1.Location = new Point(25, 25);
@@ -259,7 +259,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.WhiteSmoke;
+            BackColor = Color.FromArgb(245, 246, 250);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(btnDelete);

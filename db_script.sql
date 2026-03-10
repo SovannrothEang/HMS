@@ -128,7 +128,8 @@ VALUES ('2db25790-c22a-4adb-8f3b-8e3a7b94d851', '456 Oak Ave', 'S002', '0001-01-
 ('991d5722-d08f-4206-b782-80067da7c4b2', '123 Main St', 'S001', '0001-01-01T00:00:00.0000000', '1980-05-15 00:00:00', '4aa491b1-97cb-4189-8e03-d4ea8c27af6d', 'alice.smith@hms.com', 'Alice', 1, '2010-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Smith', '555-1111', 'Doctor', 0.0, NULL),
 ('bd1a58da-9479-4f52-802e-90e774249411', '202 Secret Rd', 'S005', '0001-01-01T00:00:00.0000000', '1995-02-28 00:00:00', 'd3200872-4f52-4982-b1a4-0ed85ee3f927', 'eve.adams@hms.com', 'Eve', 1, '2018-04-20T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Adams', '555-5555', 'Receptionist', 0.0, NULL),
 ('cb842b1f-e86c-46f0-9176-c7cf53f32d1a', '789 Pine Ln', 'S003', '0001-01-01T00:00:00.0000000', '1990-01-25 00:00:00', '80655e05-0aa7-4feb-860e-32ac14a19864', 'charlie.brown@hms.com', 'Charlie', 0, '2015-07-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Brown', '555-3333', 'Doctor', 0.0, NULL),
-('f80785eb-4de2-4dd6-9467-f3f0df47a952', '202 Secret Rd', 'S007', '0001-01-01T00:00:00.0000000', '2005-01-01 00:00:00', '63347532-a564-4e23-a5d9-c7de4ef82da0', 'tor.soklumor@hms.com', 'Soklumor', 0, '2022-04-20T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Tor', '2222-2222', 'IT', 0.0, NULL);
+('f80785eb-4de2-4dd6-9467-f3f0df47a952', '202 Secret Rd', 'S007', '0001-01-01T00:00:00.0000000', '2005-01-01 00:00:00', '63347532-a564-4e23-a5d9-c7de4ef82da0', 'tor.soklumor@hms.com', 'Soklumor', 0, '2022-04-20T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Tor', '2222-2222', 'IT', 0.0, NULL),
+('da6a4964-6725-4c01-a481-99527f311f92', 'Hospital', 'S000', '0001-01-01T00:00:00.0000000', '1990-01-01 00:00:00', '63347532-a564-4e23-a5d9-c7de4ef82da0', 'admin@hms.com', 'Admin', 0, '2020-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'User', '000-0000', 'Administrator', 0.0, NULL);
 IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'staff_id', N'address', N'code', N'created_at', N'dob', N'department_id', N'email', N'firstname', N'gender', N'hired_date', N'is_active', N'is_deleted', N'lastname', N'phonenumber', N'position', N'salary', N'updated_at') AND [object_id] = OBJECT_ID(N'[tbl_staffs]'))
     SET IDENTITY_INSERT [tbl_staffs] OFF;
 GO
@@ -146,7 +147,8 @@ IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'user_id', N
     SET IDENTITY_INSERT [tbl_users] ON;
 INSERT INTO [tbl_users] ([user_id], [code], [created_at], [is_active], [is_deleted], [password], [staff_id], [updated_at], [username])
 VALUES ('00ea1daf-21ce-49c7-a12e-1b3e31b2257c', 'S007', '0001-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'admin', 'f80785eb-4de2-4dd6-9467-f3f0df47a952', NULL, 'Lumor'),
-('b2d43c94-c5d0-4d9c-b05f-d27c25a6aaba', 'S006', '0001-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), '123456', '83f71025-693f-4067-9b85-84232d4bdce6', NULL, 'Seyha');
+('b2d43c94-c5d0-4d9c-b05f-d27c25a6aaba', 'S006', '0001-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), '123456', '83f71025-693f-4067-9b85-84232d4bdce6', NULL, 'Seyha'),
+('b78a9c2e-2e4d-4e9a-9e2a-1c5d6e7f8a9b', 'S000', '0001-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'admin', 'da6a4964-6725-4c01-a481-99527f311f92', NULL, 'admin');
 IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'user_id', N'code', N'created_at', N'is_active', N'is_deleted', N'password', N'staff_id', N'updated_at', N'username') AND [object_id] = OBJECT_ID(N'[tbl_users]'))
     SET IDENTITY_INSERT [tbl_users] OFF;
 GO

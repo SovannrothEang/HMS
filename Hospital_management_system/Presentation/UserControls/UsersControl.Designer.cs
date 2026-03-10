@@ -198,7 +198,7 @@
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.BackColor = Color.LightGray;
+            tableLayoutPanel1.BackColor = Color.White;
             tableLayoutPanel1.ColumnCount = 6;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
@@ -355,7 +355,7 @@
             dgvUser.AllowUserToResizeColumns = false;
             dgvUser.AllowUserToResizeRows = false;
             dgvUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvUser.BackgroundColor = Color.LightGray;
+            dgvUser.BackgroundColor = Color.White;
             dgvUser.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvUser.Location = new Point(25, 261);
             dgvUser.MultiSelect = false;
@@ -421,7 +421,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.WhiteSmoke;
+            BackColor = Color.FromArgb(245, 246, 250);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(btnDelete);
             Controls.Add(btnNew);

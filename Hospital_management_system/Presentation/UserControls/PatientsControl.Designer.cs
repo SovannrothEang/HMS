@@ -287,7 +287,7 @@ namespace Hospital_management_system.Presentation.UserControls
             dgvPatient.AllowUserToResizeColumns = false;
             dgvPatient.AllowUserToResizeRows = false;
             dgvPatient.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvPatient.BackgroundColor = Color.LightGray;
+            dgvPatient.BackgroundColor = Color.White;
             dgvPatient.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPatient.Location = new Point(25, 263);
             dgvPatient.MultiSelect = false;
@@ -309,7 +309,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.BackColor = Color.LightGray;
+            tableLayoutPanel1.BackColor = Color.White;
             tableLayoutPanel1.ColumnCount = 6;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
@@ -375,7 +375,7 @@ namespace Hospital_management_system.Presentation.UserControls
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.WhiteSmoke;
+            BackColor = Color.FromArgb(245, 246, 250);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(tbSearch);

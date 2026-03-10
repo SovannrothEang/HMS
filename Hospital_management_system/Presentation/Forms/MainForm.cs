@@ -133,15 +133,15 @@ public partial class MainForm : Form
     }
     private static void SetButtonStyle(Button btn)
     {
-        btn.BackColor = Color.Black;
-        btn.ForeColor = Color.White;
+        btn.BackColor = Color.FromArgb(51, 65, 85); // Active background
+        btn.ForeColor = Color.White; // Active text
     }
     private static void ResetButtonStyle(Button? btn)
     {
         if (btn == null) return;
 
-        btn.BackColor = Color.White;
-        btn.ForeColor = Color.Black;
+        btn.BackColor = Color.FromArgb(30, 41, 59); // Default background
+        btn.ForeColor = Color.FromArgb(203, 213, 225); // Default text
     }
     private void ShowControl(Func<UserControl> controlFactory)
     {

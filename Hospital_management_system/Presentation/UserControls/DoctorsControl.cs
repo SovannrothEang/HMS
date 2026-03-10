@@ -1,3 +1,4 @@
+using Hospital_management_system.Presentation.Common;
 using Hospital_management_system.Application.Common;
 using Hospital_management_system.Application.Commands.Doctors;
 using Hospital_management_system.Application.Queries.Doctors;
@@ -157,8 +158,18 @@ public partial class DoctorsControl : UserControl, IDisposable
 
     private void LoadControlsConfiguration()
     {
-        dgvDoctor.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Bold);
-        dgvDoctor.DefaultCellStyle.Font = new Font("Arial", 11F);
+        dgvDoctor.ApplyModernGridStyle();
+        btnRefresh.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(52, 152, 219), System.Drawing.Color.White);
+        btnNew.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
+        btnUpdate.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(241, 196, 15), System.Drawing.Color.White);
+        btnDelete.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(231, 76, 60), System.Drawing.Color.White);
+        btnSubmit.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
+        btnCancel.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(149, 165, 166), System.Drawing.Color.White);
+        tableLayoutPanel1?.ApplyModernInputStyles();
+        tbSearch?.ApplyModernTextBoxStyle();
+
+        
+        
         
         cmbCode.DataSource = GlobalState.Staffs.Where(s => s.Position == Position.Doctor).Select(s => s.Code).ToList();
         cmbSpecialization.DataSource = Enum.GetValues(typeof(Specialization));

@@ -1,3 +1,4 @@
+using Hospital_management_system.Presentation.Common;
 using Hospital_management_system.Application.Common;
 using Hospital_management_system.Application.DTOs;
 using Hospital_management_system.Application.Mapper;
@@ -131,8 +132,18 @@ public partial class StaffsControl : UserControl, IDisposable
 
     private void LoadControlsConfiguration()
     {
-        dgvStaff.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Bold);
-        dgvStaff.DefaultCellStyle.Font = new Font("Arial", 11F);
+        dgvStaff.ApplyModernGridStyle();
+        btnRefresh.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(52, 152, 219), System.Drawing.Color.White);
+        btnNew.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
+        btnUpdate.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(241, 196, 15), System.Drawing.Color.White);
+        btnDelete.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(231, 76, 60), System.Drawing.Color.White);
+        btnSubmit.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
+        btnCancel.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(149, 165, 166), System.Drawing.Color.White);
+        tableLayoutPanel1?.ApplyModernInputStyles();
+        tbSearch?.ApplyModernTextBoxStyle();
+
+        
+        
         
         dtpDob.Format = dtpHireDate.Format = DateTimePickerFormat.Custom;
         dtpDob.CustomFormat = dtpHireDate.CustomFormat = "dd/MM/yyyy";

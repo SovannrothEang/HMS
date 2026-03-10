@@ -47,7 +47,7 @@ namespace Hospital_management_system
             // 
             // panelSidebar
             // 
-            panelSidebar.BackColor = Color.Silver;
+            panelSidebar.BackColor = Color.FromArgb(30, 41, 59);
             panelSidebar.Controls.Add(btnUser);
             panelSidebar.Controls.Add(panel1);
             panelSidebar.Controls.Add(btnLogout);
@@ -59,42 +59,47 @@ namespace Hospital_management_system
             panelSidebar.Controls.Add(btnDashboard);
             panelSidebar.Dock = DockStyle.Left;
             panelSidebar.Location = new Point(0, 0);
-            panelSidebar.Margin = new Padding(4);
+            panelSidebar.Margin = new Padding(0);
             panelSidebar.Name = "panelSidebar";
-            panelSidebar.Size = new Size(194, 700);
+            panelSidebar.Size = new Size(220, 700);
             panelSidebar.TabIndex = 0;
             // 
             // panel1
             // 
-            panel1.BackColor = Color.White;
+            panel1.BackColor = Color.FromArgb(15, 23, 42);
             panel1.Controls.Add(lbUsername);
-            panel1.Location = new Point(12, 578);
+            panel1.Location = new Point(0, 590);
+            panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(174, 53);
+            panel1.Size = new Size(220, 60);
             panel1.TabIndex = 0;
             // 
             // lbUsername
             // 
-            lbUsername.AutoSize = true;
             lbUsername.BackColor = Color.Transparent;
-            lbUsername.Font = new Font("Arial", 22F);
-            lbUsername.Location = new Point(14, 9);
+            lbUsername.Dock = DockStyle.Fill;
+            lbUsername.Font = new Font("Segoe UI Semibold", 13F, FontStyle.Bold);
+            lbUsername.ForeColor = Color.White;
+            lbUsername.Location = new Point(0, 0);
             lbUsername.Name = "lbUsername";
-            lbUsername.Size = new Size(147, 35);
+            lbUsername.Size = new Size(220, 60);
             lbUsername.TabIndex = 1;
             lbUsername.Text = "username";
             lbUsername.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnLogout
             // 
-            btnLogout.BackColor = Color.Red;
+            btnLogout.BackColor = Color.FromArgb(220, 38, 38);
+            btnLogout.Cursor = Cursors.Hand;
+            btnLogout.FlatAppearance.BorderSize = 0;
+            btnLogout.FlatAppearance.MouseOverBackColor = Color.FromArgb(185, 28, 28);
             btnLogout.FlatStyle = FlatStyle.Flat;
-            btnLogout.Font = new Font("Arial", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLogout.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(12, 638);
-            btnLogout.Margin = new Padding(4);
+            btnLogout.Location = new Point(0, 650);
+            btnLogout.Margin = new Padding(0);
             btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(174, 49);
+            btnLogout.Size = new Size(220, 50);
             btnLogout.TabIndex = 6;
             btnLogout.Text = "Logout";
             btnLogout.UseVisualStyleBackColor = false;
@@ -102,38 +107,46 @@ namespace Hospital_management_system
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.logo;
-            pictureBox1.Location = new Point(12, 12);
+            pictureBox1.Location = new Point(45, 20);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(174, 174);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.Size = new Size(130, 130);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
             // 
             // btnPatient
             // 
-            btnPatient.BackColor = Color.White;
+            btnPatient.BackColor = Color.FromArgb(30, 41, 59);
+            btnPatient.Cursor = Cursors.Hand;
+            btnPatient.FlatAppearance.BorderSize = 0;
+            btnPatient.FlatAppearance.MouseOverBackColor = Color.FromArgb(51, 65, 85);
             btnPatient.FlatStyle = FlatStyle.Flat;
-            btnPatient.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnPatient.Location = new Point(12, 421);
-            btnPatient.Margin = new Padding(4);
+            btnPatient.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            btnPatient.ForeColor = Color.FromArgb(203, 213, 225);
+            btnPatient.Location = new Point(0, 380);
+            btnPatient.Margin = new Padding(0);
             btnPatient.Name = "btnPatient";
-            btnPatient.Padding = new Padding(15, 0, 0, 0);
-            btnPatient.Size = new Size(174, 49);
+            btnPatient.Padding = new Padding(25, 0, 0, 0);
+            btnPatient.Size = new Size(220, 50);
             btnPatient.TabIndex = 4;
-            btnPatient.Text = "Patient";
+            btnPatient.Text = "Patients";
             btnPatient.TextAlign = ContentAlignment.MiddleLeft;
             btnPatient.UseVisualStyleBackColor = false;
             // 
             // btnStaff
             // 
-            btnStaff.BackColor = Color.White;
+            btnStaff.BackColor = Color.FromArgb(30, 41, 59);
+            btnStaff.Cursor = Cursors.Hand;
+            btnStaff.FlatAppearance.BorderSize = 0;
+            btnStaff.FlatAppearance.MouseOverBackColor = Color.FromArgb(51, 65, 85);
             btnStaff.FlatStyle = FlatStyle.Flat;
-            btnStaff.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnStaff.Location = new Point(12, 364);
-            btnStaff.Margin = new Padding(4);
+            btnStaff.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            btnStaff.ForeColor = Color.FromArgb(203, 213, 225);
+            btnStaff.Location = new Point(0, 330);
+            btnStaff.Margin = new Padding(0);
             btnStaff.Name = "btnStaff";
-            btnStaff.Padding = new Padding(15, 0, 0, 0);
-            btnStaff.Size = new Size(174, 49);
+            btnStaff.Padding = new Padding(25, 0, 0, 0);
+            btnStaff.Size = new Size(220, 50);
             btnStaff.TabIndex = 3;
             btnStaff.Text = "Staff";
             btnStaff.TextAlign = ContentAlignment.MiddleLeft;
@@ -141,44 +154,56 @@ namespace Hospital_management_system
             // 
             // btnDepartment
             // 
-            btnDepartment.BackColor = Color.White;
+            btnDepartment.BackColor = Color.FromArgb(30, 41, 59);
+            btnDepartment.Cursor = Cursors.Hand;
+            btnDepartment.FlatAppearance.BorderSize = 0;
+            btnDepartment.FlatAppearance.MouseOverBackColor = Color.FromArgb(51, 65, 85);
             btnDepartment.FlatStyle = FlatStyle.Flat;
-            btnDepartment.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnDepartment.Location = new Point(12, 250);
-            btnDepartment.Margin = new Padding(4);
+            btnDepartment.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            btnDepartment.ForeColor = Color.FromArgb(203, 213, 225);
+            btnDepartment.Location = new Point(0, 230);
+            btnDepartment.Margin = new Padding(0);
             btnDepartment.Name = "btnDepartment";
-            btnDepartment.Padding = new Padding(15, 0, 0, 0);
-            btnDepartment.Size = new Size(174, 49);
+            btnDepartment.Padding = new Padding(25, 0, 0, 0);
+            btnDepartment.Size = new Size(220, 50);
             btnDepartment.TabIndex = 1;
-            btnDepartment.Text = "Department";
+            btnDepartment.Text = "Departments";
             btnDepartment.TextAlign = ContentAlignment.MiddleLeft;
             btnDepartment.UseVisualStyleBackColor = false;
             // 
             // btnDoctor
             // 
-            btnDoctor.BackColor = Color.White;
+            btnDoctor.BackColor = Color.FromArgb(30, 41, 59);
+            btnDoctor.Cursor = Cursors.Hand;
+            btnDoctor.FlatAppearance.BorderSize = 0;
+            btnDoctor.FlatAppearance.MouseOverBackColor = Color.FromArgb(51, 65, 85);
             btnDoctor.FlatStyle = FlatStyle.Flat;
-            btnDoctor.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnDoctor.Location = new Point(12, 307);
-            btnDoctor.Margin = new Padding(4);
+            btnDoctor.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            btnDoctor.ForeColor = Color.FromArgb(203, 213, 225);
+            btnDoctor.Location = new Point(0, 280);
+            btnDoctor.Margin = new Padding(0);
             btnDoctor.Name = "btnDoctor";
-            btnDoctor.Padding = new Padding(15, 0, 0, 0);
-            btnDoctor.Size = new Size(174, 49);
+            btnDoctor.Padding = new Padding(25, 0, 0, 0);
+            btnDoctor.Size = new Size(220, 50);
             btnDoctor.TabIndex = 2;
-            btnDoctor.Text = "Doctor";
+            btnDoctor.Text = "Doctors";
             btnDoctor.TextAlign = ContentAlignment.MiddleLeft;
             btnDoctor.UseVisualStyleBackColor = false;
             // 
             // btnDashboard
             // 
-            btnDashboard.BackColor = Color.White;
+            btnDashboard.BackColor = Color.FromArgb(30, 41, 59);
+            btnDashboard.Cursor = Cursors.Hand;
+            btnDashboard.FlatAppearance.BorderSize = 0;
+            btnDashboard.FlatAppearance.MouseOverBackColor = Color.FromArgb(51, 65, 85);
             btnDashboard.FlatStyle = FlatStyle.Flat;
-            btnDashboard.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnDashboard.Location = new Point(12, 193);
-            btnDashboard.Margin = new Padding(4);
+            btnDashboard.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            btnDashboard.ForeColor = Color.FromArgb(203, 213, 225);
+            btnDashboard.Location = new Point(0, 180);
+            btnDashboard.Margin = new Padding(0);
             btnDashboard.Name = "btnDashboard";
-            btnDashboard.Padding = new Padding(15, 0, 0, 0);
-            btnDashboard.Size = new Size(174, 49);
+            btnDashboard.Padding = new Padding(25, 0, 0, 0);
+            btnDashboard.Size = new Size(220, 50);
             btnDashboard.TabIndex = 0;
             btnDashboard.Text = "Dashboard";
             btnDashboard.TextAlign = ContentAlignment.MiddleLeft;
@@ -187,46 +212,48 @@ namespace Hospital_management_system
             // mainPanel
             // 
             mainPanel.Dock = DockStyle.Fill;
-            mainPanel.Location = new Point(194, 0);
-            mainPanel.Margin = new Padding(4);
+            mainPanel.Location = new Point(220, 0);
+            mainPanel.BackColor = Color.FromArgb(245, 246, 250);
+            mainPanel.Margin = new Padding(0);
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(1300, 700);
             mainPanel.TabIndex = 1;
             // 
             // btnUser
             // 
-            btnUser.BackColor = Color.White;
+            btnUser.BackColor = Color.FromArgb(30, 41, 59);
+            btnUser.Cursor = Cursors.Hand;
+            btnUser.FlatAppearance.BorderSize = 0;
+            btnUser.FlatAppearance.MouseOverBackColor = Color.FromArgb(51, 65, 85);
             btnUser.FlatStyle = FlatStyle.Flat;
-            btnUser.Font = new Font("Arial", 18F, FontStyle.Bold);
-            btnUser.Location = new Point(12, 478);
-            btnUser.Margin = new Padding(4);
+            btnUser.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            btnUser.ForeColor = Color.FromArgb(203, 213, 225);
+            btnUser.Location = new Point(0, 430);
+            btnUser.Margin = new Padding(0);
             btnUser.Name = "btnUser";
-            btnUser.Padding = new Padding(15, 0, 0, 0);
-            btnUser.Size = new Size(174, 49);
+            btnUser.Padding = new Padding(25, 0, 0, 0);
+            btnUser.Size = new Size(220, 50);
             btnUser.TabIndex = 7;
-            btnUser.Text = "User";
+            btnUser.Text = "Users";
             btnUser.TextAlign = ContentAlignment.MiddleLeft;
             btnUser.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(9F, 18F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1494, 700);
+            ClientSize = new Size(1520, 700);
             Controls.Add(mainPanel);
             Controls.Add(panelSidebar);
-            Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(4);
             MaximizeBox = false;
-            MaximumSize = new Size(1510, 739);
-            MinimumSize = new Size(1510, 739);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "HMS";
+            Text = "Hospital Management System";
             panelSidebar.ResumeLayout(false);
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }

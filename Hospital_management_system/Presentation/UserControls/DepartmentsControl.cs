@@ -1,3 +1,4 @@
+using Hospital_management_system.Presentation.Common;
 using Hospital_management_system.Application.Common;
 using Hospital_management_system.Application.Commands.Departments;
 using Hospital_management_system.Application.Queries.Departments;
@@ -179,8 +180,18 @@ public partial class DepartmentsControl : UserControl, IDisposable
     #region UI config
     private void LoadControlsConfiguration()
     {
-        dgvDept.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-        dgvDept.DefaultCellStyle.Font = new Font("Arial", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dgvDept.ApplyModernGridStyle();
+        btnRefresh.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(52, 152, 219), System.Drawing.Color.White);
+        btnNew.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
+        btnUpdate.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(241, 196, 15), System.Drawing.Color.White);
+        btnDelete.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(231, 76, 60), System.Drawing.Color.White);
+        btnSubmit.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
+        btnCancel.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(149, 165, 166), System.Drawing.Color.White);
+        tableLayoutPanel1?.ApplyModernInputStyles();
+        tbSearch?.ApplyModernTextBoxStyle();
+
+        
+        
 
         dgvDept.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
         dgvDept.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;

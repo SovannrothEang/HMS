@@ -253,7 +253,7 @@
             dgvDoctor.AllowUserToResizeColumns = false;
             dgvDoctor.AllowUserToResizeRows = false;
             dgvDoctor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvDoctor.BackgroundColor = Color.LightGray;
+            dgvDoctor.BackgroundColor = Color.White;
             dgvDoctor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDoctor.Location = new Point(25, 219);
             dgvDoctor.MultiSelect = false;
@@ -275,7 +275,7 @@
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.BackColor = Color.LightGray;
+            tableLayoutPanel1.BackColor = Color.White;
             tableLayoutPanel1.ColumnCount = 6;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
@@ -307,7 +307,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.WhiteSmoke;
+            BackColor = Color.FromArgb(245, 246, 250);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(btnUpdate);
             Controls.Add(tbSearch);
