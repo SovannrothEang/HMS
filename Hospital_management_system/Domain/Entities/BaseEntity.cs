@@ -8,7 +8,7 @@ public abstract class BaseEntity
     private string _code = null!;
     private bool _isActive = true;
     private bool _isDeleted = false;
-    private DateTime _createdAt;
+    private DateTime _createdAt = DateTime.Now;
     private DateTime? _updatedAt;
     #endregion
 

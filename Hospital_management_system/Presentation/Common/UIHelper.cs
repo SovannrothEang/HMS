@@ -58,7 +58,7 @@ namespace Hospital_management_system.Presentation.Common
                 else if (c is ComboBox cb)
                 {
                     cb.DropDownStyle = ComboBoxStyle.DropDownList;
-                    cb.FlatStyle = FlatStyle.Flat;
+                    cb.FlatStyle = FlatStyle.Standard;
                     cb.Font = new Font("Segoe UI", 11F);
                 }
                 else if (c is DateTimePicker dtp)
@@ -67,8 +67,12 @@ namespace Hospital_management_system.Presentation.Common
                 }
                 else if (c is Label lbl)
                 {
-                    lbl.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-                    lbl.ForeColor = Color.FromArgb(52, 73, 94);
+                    // Only apply to standard labels, don't override title styles
+                    if (lbl.Font.Size < 18)
+                    {
+                        lbl.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+                        lbl.ForeColor = Color.FromArgb(52, 73, 94);
+                    }
                 }
 
                 if (c.HasChildren)

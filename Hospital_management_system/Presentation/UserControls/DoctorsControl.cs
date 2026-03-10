@@ -180,12 +180,12 @@ public partial class DoctorsControl : UserControl, IDisposable
         dgvDoctor.Columns.AddRange([
             new DataGridViewTextBoxColumn { Name = "colId", DataPropertyName = "DoctorId", Visible = false },
             new DataGridViewTextBoxColumn { Name = "colCode", HeaderText = "Code", DataPropertyName = "Code", AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells },
-            new DataGridViewTextBoxColumn { Name = "colFirstName", HeaderText = "First Name", DataPropertyName = "Staff.FirstName", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill },
-            new DataGridViewTextBoxColumn { Name = "colLastName", HeaderText = "Last Name", DataPropertyName = "Staff.LastName", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill },
+            new DataGridViewTextBoxColumn { Name = "colFirstName", HeaderText = "First Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill },
+            new DataGridViewTextBoxColumn { Name = "colLastName", HeaderText = "Last Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill },
             new DataGridViewTextBoxColumn { Name = "colSpecialization", HeaderText = "Specialization", DataPropertyName = "Specialization", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
             new DataGridViewTextBoxColumn { Name = "colLicenseNumber", HeaderText = "License", DataPropertyName = "LicenseNumber", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill },
             new DataGridViewTextBoxColumn { Name = "colYearsOfExperience", HeaderText = "Experience", DataPropertyName = "YearsOfExperience", AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells },
-            new DataGridViewTextBoxColumn { Name = "colDepartment", HeaderText = "Department", DataPropertyName = "Staff.Department.Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill }
+            new DataGridViewTextBoxColumn { Name = "colDepartment", HeaderText = "Department", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill }
         ]);
     }
 

@@ -99,7 +99,7 @@ namespace Hospital_management_system.Presentation.UserControls
 
             cmbCode.Dock = DockStyle.Fill;
             cmbCode.Location = new Point(133, 15);
-            cmbCode.Margin = new Padding(3, 5, 3, 3);
+            cmbCode.Margin = new Padding(3, 8, 3, 3);
             cmbCode.Name = "cmbCode";
 
             label1.Dock = DockStyle.Fill;
@@ -111,7 +111,7 @@ namespace Hospital_management_system.Presentation.UserControls
 
             tbLicenseNumber.Dock = DockStyle.Fill;
             tbLicenseNumber.Location = new Point(540, 15);
-            tbLicenseNumber.Margin = new Padding(3, 5, 3, 3);
+            tbLicenseNumber.Margin = new Padding(3, 8, 3, 3);
             tbLicenseNumber.Name = "tbLicenseNumber";
 
             label3.Dock = DockStyle.Fill;
@@ -123,7 +123,7 @@ namespace Hospital_management_system.Presentation.UserControls
 
             dtpHireDate.Dock = DockStyle.Fill;
             dtpHireDate.Location = new Point(947, 15);
-            dtpHireDate.Margin = new Padding(3, 5, 3, 3);
+            dtpHireDate.Margin = new Padding(3, 8, 3, 3);
             dtpHireDate.Name = "dtpHireDate";
 
             lbName.Dock = DockStyle.Fill;
@@ -135,7 +135,7 @@ namespace Hospital_management_system.Presentation.UserControls
 
             cmbSpecialization.Dock = DockStyle.Fill;
             cmbSpecialization.Location = new Point(133, 60);
-            cmbSpecialization.Margin = new Padding(3, 5, 3, 3);
+            cmbSpecialization.Margin = new Padding(3, 8, 3, 3);
             cmbSpecialization.Name = "cmbSpecialization";
 
             label2.Dock = DockStyle.Fill;
@@ -147,7 +147,7 @@ namespace Hospital_management_system.Presentation.UserControls
 
             tbExperinse.Dock = DockStyle.Fill;
             tbExperinse.Location = new Point(540, 60);
-            tbExperinse.Margin = new Padding(3, 5, 3, 3);
+            tbExperinse.Margin = new Padding(3, 8, 3, 3);
             tbExperinse.Name = "tbExperinse";
 
             label9.Dock = DockStyle.Fill;
@@ -159,7 +159,7 @@ namespace Hospital_management_system.Presentation.UserControls
 
             cmbDepartment.Dock = DockStyle.Fill;
             cmbDepartment.Location = new Point(947, 60);
-            cmbDepartment.Margin = new Padding(3, 5, 3, 3);
+            cmbDepartment.Margin = new Padding(3, 8, 3, 3);
             cmbDepartment.Name = "cmbDepartment";
 
             // tlpActions

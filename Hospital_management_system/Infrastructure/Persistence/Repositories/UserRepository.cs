@@ -17,25 +17,28 @@ public class UserRepository : DapperRepository<User>, IUserRepository
         string sql = $@"
             SELECT u.*, 
                    s.staff_id AS split_staff, s.*, 
-                   d.department_id AS split_dept, d.*
+                   d.department_id AS split_dept, d.*,
+                   p.position_id AS split_pos, p.*
             FROM {TableNames.Users} u
             JOIN {TableNames.Staffs} s ON u.staff_id = s.staff_id
             LEFT JOIN {TableNames.Departments} d ON s.department_id = d.department_id
+            LEFT JOIN {TableNames.Positions} p ON s.position_id = p.position_id
             WHERE u.is_deleted = 0";
 
         using var connection = _connectionFactory.CreateConnection();
-        var userList = await connection.QueryAsync<User, Staff, Department, User>(
+        var userList = await connection.QueryAsync<User, Staff, Department, Position, User>(
             sql,
-            (user, staff, department) =>
+            (user, staff, department, position) =>
             {
                 user.Staff = staff;
                 if (user.Staff != null)
                 {
                     user.Staff.Department = department;
+                    user.Staff.Position = position;
                 }
                 return user;
             },
-            splitOn: "split_staff,split_dept");
+            splitOn: "split_staff,split_dept,split_pos");
 
         return userList;
     }

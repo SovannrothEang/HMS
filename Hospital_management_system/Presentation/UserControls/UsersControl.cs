@@ -208,7 +208,23 @@ public partial class UsersControl : UserControl, IDisposable
     private void OnDgvUserSelectionChanged(object? sender, EventArgs e)
     {
         if (dgvUser.CurrentRow?.DataBoundItem is not UserDto user) return;
-        cmbCode.Text = user.Code;
+        
+        // Ensure the code is in the list or style allows it
+        if (cmbCode.DropDownStyle == ComboBoxStyle.DropDownList)
+        {
+            if (!cmbCode.Items.Contains(user.Code))
+            {
+                cmbCode.DataSource = null;
+                cmbCode.Items.Clear();
+                cmbCode.Items.Add(user.Code);
+            }
+            cmbCode.SelectedItem = user.Code;
+        }
+        else
+        {
+            cmbCode.Text = user.Code;
+        }
+
         tbUsername.Text = user.Username;
         tbPassword.Text = string.Empty;
         if (user.Staff != null)

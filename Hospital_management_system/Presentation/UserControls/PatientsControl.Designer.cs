@@ -106,32 +106,41 @@ namespace Hospital_management_system.Presentation.UserControls
             lbCode.Text = "Code";
             lbCode.TextAlign = ContentAlignment.MiddleLeft;
             tbCode.Dock = DockStyle.Fill;
+            tbCode.Margin = new Padding(3, 8, 3, 3);
             label2.Text = "Gender";
             label2.TextAlign = ContentAlignment.MiddleLeft;
             cmbGender.Dock = DockStyle.Fill;
+            cmbGender.Margin = new Padding(3, 8, 3, 3);
             label5.Text = "Address";
             label5.TextAlign = ContentAlignment.MiddleLeft;
             tbAddress.Dock = DockStyle.Fill;
+            tbAddress.Margin = new Padding(3, 8, 3, 3);
 
             lbName.Text = "First Name";
             lbName.TextAlign = ContentAlignment.MiddleLeft;
             tbFirstName.Dock = DockStyle.Fill;
+            tbFirstName.Margin = new Padding(3, 8, 3, 3);
             label3.Text = "DOB";
             label3.TextAlign = ContentAlignment.MiddleLeft;
             dtpDob.Dock = DockStyle.Fill;
+            dtpDob.Margin = new Padding(3, 8, 3, 3);
             label7.Text = "Sickness";
             label7.TextAlign = ContentAlignment.MiddleLeft;
             tbSickness.Dock = DockStyle.Fill;
+            tbSickness.Margin = new Padding(3, 8, 3, 3);
 
             label1.Text = "Last Name";
             label1.TextAlign = ContentAlignment.MiddleLeft;
             tbLastName.Dock = DockStyle.Fill;
+            tbLastName.Margin = new Padding(3, 8, 3, 3);
             label4.Text = "Phone";
             label4.TextAlign = ContentAlignment.MiddleLeft;
             tbPhoneNumber.Dock = DockStyle.Fill;
+            tbPhoneNumber.Margin = new Padding(3, 8, 3, 3);
             label6.Text = "Doctor";
             label6.TextAlign = ContentAlignment.MiddleLeft;
             cmbDoctor.Dock = DockStyle.Fill;
+            cmbDoctor.Margin = new Padding(3, 8, 3, 3);
 
             // tlpActions
             tlpActions.Anchor = ((AnchorStyles)(((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right)));

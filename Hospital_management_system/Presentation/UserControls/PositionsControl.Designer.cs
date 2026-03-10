@@ -12,6 +12,10 @@ namespace Hospital_management_system.Presentation.UserControls
             if (disposing && (components != null))
             {
                 components.Dispose();
+                if (_searchTimer != null)
+                {
+                    _searchTimer.Dispose();
+                }
             }
             base.Dispose(disposing);
         }
@@ -117,6 +121,9 @@ namespace Hospital_management_system.Presentation.UserControls
 
             this.tbDescription.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbDescription.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
+            this.tbDescription.Multiline = true;
+            this.tbDescription.Name = "tbDescription";
+            this.tbDescription.Size = new System.Drawing.Size(1104, 38);
             this.tbDescription.TabIndex = 4;
 
             // tlpActions

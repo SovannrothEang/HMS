@@ -28,7 +28,8 @@ public class CreatePositionCommandHandler : IRequestHandler<CreatePositionComman
             Description = request.Description,
             DepartmentId = request.DepartmentId,
             IsActive = true,
-            IsDeleted = false
+            IsDeleted = false,
+            CreatedAt = DateTime.UtcNow.AddHours(7)
         };
 
         var result = await _positionRepository.AddAsync(position);

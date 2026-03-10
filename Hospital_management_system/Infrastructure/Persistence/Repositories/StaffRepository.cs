@@ -37,6 +37,13 @@ public class StaffRepository : DapperRepository<Staff>, IStaffRepository
         return staffList;
     }
 
+    public async Task<IEnumerable<Staff>> GetByPositionIdAsync(string positionId)
+    {
+        string sql = $"SELECT * FROM {TableNames.Staffs} WHERE position_id = @PositionId AND is_deleted = 0";
+        using var connection = _connectionFactory.CreateConnection();
+        return await connection.QueryAsync<Staff>(sql, new { PositionId = positionId });
+    }
+
     public async Task<int> AddAsync(Staff staff)
     {
         staff.UpdatedAt = null;
