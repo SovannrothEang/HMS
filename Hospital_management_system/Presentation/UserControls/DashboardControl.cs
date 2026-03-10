@@ -15,17 +15,25 @@ public partial class DashboardControl : UserControl
         InitializeComponent();
         SetupGrids();
         
-        GlobalState.DataUpdated += OnDataUpdated;
-        this.Load += (s, e) =>
+        if (!DesignMode)
         {
-            OnDataUpdated();
-        };
+            GlobalState.DataUpdated += OnDataUpdated;
+            this.Load += (s, e) =>
+            {
+                OnDataUpdated();
+            };
+        }
     }
 
     private void SetupGrids()
     {
-        // Setup Patients Grid
+        // Apply modern theme and standard behavior
+        dgvRecentPatients.ApplyModernGridStyle();
+        dgvDepartments.ApplyModernGridStyle();
+
+        // Specific configurations for Dashboard
         dgvRecentPatients.AutoGenerateColumns = false;
+        dgvRecentPatients.AllowUserToResizeColumns = false;
         dgvRecentPatients.Columns.Clear();
         dgvRecentPatients.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Code", HeaderText = "Code", Width = 80 });
         dgvRecentPatients.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FirstName", HeaderText = "First Name", Width = 150 });
@@ -33,8 +41,8 @@ public partial class DashboardControl : UserControl
         dgvRecentPatients.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Gender", HeaderText = "Gender", Width = 100 });
         dgvRecentPatients.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Sickness", HeaderText = "Sickness", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
 
-        // Setup Departments Grid
         dgvDepartments.AutoGenerateColumns = false;
+        dgvDepartments.AllowUserToResizeColumns = false;
         dgvDepartments.Columns.Clear();
         dgvDepartments.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Code", HeaderText = "Code", Width = 80 });
         dgvDepartments.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Name", HeaderText = "Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });

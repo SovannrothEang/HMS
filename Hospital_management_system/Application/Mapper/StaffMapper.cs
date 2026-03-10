@@ -19,7 +19,7 @@ public static class StaffMapper
             PhoneNumber = dto.PhoneNumber,
             Address = dto.Address,
             Email = dto.Email,
-            Position = dto.Position.ToString(),
+            PositionId = dto.PositionId,
             HiredDate = dto.HiredDate,
             Salary = dto.Salary,
             DepartmentId = dto.DepartmentId
@@ -39,7 +39,8 @@ public static class StaffMapper
             PhoneNumber = entity.PhoneNumber,
             Address = entity.Address,
             Email = entity.Email,
-            Position = Enum.Parse<Position>(entity.Position, true),
+            PositionId = entity.PositionId,
+            Position = entity.Position?.ToDto(),
             HiredDate = entity.HiredDate,
             Salary = entity.Salary,
             DepartmentId = entity.DepartmentId,

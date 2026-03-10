@@ -34,16 +34,25 @@ public record DeleteDepartmentCommand(string Code) : IRequest<Result>;
 public class DeleteDepartmentHandler : IRequestHandler<DeleteDepartmentCommand, Result>
 {
     private readonly IDepartmentRepository _departmentRepository;
+    private readonly IPositionRepository _positionRepository;
 
-    public DeleteDepartmentHandler(IDepartmentRepository departmentRepository)
+    public DeleteDepartmentHandler(IDepartmentRepository departmentRepository, IPositionRepository positionRepository)
     {
         _departmentRepository = departmentRepository;
+        _positionRepository = positionRepository;
     }
 
     public async Task<Result> HandleAsync(DeleteDepartmentCommand request, CancellationToken cancellationToken)
     {
         var department = await _departmentRepository.GetByCodeAsync(request.Code);
         if (department == null) return Result.Failure("Department not found.");
+
+        // Guard: Check if department has positions
+        var positions = await _positionRepository.GetByDepartmentIdAsync(department.DepartmentId);
+        if (positions.Any())
+        {
+            return Result.Failure("Cannot delete department because it has associated positions. Please delete all positions in this department first.");
+        }
 
         await _departmentRepository.DeleteAsync(request.Code);
         return Result.Success();

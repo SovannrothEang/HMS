@@ -51,6 +51,10 @@ public partial class MainForm : Form
         {
             ActivateControl(this.btnPatient, () => _serviceProvider.GetRequiredService<PatientsControl>());
         };
+        btnPosition.Click += (s, e) =>
+        {
+            ActivateControl(this.btnPosition, () => _serviceProvider.GetRequiredService<PositionsControl>());
+        };
         btnStaff.Click += (s, e) =>
         {
             ActivateControl(this.btnStaff, () => _serviceProvider.GetRequiredService<StaffsControl>());
@@ -86,7 +90,7 @@ public partial class MainForm : Form
         {
             btnUser.Visible = true;
         }
-        else if (GlobalState.CurrentStaffInfo != null && GlobalState.CurrentStaffInfo.Position == Position.IT)
+        else if (GlobalState.CurrentStaffInfo != null && GlobalState.CurrentStaffInfo.Position?.Name == "IT")
         {
             btnUser.Visible = true;
         }
@@ -147,23 +151,23 @@ public partial class MainForm : Form
     {
         try
         {
-            // Remove current control
+            // Remove current control from mainPanel
             if (_currentControl != null)
             {
-                this.Controls.Remove(_currentControl);
+                mainPanel.Controls.Remove(_currentControl);
                 _currentControl.Dispose();
                 _currentControl = null;
             }
+
+            // Clear mainPanel just to be absolutely sure
+            mainPanel.Controls.Clear();
 
             // Create and show new control
             var control = controlFactory();
             control.Dock = DockStyle.Fill;
             mainPanel.Controls.Add(control);
             _currentControl = control;
-
-            // Update status
-            //var statusLabel = (ToolStripStatusLabel)this.statusStrip.Items[0];
-            //statusLabel.Text = $"Ready - {control.GetType().Name.Replace("Control", "")} Management";
+            control.BringToFront();
         }
         catch (Exception ex)
         {
@@ -176,30 +180,35 @@ public partial class MainForm : Form
         try
         {
             var deptRepo = _serviceProvider.GetRequiredService<IDepartmentRepository>();
+            var posRepo = _serviceProvider.GetRequiredService<IPositionRepository>();
             var staffRepo = _serviceProvider.GetRequiredService<IStaffRepository>();
             var docRepo = _serviceProvider.GetRequiredService<IDoctorRepository>();
             var patientRepo = _serviceProvider.GetRequiredService<IPatientRepository>();
             var userRepo = _serviceProvider.GetRequiredService<IUserRepository>();
 
             var deptList = await deptRepo.GetAllAsync();
+            var posList = await posRepo.GetAllAsync();
             var staffList = await staffRepo.GetAllWithDepartmentsAsync();
             var docList = await docRepo.GetAllWithStaffsAsync();
             var patientList = await patientRepo.GetAllWithDoctorAsync();
             var userList = await userRepo.GetAllWithStaffAsync();
 
             var deptDtos = deptList.Select(x => x.ToDto()).ToList();
+            var posDtos = posList.Select(x => x.ToDto()).ToList();
             var staffDtos = staffList.Select(x => x.ToDto()).ToList();
             var doctorDtos = docList.Select(x => x.ToDto()).ToList();
             var patientDtos = patientList.Select(x => x.ToDto()).ToList();
             var userDtos = userList.Select(x => x.ToDto()).ToList();
 
             GlobalState.Departments.Clear();
+            GlobalState.Positions.Clear();
             GlobalState.Staffs.Clear();
             GlobalState.Doctors.Clear();
             GlobalState.Patients.Clear();
             GlobalState.Users.Clear();
 
             GlobalState.AddItems<DepartmentDto>(deptDtos, GlobalState.Departments);
+            GlobalState.AddItems<PositionDto>(posDtos, GlobalState.Positions);
             GlobalState.AddItems<StaffDto>(staffDtos, GlobalState.Staffs);
             GlobalState.AddItems<DoctorDto>(doctorDtos, GlobalState.Doctors);
             GlobalState.AddItems<PatientDto>(patientDtos, GlobalState.Patients);

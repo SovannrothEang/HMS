@@ -7,4 +7,5 @@ public static class TableNames
     public const string Patients = "tbl_patients";
     public const string Staffs = "tbl_staffs";
     public const string Users = "tbl_users";
+    public const string Positions = "tbl_positions";
 }

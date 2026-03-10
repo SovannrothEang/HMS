@@ -14,7 +14,7 @@ public record CreateStaffCommand(
     string? PhoneNumber, 
     string? Address, 
     string? Email, 
-    string Position, 
+    string PositionId, 
     DateTime HiredDate, 
     decimal Salary, 
     string DepartmentId) : IRequest<Result<string>>;
@@ -44,7 +44,7 @@ public class CreateStaffHandler : IRequestHandler<CreateStaffCommand, Result<str
             PhoneNumber = request.PhoneNumber,
             Address = request.Address,
             Email = request.Email,
-            Position = request.Position,
+            PositionId = request.PositionId,
             HiredDate = request.HiredDate,
             Salary = request.Salary,
             DepartmentId = request.DepartmentId,
@@ -68,7 +68,7 @@ public record UpdateStaffCommand(
     string? PhoneNumber, 
     string? Address, 
     string? Email, 
-    string Position, 
+    string PositionId, 
     DateTime HiredDate, 
     decimal Salary, 
     string DepartmentId,
@@ -95,7 +95,7 @@ public class UpdateStaffHandler : IRequestHandler<UpdateStaffCommand, Result>
         staff.PhoneNumber = request.PhoneNumber;
         staff.Address = request.Address;
         staff.Email = request.Email;
-        staff.Position = request.Position;
+        staff.PositionId = request.PositionId;
         staff.HiredDate = request.HiredDate;
         staff.Salary = request.Salary;
         staff.DepartmentId = request.DepartmentId;

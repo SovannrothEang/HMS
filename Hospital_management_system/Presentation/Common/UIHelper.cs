@@ -26,6 +26,8 @@ namespace Hospital_management_system.Presentation.Common
             dgv.RowTemplate.Height = 40;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.AllowUserToResizeRows = false;
+            dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
         }
 
         public static void ApplyModernButtonStyle(this Button btn, Color primaryColor, Color textColor)
@@ -55,6 +57,7 @@ namespace Hospital_management_system.Presentation.Common
                 }
                 else if (c is ComboBox cb)
                 {
+                    cb.DropDownStyle = ComboBoxStyle.DropDownList;
                     cb.FlatStyle = FlatStyle.Flat;
                     cb.Font = new Font("Segoe UI", 11F);
                 }

@@ -187,7 +187,7 @@ public partial class DepartmentsControl : UserControl, IDisposable
         btnDelete.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(231, 76, 60), System.Drawing.Color.White);
         btnSubmit.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
         btnCancel.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(149, 165, 166), System.Drawing.Color.White);
-        tableLayoutPanel1?.ApplyModernInputStyles();
+        tlpInput?.ApplyModernInputStyles();
         tbSearch?.ApplyModernTextBoxStyle();
 
         

@@ -101,21 +101,38 @@ public partial class StaffsControl : UserControl, IDisposable
             var phone = tbPhoneNumber.Text.Trim();
             var address = tbAddress.Text.Trim();
             var email = tbEmail.Text.Trim();
-            var position = cmbPosition.Text;
+            var positionId = cmbPosition.SelectedValue?.ToString() ?? string.Empty;
             var salary = decimal.TryParse(tbSalary.Text, out var sal) ? sal : 0;
             var hiredDate = dtpHireDate.Value.Date;
             var deptId = cmbDepartment.SelectedValue?.ToString() ?? string.Empty;
 
+            if (string.IsNullOrEmpty(positionId))
+            {
+                MessageBox.Show("Please select a position.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             Result result;
             if (IsNew)
             {
-                result = await _mediator.SendAsync(new CreateStaffCommand(code, firstName, lastName, dob, gender, phone, address, email, position, hiredDate, salary, deptId));
+                result = await _mediator.SendAsync(new CreateStaffCommand(code, firstName, lastName, dob, gender, phone, address, email, positionId, hiredDate, salary, deptId));
             }
             else
             {
                 var staff = dgvStaff.CurrentRow?.DataBoundItem as StaffDto;
                 if (staff == null) return;
-                result = await _mediator.SendAsync(new UpdateStaffCommand(staff.StaffId, code, firstName, lastName, dob, gender, phone, address, email, position, hiredDate, salary, deptId, true));
+
+                // Guard: Prevent changing position from Doctor if Doctor info exists
+                if (staff.Position?.Name == "Doctor" && positionId != staff.PositionId)
+                {
+                    if (GlobalState.Doctors.Any(d => d.StaffId == staff.StaffId))
+                    {
+                        MessageBox.Show("Cannot change position from Doctor because this staff member has associated Doctor information. Please delete the Doctor record from the Doctors module first.", "Action Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                result = await _mediator.SendAsync(new UpdateStaffCommand(staff.StaffId, code, firstName, lastName, dob, gender, phone, address, email, positionId, hiredDate, salary, deptId, true));
             }
 
             if (result.IsSuccess)
@@ -139,7 +156,7 @@ public partial class StaffsControl : UserControl, IDisposable
         btnDelete.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(231, 76, 60), System.Drawing.Color.White);
         btnSubmit.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
         btnCancel.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(149, 165, 166), System.Drawing.Color.White);
-        tableLayoutPanel1?.ApplyModernInputStyles();
+        tlpInput?.ApplyModernInputStyles();
         tbSearch?.ApplyModernTextBoxStyle();
 
         
@@ -149,7 +166,11 @@ public partial class StaffsControl : UserControl, IDisposable
         dtpDob.CustomFormat = dtpHireDate.CustomFormat = "dd/MM/yyyy";
         
         cmbGender.DataSource = Enum.GetValues(typeof(PersonGender));
-        cmbPosition.DataSource = Enum.GetValues(typeof(Position));
+        
+        cmbPosition.DataSource = GlobalState.Positions;
+        cmbPosition.DisplayMember = "Name";
+        cmbPosition.ValueMember = "PositionId";
+
         cmbDepartment.DataSource = GlobalState.Departments;
         cmbDepartment.DisplayMember = "Name";
         cmbDepartment.ValueMember = "DepartmentId";
@@ -164,7 +185,7 @@ public partial class StaffsControl : UserControl, IDisposable
             new DataGridViewTextBoxColumn { Name = "colDob", HeaderText = "DOB", DataPropertyName = "DOB", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
             new DataGridViewTextBoxColumn { Name = "colPhone", HeaderText = "Phone", DataPropertyName = "PhoneNumber", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
             new DataGridViewTextBoxColumn { Name = "colEmail", HeaderText = "Email", DataPropertyName = "Email", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
-            new DataGridViewTextBoxColumn { Name = "colPosition", HeaderText = "Position", DataPropertyName = "Position", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
+            new DataGridViewTextBoxColumn { Name = "colPosition", HeaderText = "Position", DataPropertyName = "Position.Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
             new DataGridViewTextBoxColumn { Name = "colSalary", HeaderText = "Salary", DataPropertyName = "Salary", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells },
             new DataGridViewTextBoxColumn { Name = "colDepartment", HeaderText = "Department", DataPropertyName = "Department.Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells }
         ]);
@@ -198,7 +219,7 @@ public partial class StaffsControl : UserControl, IDisposable
         tbPhoneNumber.Text = staff.PhoneNumber;
         tbAddress.Text = staff.Address;
         tbEmail.Text = staff.Email;
-        cmbPosition.SelectedItem = staff.Position;
+        cmbPosition.SelectedValue = staff.PositionId;
         tbSalary.Text = staff.Salary.ToString();
         dtpHireDate.Value = staff.HiredDate < dtpHireDate.MinDate ? dtpHireDate.MinDate : staff.HiredDate;
         if (!string.IsNullOrEmpty(staff.DepartmentId))

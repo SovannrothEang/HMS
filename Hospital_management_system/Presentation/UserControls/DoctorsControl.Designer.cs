@@ -1,16 +1,9 @@
-﻿namespace Hospital_management_system.Presentation.UserControls
+namespace Hospital_management_system.Presentation.UserControls
 {
     partial class DoctorsControl
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             cmbCode = new ComboBox();
@@ -42,220 +31,217 @@
             cmbDepartment = new ComboBox();
             btnUpdate = new Button();
             tbSearch = new TextBox();
-            colUpdatedAt = new DataGridViewTextBoxColumn();
-            colCreatedAt = new DataGridViewTextBoxColumn();
-            colDescription = new DataGridViewTextBoxColumn();
-            colName = new DataGridViewTextBoxColumn();
-            colCode = new DataGridViewTextBoxColumn();
             btnDelete = new Button();
             btnNew = new Button();
             btnSubmit = new Button();
             btnCancel = new Button();
             dgvDoctor = new DataGridView();
             btnRefresh = new Button();
-            tableLayoutPanel1 = new TableLayoutPanel();
+            pnlHeader = new Panel();
+            tlpInput = new TableLayoutPanel();
+            tlpActions = new TableLayoutPanel();
+            pnlLeftActions = new FlowLayoutPanel();
+            pnlCenterActions = new FlowLayoutPanel();
+            pnlRightActions = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)dgvDoctor).BeginInit();
-            tableLayoutPanel1.SuspendLayout();
+            pnlHeader.SuspendLayout();
+            tlpInput.SuspendLayout();
+            tlpActions.SuspendLayout();
+            pnlLeftActions.SuspendLayout();
+            pnlCenterActions.SuspendLayout();
+            pnlRightActions.SuspendLayout();
             SuspendLayout();
-            // 
-            // cmbCode
-            // 
-            cmbCode.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbCode.FormattingEnabled = true;
-            cmbCode.Location = new Point(123, 3);
-            cmbCode.Name = "cmbCode";
-            cmbCode.Size = new Size(259, 26);
-            cmbCode.TabIndex = 78;
-            // 
-            // lbCode
-            // 
-            lbCode.AutoSize = true;
-            lbCode.Location = new Point(3, 7);
-            lbCode.Margin = new Padding(3, 7, 3, 0);
+            
+            // pnlHeader
+            pnlHeader.Anchor = ((AnchorStyles)(((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right)));
+            pnlHeader.BackColor = Color.White;
+            pnlHeader.Controls.Add(tlpInput);
+            pnlHeader.Location = new Point(25, 25);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(1250, 110);
+            pnlHeader.TabIndex = 78;
+
+            // tlpInput
+            tlpInput.ColumnCount = 6;
+            tlpInput.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tlpInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            tlpInput.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tlpInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            tlpInput.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tlpInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            tlpInput.Controls.Add(lbCode, 0, 0);
+            tlpInput.Controls.Add(cmbCode, 1, 0);
+            tlpInput.Controls.Add(label1, 2, 0);
+            tlpInput.Controls.Add(tbLicenseNumber, 3, 0);
+            tlpInput.Controls.Add(label3, 4, 0);
+            tlpInput.Controls.Add(dtpHireDate, 5, 0);
+            tlpInput.Controls.Add(lbName, 0, 1);
+            tlpInput.Controls.Add(cmbSpecialization, 1, 1);
+            tlpInput.Controls.Add(label2, 2, 1);
+            tlpInput.Controls.Add(tbExperinse, 3, 1);
+            tlpInput.Controls.Add(label9, 4, 1);
+            tlpInput.Controls.Add(cmbDepartment, 5, 1);
+            tlpInput.Dock = DockStyle.Fill;
+            tlpInput.Location = new Point(0, 0);
+            tlpInput.Name = "tlpInput";
+            tlpInput.Padding = new Padding(10);
+            tlpInput.RowCount = 2;
+            tlpInput.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlpInput.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlpInput.Size = new Size(1250, 110);
+
+            lbCode.Dock = DockStyle.Fill;
+            lbCode.Location = new Point(13, 10);
             lbCode.Name = "lbCode";
-            lbCode.Size = new Size(47, 18);
-            lbCode.TabIndex = 62;
+            lbCode.Size = new Size(114, 45);
             lbCode.Text = "Code";
-            // 
-            // lbName
-            // 
-            lbName.AutoSize = true;
-            lbName.Location = new Point(3, 54);
-            lbName.Margin = new Padding(3, 7, 3, 0);
-            lbName.Name = "lbName";
-            lbName.Size = new Size(106, 18);
-            lbName.TabIndex = 63;
-            lbName.Text = "Specialization";
-            // 
-            // cmbSpecialization
-            // 
-            cmbSpecialization.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbSpecialization.FormattingEnabled = true;
-            cmbSpecialization.Location = new Point(123, 50);
-            cmbSpecialization.Name = "cmbSpecialization";
-            cmbSpecialization.Size = new Size(259, 26);
-            cmbSpecialization.TabIndex = 4;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(426, 7);
-            label1.Margin = new Padding(3, 7, 3, 0);
+            lbCode.TextAlign = ContentAlignment.MiddleLeft;
+
+            cmbCode.Dock = DockStyle.Fill;
+            cmbCode.Location = new Point(133, 15);
+            cmbCode.Margin = new Padding(3, 5, 3, 3);
+            cmbCode.Name = "cmbCode";
+
+            label1.Dock = DockStyle.Fill;
+            label1.Location = new Point(420, 10);
             label1.Name = "label1";
-            label1.Size = new Size(67, 36);
-            label1.TabIndex = 68;
-            label1.Text = "License Number";
-            // 
-            // tbLicenseNumber
-            // 
-            tbLicenseNumber.Location = new Point(546, 3);
-            tbLicenseNumber.Multiline = true;
+            label1.Size = new Size(114, 45);
+            label1.Text = "License";
+            label1.TextAlign = ContentAlignment.MiddleLeft;
+
+            tbLicenseNumber.Dock = DockStyle.Fill;
+            tbLicenseNumber.Location = new Point(540, 15);
+            tbLicenseNumber.Margin = new Padding(3, 5, 3, 3);
             tbLicenseNumber.Name = "tbLicenseNumber";
-            tbLicenseNumber.Size = new Size(259, 29);
-            tbLicenseNumber.TabIndex = 2;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(426, 54);
-            label2.Margin = new Padding(3, 7, 3, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(87, 18);
-            label2.TabIndex = 69;
-            label2.Text = "Experiense";
-            // 
-            // tbExperinse
-            // 
-            tbExperinse.Location = new Point(546, 50);
-            tbExperinse.Multiline = true;
-            tbExperinse.Name = "tbExperinse";
-            tbExperinse.Size = new Size(259, 29);
-            tbExperinse.TabIndex = 5;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(849, 7);
-            label3.Margin = new Padding(3, 7, 3, 0);
+
+            label3.Dock = DockStyle.Fill;
+            label3.Location = new Point(827, 10);
             label3.Name = "label3";
-            label3.Size = new Size(75, 18);
-            label3.TabIndex = 70;
+            label3.Size = new Size(114, 45);
             label3.Text = "Hire Date";
-            // 
-            // dtpHireDate
-            // 
-            dtpHireDate.Location = new Point(949, 3);
+            label3.TextAlign = ContentAlignment.MiddleLeft;
+
+            dtpHireDate.Dock = DockStyle.Fill;
+            dtpHireDate.Location = new Point(947, 15);
+            dtpHireDate.Margin = new Padding(3, 5, 3, 3);
             dtpHireDate.Name = "dtpHireDate";
-            dtpHireDate.Size = new Size(262, 26);
-            dtpHireDate.TabIndex = 3;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(849, 54);
-            label9.Margin = new Padding(3, 7, 3, 0);
+
+            lbName.Dock = DockStyle.Fill;
+            lbName.Location = new Point(13, 55);
+            lbName.Name = "lbName";
+            lbName.Size = new Size(114, 45);
+            lbName.Text = "Specialization";
+            lbName.TextAlign = ContentAlignment.MiddleLeft;
+
+            cmbSpecialization.Dock = DockStyle.Fill;
+            cmbSpecialization.Location = new Point(133, 60);
+            cmbSpecialization.Margin = new Padding(3, 5, 3, 3);
+            cmbSpecialization.Name = "cmbSpecialization";
+
+            label2.Dock = DockStyle.Fill;
+            label2.Location = new Point(420, 55);
+            label2.Name = "label2";
+            label2.Size = new Size(114, 45);
+            label2.Text = "Experience";
+            label2.TextAlign = ContentAlignment.MiddleLeft;
+
+            tbExperinse.Dock = DockStyle.Fill;
+            tbExperinse.Location = new Point(540, 60);
+            tbExperinse.Margin = new Padding(3, 5, 3, 3);
+            tbExperinse.Name = "tbExperinse";
+
+            label9.Dock = DockStyle.Fill;
+            label9.Location = new Point(827, 55);
             label9.Name = "label9";
-            label9.Size = new Size(90, 18);
-            label9.TabIndex = 76;
+            label9.Size = new Size(114, 45);
             label9.Text = "Department";
-            // 
-            // cmbDepartment
-            // 
-            cmbDepartment.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbDepartment.FormattingEnabled = true;
-            cmbDepartment.Location = new Point(949, 50);
+            label9.TextAlign = ContentAlignment.MiddleLeft;
+
+            cmbDepartment.Dock = DockStyle.Fill;
+            cmbDepartment.Location = new Point(947, 60);
+            cmbDepartment.Margin = new Padding(3, 5, 3, 3);
             cmbDepartment.Name = "cmbDepartment";
-            cmbDepartment.Size = new Size(262, 26);
-            cmbDepartment.TabIndex = 6;
-            // 
-            // btnUpdate
-            // 
-            btnUpdate.Location = new Point(643, 150);
-            btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(99, 38);
-            btnUpdate.TabIndex = 67;
-            btnUpdate.Text = "Update";
-            btnUpdate.UseVisualStyleBackColor = true;
-            // 
-            // tbSearch
-            // 
-            tbSearch.Location = new Point(25, 150);
-            tbSearch.Multiline = true;
+
+            // tlpActions
+            tlpActions.Anchor = ((AnchorStyles)(((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right)));
+            tlpActions.ColumnCount = 3;
+            tlpActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tlpActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tlpActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+            tlpActions.Controls.Add(pnlLeftActions, 0, 0);
+            tlpActions.Controls.Add(pnlCenterActions, 1, 0);
+            tlpActions.Controls.Add(pnlRightActions, 2, 0);
+            tlpActions.Location = new Point(25, 150);
+            tlpActions.Name = "tlpActions";
+            tlpActions.RowCount = 1;
+            tlpActions.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlpActions.Size = new Size(1250, 50);
+
+            // pnlLeftActions
+            pnlLeftActions.Controls.Add(tbSearch);
+            pnlLeftActions.Controls.Add(btnRefresh);
+            pnlLeftActions.Dock = DockStyle.Fill;
+            pnlLeftActions.Location = new Point(0, 0);
+            pnlLeftActions.Name = "pnlLeftActions";
+
+            tbSearch.Margin = new Padding(0, 5, 5, 0);
             tbSearch.Name = "tbSearch";
             tbSearch.Size = new Size(402, 38);
-            tbSearch.TabIndex = 65;
-            // 
-            // colUpdatedAt
-            // 
-            colUpdatedAt.HeaderText = "Updated At";
-            colUpdatedAt.Name = "colUpdatedAt";
-            // 
-            // colCreatedAt
-            // 
-            colCreatedAt.HeaderText = "Created At";
-            colCreatedAt.Name = "colCreatedAt";
-            // 
-            // colDescription
-            // 
-            colDescription.HeaderText = "Description";
-            colDescription.Name = "colDescription";
-            // 
-            // colName
-            // 
-            colName.HeaderText = "Name";
-            colName.Name = "colName";
-            // 
-            // colCode
-            // 
-            colCode.HeaderText = "Code";
-            colCode.Name = "colCode";
-            // 
-            // btnDelete
-            // 
-            btnDelete.Location = new Point(538, 150);
+            tbSearch.PlaceholderText = "Search doctors...";
+
+            btnRefresh.Margin = new Padding(5, 3, 5, 0);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(99, 38);
+            btnRefresh.Text = "Refresh";
+
+            // pnlCenterActions
+            pnlCenterActions.Controls.Add(btnDelete);
+            pnlCenterActions.Controls.Add(btnUpdate);
+            pnlCenterActions.Controls.Add(btnNew);
+            pnlCenterActions.Dock = DockStyle.Fill;
+            pnlCenterActions.Location = new Point(500, 0);
+            pnlCenterActions.Name = "pnlCenterActions";
+
+            btnDelete.Margin = new Padding(5, 3, 5, 0);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(99, 38);
-            btnDelete.TabIndex = 66;
             btnDelete.Text = "Delete";
-            btnDelete.UseVisualStyleBackColor = true;
-            // 
-            // btnNew
-            // 
-            btnNew.Location = new Point(748, 150);
+
+            btnUpdate.Margin = new Padding(5, 3, 5, 0);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(99, 38);
+            btnUpdate.Text = "Update";
+
+            btnNew.Margin = new Padding(5, 3, 5, 0);
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(99, 38);
-            btnNew.TabIndex = 64;
             btnNew.Text = "New";
-            btnNew.UseVisualStyleBackColor = true;
-            // 
-            // btnSubmit
-            // 
-            btnSubmit.Location = new Point(1142, 150);
+
+            // pnlRightActions
+            pnlRightActions.Controls.Add(btnSubmit);
+            pnlRightActions.Controls.Add(btnCancel);
+            pnlRightActions.Dock = DockStyle.Fill;
+            pnlRightActions.FlowDirection = FlowDirection.RightToLeft;
+            pnlRightActions.Location = new Point(812, 0);
+            pnlRightActions.Name = "pnlRightActions";
+
+            btnSubmit.Margin = new Padding(5, 3, 0, 0);
             btnSubmit.Name = "btnSubmit";
-            btnSubmit.Size = new Size(99, 38);
-            btnSubmit.TabIndex = 59;
+            btnSubmit.Size = new Size(100, 38);
             btnSubmit.Text = "Submit";
-            btnSubmit.UseVisualStyleBackColor = true;
-            // 
-            // btnCancel
-            // 
-            btnCancel.Location = new Point(1037, 150);
+
+            btnCancel.Margin = new Padding(5, 3, 5, 0);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(99, 38);
-            btnCancel.TabIndex = 58;
             btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
-            // 
+
             // dgvDoctor
-            // 
-            dgvDoctor.AllowUserToAddRows = false;
-            dgvDoctor.AllowUserToDeleteRows = false;
-            dgvDoctor.AllowUserToResizeColumns = false;
-            dgvDoctor.AllowUserToResizeRows = false;
+            dgvDoctor.Anchor = ((AnchorStyles)((((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left) | AnchorStyles.Right)));
             dgvDoctor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvDoctor.BackgroundColor = Color.White;
+            dgvDoctor.BorderStyle = BorderStyle.None;
             dgvDoctor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDoctor.Location = new Point(25, 219);
+            dgvDoctor.Location = new Point(25, 215);
             dgvDoctor.MultiSelect = false;
             dgvDoctor.Name = "dgvDoctor";
             dgvDoctor.ReadOnly = true;
@@ -263,69 +249,27 @@
             dgvDoctor.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDoctor.Size = new Size(1250, 460);
             dgvDoctor.TabIndex = 61;
-            // 
-            // btnRefresh
-            // 
-            btnRefresh.Location = new Point(433, 150);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(99, 38);
-            btnRefresh.TabIndex = 60;
-            btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.BackColor = Color.White;
-            tableLayoutPanel1.ColumnCount = 6;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.Controls.Add(cmbDepartment, 5, 1);
-            tableLayoutPanel1.Controls.Add(dtpHireDate, 5, 0);
-            tableLayoutPanel1.Controls.Add(label3, 4, 0);
-            tableLayoutPanel1.Controls.Add(label9, 4, 1);
-            tableLayoutPanel1.Controls.Add(tbExperinse, 3, 1);
-            tableLayoutPanel1.Controls.Add(tbLicenseNumber, 3, 0);
-            tableLayoutPanel1.Controls.Add(label1, 2, 0);
-            tableLayoutPanel1.Controls.Add(label2, 2, 1);
-            tableLayoutPanel1.Controls.Add(cmbSpecialization, 1, 1);
-            tableLayoutPanel1.Controls.Add(cmbCode, 1, 0);
-            tableLayoutPanel1.Controls.Add(lbCode, 0, 0);
-            tableLayoutPanel1.Controls.Add(lbName, 0, 1);
-            tableLayoutPanel1.Location = new Point(25, 25);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.Size = new Size(1250, 94);
-            tableLayoutPanel1.TabIndex = 78;
-            // 
-            // DoctorControl
-            // 
+
+            // DoctorsControl
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 246, 250);
-            Controls.Add(tableLayoutPanel1);
-            Controls.Add(btnUpdate);
-            Controls.Add(tbSearch);
-            Controls.Add(btnDelete);
-            Controls.Add(btnNew);
-            Controls.Add(btnSubmit);
-            Controls.Add(btnCancel);
             Controls.Add(dgvDoctor);
-            Controls.Add(btnRefresh);
-            Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Controls.Add(tlpActions);
+            Controls.Add(pnlHeader);
+            Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(4);
-            Name = "DoctorControl";
+            Name = "DoctorsControl";
             Size = new Size(1300, 700);
             ((System.ComponentModel.ISupportInitialize)dgvDoctor).EndInit();
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
+            pnlHeader.ResumeLayout(false);
+            tlpInput.ResumeLayout(false);
+            tlpActions.ResumeLayout(false);
+            pnlLeftActions.ResumeLayout(false);
+            pnlLeftActions.PerformLayout();
+            pnlCenterActions.ResumeLayout(false);
+            pnlRightActions.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -340,11 +284,6 @@
         private TextBox tbLicenseNumber;
         private Button btnUpdate;
         private TextBox tbSearch;
-        private DataGridViewTextBoxColumn colUpdatedAt;
-        private DataGridViewTextBoxColumn colCreatedAt;
-        private DataGridViewTextBoxColumn colDescription;
-        private DataGridViewTextBoxColumn colName;
-        private DataGridViewTextBoxColumn colCode;
         private Button btnDelete;
         private Button btnNew;
         private Button btnSubmit;
@@ -355,6 +294,11 @@
         private DataGridView dgvDoctor;
         private Button btnRefresh;
         private ComboBox cmbCode;
-        private TableLayoutPanel tableLayoutPanel1;
+        private Panel pnlHeader;
+        private TableLayoutPanel tlpInput;
+        private TableLayoutPanel tlpActions;
+        private FlowLayoutPanel pnlLeftActions;
+        private FlowLayoutPanel pnlCenterActions;
+        private FlowLayoutPanel pnlRightActions;
     }
 }

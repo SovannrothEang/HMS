@@ -12,7 +12,8 @@ public class StaffDto : BaseDtoEntity
     public string? PhoneNumber { get; set; }
     public string? Address { get; set; }
     public string? Email { get; set; }
-    public Position Position { get; set; }
+    public string PositionId { get; set; } = string.Empty;
+    public PositionDto? Position { get; set; }
     public DateTime HiredDate { get; set; }
     public decimal Salary { get; set; }
     public string DepartmentId { get; set; } = string.Empty;

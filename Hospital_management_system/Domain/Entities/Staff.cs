@@ -9,7 +9,7 @@ public class Staff : Person
 {
     #region - Fields
     private string _staffId = null!;
-    private string _position = null!;
+    private string _positionId = null!;
     private DateTime _hiredDate;
     private decimal _salary;
     private string _departmentId = null!;
@@ -29,16 +29,16 @@ public class Staff : Person
             _staffId = value;
         }
     }
-    [Column("position", TypeName = "varchar(150)")]
-    public string Position
+    [Column("position_id", TypeName = "varchar(150)")]
+    public string PositionId
     {
-        get => _position;
+        get => _positionId;
         set
         {
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentException("Invalid ID", nameof(value));
 
-            _position = value;
+            _positionId = value;
         }
     }
     [Column("hired_date", TypeName = "datetime2")]
@@ -76,6 +76,7 @@ public class Staff : Person
 
     #region Navigation Prop
     public virtual Department Department { get; set; } = null!;
+    public virtual Position Position { get; set; } = null!;
     public virtual Doctor? Doctor { get; set; }
     public virtual User? User { get; set; }
     #endregion

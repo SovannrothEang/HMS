@@ -100,7 +100,7 @@ public partial class DoctorsControl : UserControl, IDisposable
             DisableControls(false);
             var doctorStaffIds = GlobalState.Doctors.Select(d => d.StaffId).ToList();
             cmbCode.DataSource = GlobalState.Staffs
-                .Where(s => s.Position == Position.Doctor && !doctorStaffIds.Contains(s.StaffId))
+                .Where(s => s.Position?.Name == "Doctor" && !doctorStaffIds.Contains(s.StaffId))
                 .Select(s => s.Code).ToList();
             
             IsNew = true;
@@ -165,13 +165,13 @@ public partial class DoctorsControl : UserControl, IDisposable
         btnDelete.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(231, 76, 60), System.Drawing.Color.White);
         btnSubmit.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
         btnCancel.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(149, 165, 166), System.Drawing.Color.White);
-        tableLayoutPanel1?.ApplyModernInputStyles();
+        tlpInput?.ApplyModernInputStyles();
         tbSearch?.ApplyModernTextBoxStyle();
 
         
         
         
-        cmbCode.DataSource = GlobalState.Staffs.Where(s => s.Position == Position.Doctor).Select(s => s.Code).ToList();
+        cmbCode.DataSource = GlobalState.Staffs.Where(s => s.Position?.Name == "Doctor").Select(s => s.Code).ToList();
         cmbSpecialization.DataSource = Enum.GetValues(typeof(Specialization));
         cmbDepartment.DataSource = GlobalState.Departments;
         cmbDepartment.DisplayMember = "Name";
@@ -223,7 +223,7 @@ public partial class DoctorsControl : UserControl, IDisposable
         {
             dtpHireDate.Value = doc.Staff.HiredDate < dtpHireDate.MinDate 
                 ? dtpHireDate.MinDate 
-                : doc.Staff.HiredDate;
+                 : doc.Staff.HiredDate;
         }
     }
 

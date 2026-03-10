@@ -14,6 +14,7 @@ public static class GlobalState
 
     // Recently accessed records
     public static BindingList<DepartmentDto> Departments { get; set; } = [];
+    public static BindingList<PositionDto> Positions { get; set; } = [];
     public static BindingList<DoctorDto> Doctors { get; set; } = [];
     public static BindingList<PatientDto> Patients { get; set; } = [];
     public static BindingList<StaffDto> Staffs { get; set; } = [];
@@ -34,6 +35,7 @@ public static class GlobalState
     public static void ClearAllData()
     {
         Departments.Clear();
+        Positions.Clear();
         Doctors.Clear();
         Patients.Clear();
         Staffs.Clear();

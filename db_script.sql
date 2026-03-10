@@ -1,4 +1,10 @@
-﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+CREATE DATABASE hms;
+GO
+
+USE hms;
+GO
+
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (
         [MigrationId] nvarchar(150) NOT NULL,
@@ -24,9 +30,27 @@ CREATE TABLE [tbl_departments] (
 );
 GO
 
+CREATE TABLE [tbl_positions] (
+    [position_id] varchar(150) NOT NULL,
+    [name] varchar(255) NOT NULL,
+    [description] varchar(500) NULL,
+    [department_id] varchar(150) NOT NULL,
+    [code] varchar(150) NOT NULL,
+    [is_active] bit NOT NULL,
+    [is_deleted] bit NOT NULL,
+    [created_at] datetime2 NOT NULL,
+    [updated_at] datetime2 NULL,
+    CONSTRAINT [PK_tbl_positions] PRIMARY KEY ([position_id]),
+    CONSTRAINT [FK_tbl_positions_tbl_departments_department_id] FOREIGN KEY ([department_id]) REFERENCES [tbl_departments] ([department_id]) ON DELETE CASCADE
+);
+GO
+
+CREATE UNIQUE INDEX [IX_tbl_positions_code] ON [tbl_positions] ([code]) WHERE [is_deleted] = 0;
+GO
+
 CREATE TABLE [tbl_staffs] (
     [staff_id] varchar(150) NOT NULL,
-    [position] varchar(150) NOT NULL,
+    [position_id] varchar(150) NOT NULL,
     [hired_date] datetime2 NOT NULL,
     [salary] decimal(18,2) NOT NULL,
     [department_id] varchar(150) NOT NULL,
@@ -45,7 +69,8 @@ CREATE TABLE [tbl_staffs] (
     CONSTRAINT [PK_tbl_staffs] PRIMARY KEY ([staff_id]),
     CONSTRAINT [CHK_CODE_NOT_EMPTY1] CHECK (LTRIM(RTRIM(ISNULL([Code], ''))) <> ''),
     CONSTRAINT [CHK_NAME_NOT_EMPTY1] CHECK (LTRIM(RTRIM(FirstName + ' ' + LastName)) <> ''),
-    CONSTRAINT [FK_tbl_staffs_tbl_departments_department_id] FOREIGN KEY ([department_id]) REFERENCES [tbl_departments] ([department_id]) ON DELETE CASCADE
+    CONSTRAINT [FK_tbl_staffs_tbl_departments_department_id] FOREIGN KEY ([department_id]) REFERENCES [tbl_departments] ([department_id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_tbl_staffs_tbl_positions_position_id] FOREIGN KEY ([position_id]) REFERENCES [tbl_positions] ([position_id]) ON DELETE NO ACTION
 );
 GO
 
@@ -106,61 +131,57 @@ CREATE TABLE [tbl_patients] (
 );
 GO
 
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'department_id', N'code', N'created_at', N'description', N'is_active', N'is_deleted', N'name', N'updated_at') AND [object_id] = OBJECT_ID(N'[tbl_departments]'))
-    SET IDENTITY_INSERT [tbl_departments] ON;
+-- Seeding
 INSERT INTO [tbl_departments] ([department_id], [code], [created_at], [description], [is_active], [is_deleted], [name], [updated_at])
-VALUES ('2883fe52-f4ca-4ce2-9999-6c0280668b2f', 'ORTH', '0001-01-01T00:00:00.0000000', 'Bone and Joint Department', CAST(1 AS bit), CAST(0 AS bit), 'Orthopedics', NULL),
-('4aa491b1-97cb-4189-8e03-d4ea8c27af6d', 'CAD', '0001-01-01T00:00:00.0000000', 'Heart and Cardiovascular Department', CAST(1 AS bit), CAST(0 AS bit), 'Cardiology', NULL),
-('4e795955-b97a-4f02-b6bd-334df9f79e47', 'GM', '0001-01-01T00:00:00.0000000', 'General Health Department', CAST(1 AS bit), CAST(0 AS bit), 'General Medicine', NULL),
-('63347532-a564-4e23-a5d9-c7de4ef82da0', 'IT', '0001-01-01T00:00:00.0000000', 'Information Technology', CAST(1 AS bit), CAST(0 AS bit), 'IT', NULL),
-('80655e05-0aa7-4feb-860e-32ac14a19864', 'PED', '0001-01-01T00:00:00.0000000', 'Children Health Department', CAST(1 AS bit), CAST(0 AS bit), 'Pediatrics', NULL),
-('d3200872-4f52-4982-b1a4-0ed85ee3f927', 'EMG', '0001-01-01T00:00:00.0000000', 'Emergency Department', CAST(1 AS bit), CAST(0 AS bit), 'Emergency', NULL);
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'department_id', N'code', N'created_at', N'description', N'is_active', N'is_deleted', N'name', N'updated_at') AND [object_id] = OBJECT_ID(N'[tbl_departments]'))
-    SET IDENTITY_INSERT [tbl_departments] OFF;
+VALUES 
+('dept-001', 'ORTH', GETDATE(), 'Bone and Joint Department', 1, 0, 'Orthopedics', NULL),
+('dept-002', 'CAD', GETDATE(), 'Heart and Cardiovascular Department', 1, 0, 'Cardiology', NULL),
+('dept-003', 'GM', GETDATE(), 'General Health Department', 1, 0, 'General Medicine', NULL),
+('dept-004', 'IT', GETDATE(), 'Information Technology', 1, 0, 'IT', NULL),
+('dept-005', 'PED', GETDATE(), 'Children Health Department', 1, 0, 'Pediatrics', NULL),
+('dept-006', 'EMG', GETDATE(), 'Emergency Department', 1, 0, 'Emergency', NULL);
 GO
 
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'staff_id', N'address', N'code', N'created_at', N'dob', N'department_id', N'email', N'firstname', N'gender', N'hired_date', N'is_active', N'is_deleted', N'lastname', N'phonenumber', N'position', N'salary', N'updated_at') AND [object_id] = OBJECT_ID(N'[tbl_staffs]'))
-    SET IDENTITY_INSERT [tbl_staffs] ON;
-INSERT INTO [tbl_staffs] ([staff_id], [address], [code], [created_at], [dob], [department_id], [email], [firstname], [gender], [hired_date], [is_active], [is_deleted], [lastname], [phonenumber], [position], [salary], [updated_at])
-VALUES ('2db25790-c22a-4adb-8f3b-8e3a7b94d851', '456 Oak Ave', 'S002', '0001-01-01T00:00:00.0000000', '1975-08-20 00:00:00', '4e795955-b97a-4f02-b6bd-334df9f79e47', 'bob.johnson@hms.com', 'Bob', 0, '2005-03-10T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Johnson', '555-2222', 'Nurse', 0.0, NULL),
-('83f71025-693f-4067-9b85-84232d4bdce6', '202 Secret Rd', 'S006', '0001-01-01T00:00:00.0000000', '2004-01-01 00:00:00', '63347532-a564-4e23-a5d9-c7de4ef82da0', 'tola.seyha@hms.com', 'Seyha', 0, '2022-04-20T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Tola', '1111-1111', 'Administrator', 0.0, NULL),
-('92c7323b-d3c2-4024-826c-2a6d4f357c1c', '101 Hero Way', 'S004', '0001-01-01T00:00:00.0000000', '1982-11-03 00:00:00', '2883fe52-f4ca-4ce2-9999-6c0280668b2f', 'diana.prince@hms.com', 'Diana', 1, '2012-09-15T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Prince', '555-4444', 'Technician', 0.0, NULL),
-('991d5722-d08f-4206-b782-80067da7c4b2', '123 Main St', 'S001', '0001-01-01T00:00:00.0000000', '1980-05-15 00:00:00', '4aa491b1-97cb-4189-8e03-d4ea8c27af6d', 'alice.smith@hms.com', 'Alice', 1, '2010-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Smith', '555-1111', 'Doctor', 0.0, NULL),
-('bd1a58da-9479-4f52-802e-90e774249411', '202 Secret Rd', 'S005', '0001-01-01T00:00:00.0000000', '1995-02-28 00:00:00', 'd3200872-4f52-4982-b1a4-0ed85ee3f927', 'eve.adams@hms.com', 'Eve', 1, '2018-04-20T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Adams', '555-5555', 'Receptionist', 0.0, NULL),
-('cb842b1f-e86c-46f0-9176-c7cf53f32d1a', '789 Pine Ln', 'S003', '0001-01-01T00:00:00.0000000', '1990-01-25 00:00:00', '80655e05-0aa7-4feb-860e-32ac14a19864', 'charlie.brown@hms.com', 'Charlie', 0, '2015-07-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Brown', '555-3333', 'Doctor', 0.0, NULL),
-('f80785eb-4de2-4dd6-9467-f3f0df47a952', '202 Secret Rd', 'S007', '0001-01-01T00:00:00.0000000', '2005-01-01 00:00:00', '63347532-a564-4e23-a5d9-c7de4ef82da0', 'tor.soklumor@hms.com', 'Soklumor', 0, '2022-04-20T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'Tor', '2222-2222', 'IT', 0.0, NULL),
-('da6a4964-6725-4c01-a481-99527f311f92', 'Hospital', 'S000', '0001-01-01T00:00:00.0000000', '1990-01-01 00:00:00', '63347532-a564-4e23-a5d9-c7de4ef82da0', 'admin@hms.com', 'Admin', 0, '2020-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'User', '000-0000', 'Administrator', 0.0, NULL);
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'staff_id', N'address', N'code', N'created_at', N'dob', N'department_id', N'email', N'firstname', N'gender', N'hired_date', N'is_active', N'is_deleted', N'lastname', N'phonenumber', N'position', N'salary', N'updated_at') AND [object_id] = OBJECT_ID(N'[tbl_staffs]'))
-    SET IDENTITY_INSERT [tbl_staffs] OFF;
+INSERT INTO [tbl_positions] ([position_id], [code], [name], [description], [department_id], [is_active], [is_deleted], [created_at])
+VALUES 
+('pos-001', 'NUR', 'Nurse', 'Nursing staff', 'dept-003', 1, 0, GETDATE()),
+('pos-002', 'DOC', 'Doctor', 'Medical doctor', 'dept-002', 1, 0, GETDATE()),
+('pos-003', 'ADM', 'Administrator', 'Administrative staff', 'dept-004', 1, 0, GETDATE()),
+('pos-004', 'TEC', 'Technician', 'Technical staff', 'dept-001', 1, 0, GETDATE()),
+('pos-005', 'REC', 'Receptionist', 'Front desk staff', 'dept-006', 1, 0, GETDATE()),
+('pos-006', 'ITS', 'IT Specialist', 'IT support staff', 'dept-004', 1, 0, GETDATE());
 GO
 
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'doctor_id', N'code', N'created_at', N'is_active', N'is_deleted', N'license_number', N'specialization', N'staff_id', N'stopped_work', N'updated_at', N'years_of_experience ') AND [object_id] = OBJECT_ID(N'[tbl_doctors]'))
-    SET IDENTITY_INSERT [tbl_doctors] ON;
+INSERT INTO [tbl_staffs] ([staff_id], [address], [code], [created_at], [dob], [department_id], [email], [firstname], [gender], [hired_date], [is_active], [is_deleted], [lastname], [phonenumber], [position_id], [salary], [updated_at])
+VALUES 
+('staff-001', '456 Oak Ave', 'S002', GETDATE(), '1975-08-20', 'dept-003', 'bob.johnson@hms.com', 'Bob', 0, '2005-03-10', 1, 0, 'Johnson', '555-2222', 'pos-001', 0.0, NULL),
+('staff-002', '202 Secret Rd', 'S006', GETDATE(), '2004-01-01', 'dept-004', 'tola.seyha@hms.com', 'Seyha', 0, '2022-04-20', 1, 0, 'Tola', '1111-1111', 'pos-003', 0.0, NULL),
+('staff-003', '101 Hero Way', 'S004', GETDATE(), '1982-11-03', 'dept-001', 'diana.prince@hms.com', 'Diana', 1, '2012-09-15', 1, 0, 'Prince', '555-4444', 'pos-004', 0.0, NULL),
+('staff-004', '123 Main St', 'S001', GETDATE(), '1980-05-15', 'dept-002', 'alice.smith@hms.com', 'Alice', 1, '2010-01-01', 1, 0, 'Smith', '555-1111', 'pos-002', 0.0, NULL),
+('staff-005', '202 Secret Rd', 'S005', GETDATE(), '1995-02-28', 'dept-006', 'eve.adams@hms.com', 'Eve', 1, '2018-04-20', 1, 0, 'Adams', '555-5555', 'pos-005', 0.0, NULL),
+('staff-006', '789 Pine Ln', 'S003', GETDATE(), '1990-01-25', 'dept-005', 'charlie.brown@hms.com', 'Charlie', 0, '2015-07-01', 1, 0, 'Brown', '555-3333', 'pos-002', 0.0, NULL),
+('staff-007', '202 Secret Rd', 'S007', GETDATE(), '2005-01-01', 'dept-004', 'tor.soklumor@hms.com', 'Soklumor', 0, '2022-04-20', 1, 0, 'Tor', '2222-2222', 'pos-006', 0.0, NULL),
+('staff-000', 'Hospital', 'S000', GETDATE(), '1990-01-01', 'dept-004', 'admin@hms.com', 'Admin', 0, '2020-01-01', 1, 0, 'User', '000-0000', 'pos-003', 0.0, NULL);
+GO
+
 INSERT INTO [tbl_doctors] ([doctor_id], [code], [created_at], [is_active], [is_deleted], [license_number], [specialization], [staff_id], [stopped_work], [updated_at], [years_of_experience ])
-VALUES ('7f760449-40eb-4483-8a34-095bc94c4b46', 'S003', '0001-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'LIC-PED-001', 'Pediatrics', 'cb842b1f-e86c-46f0-9176-c7cf53f32d1a', CAST(0 AS bit), NULL, 10),
-('f23d761d-82be-42e1-8bc8-19392ed61b62', 'S001', '0001-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'LIC-CARD-001', 'Cardiology', '991d5722-d08f-4206-b782-80067da7c4b2', CAST(0 AS bit), NULL, 15);
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'doctor_id', N'code', N'created_at', N'is_active', N'is_deleted', N'license_number', N'specialization', N'staff_id', N'stopped_work', N'updated_at', N'years_of_experience ') AND [object_id] = OBJECT_ID(N'[tbl_doctors]'))
-    SET IDENTITY_INSERT [tbl_doctors] OFF;
+VALUES 
+('doc-001', 'S003', GETDATE(), 1, 0, 'LIC-PED-001', 'Pediatrics', 'staff-006', 0, NULL, 10),
+('doc-002', 'S001', GETDATE(), 1, 0, 'LIC-CARD-001', 'Cardiology', 'staff-004', 0, NULL, 15);
 GO
 
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'user_id', N'code', N'created_at', N'is_active', N'is_deleted', N'password', N'staff_id', N'updated_at', N'username') AND [object_id] = OBJECT_ID(N'[tbl_users]'))
-    SET IDENTITY_INSERT [tbl_users] ON;
 INSERT INTO [tbl_users] ([user_id], [code], [created_at], [is_active], [is_deleted], [password], [staff_id], [updated_at], [username])
-VALUES ('00ea1daf-21ce-49c7-a12e-1b3e31b2257c', 'S007', '0001-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'admin', 'f80785eb-4de2-4dd6-9467-f3f0df47a952', NULL, 'Lumor'),
-('b2d43c94-c5d0-4d9c-b05f-d27c25a6aaba', 'S006', '0001-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), '123456', '83f71025-693f-4067-9b85-84232d4bdce6', NULL, 'Seyha'),
-('b78a9c2e-2e4d-4e9a-9e2a-1c5d6e7f8a9b', 'S000', '0001-01-01T00:00:00.0000000', CAST(1 AS bit), CAST(0 AS bit), 'admin', 'da6a4964-6725-4c01-a481-99527f311f92', NULL, 'admin');
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'user_id', N'code', N'created_at', N'is_active', N'is_deleted', N'password', N'staff_id', N'updated_at', N'username') AND [object_id] = OBJECT_ID(N'[tbl_users]'))
-    SET IDENTITY_INSERT [tbl_users] OFF;
+VALUES 
+('user-001', 'S007', GETDATE(), 1, 0, 'admin', 'staff-007', NULL, 'Lumor'),
+('user-002', 'S006', GETDATE(), 1, 0, '123456', 'staff-002', NULL, 'Seyha'),
+('user-003', 'S000', GETDATE(), 1, 0, 'admin', 'staff-000', NULL, 'admin');
 GO
 
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'patient_id', N'address', N'code', N'created_at', N'dob', N'doctor_id', N'email', N'firstname', N'gender', N'is_active', N'is_deleted', N'lastname', N'phonenumber', N'sickness', N'updated_at') AND [object_id] = OBJECT_ID(N'[tbl_patients]'))
-    SET IDENTITY_INSERT [tbl_patients] ON;
 INSERT INTO [tbl_patients] ([patient_id], [address], [code], [created_at], [dob], [doctor_id], [email], [firstname], [gender], [is_active], [is_deleted], [lastname], [phonenumber], [sickness], [updated_at])
-VALUES ('23da1e1f-96fd-446e-9568-473762b2049d', '303 River St', 'P001', '0001-01-01T00:00:00.0000000', '1960-03-10 00:00:00', 'f23d761d-82be-42e1-8bc8-19392ed61b62', 'frank.white@example.com', 'Frank', 0, CAST(1 AS bit), CAST(0 AS bit), 'White', '555-6666', 'Headache', NULL),
-('847ba0b5-b4c8-4666-9063-c047f89ed82b', '404 Lake Rd', 'P002', '0001-01-01T00:00:00.0000000', '2018-07-01 00:00:00', '7f760449-40eb-4483-8a34-095bc94c4b46', 'grace.black@example.com', 'Grace', 1, CAST(1 AS bit), CAST(0 AS bit), 'Black', '555-7777', 'Fatigue', NULL),
-('d2235564-74c6-4879-a5d6-8e464b062cd3', '505 Mountain View', 'P003', '0001-01-01T00:00:00.0000000', '1990-12-25 00:00:00', 'f23d761d-82be-42e1-8bc8-19392ed61b62', 'henry.green@example.com', 'Henry', 0, CAST(1 AS bit), CAST(0 AS bit), 'Green', '555-8888', 'Cold', NULL);
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'patient_id', N'address', N'code', N'created_at', N'dob', N'doctor_id', N'email', N'firstname', N'gender', N'is_active', N'is_deleted', N'lastname', N'phonenumber', N'sickness', N'updated_at') AND [object_id] = OBJECT_ID(N'[tbl_patients]'))
-    SET IDENTITY_INSERT [tbl_patients] OFF;
+VALUES 
+('pat-001', '303 River St', 'P001', GETDATE(), '1960-03-10', 'doc-002', 'frank.white@example.com', 'Frank', 0, 1, 0, 'White', '555-6666', 'Headache', NULL),
+('pat-002', '404 Lake Rd', 'P002', GETDATE(), '2018-07-01', 'doc-001', 'grace.black@example.com', 'Grace', 1, 1, 0, 'Black', '555-7777', 'Fatigue', NULL),
+('pat-003', '505 Mountain View', 'P003', GETDATE(), '1990-12-25', 'doc-002', 'henry.green@example.com', 'Henry', 0, 1, 0, 'Green', '555-8888', 'Cold', NULL);
 GO
 
 CREATE UNIQUE INDEX [IX_tbl_departments_code] ON [tbl_departments] ([code]) WHERE [is_deleted] = 0 AND [code] <> '';
@@ -208,4 +229,3 @@ GO
 
 COMMIT;
 GO
-

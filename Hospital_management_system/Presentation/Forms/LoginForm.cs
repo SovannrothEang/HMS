@@ -57,6 +57,8 @@ public partial class LoginForm : Form
             tbPassword.PasswordChar = cbShowPassword.Checked ? '\0' : '•';
         };
 
+        this.AcceptButton = btnLogin; // Pressing Enter triggers login
+
         // Enable form dragging since it is borderless
         pnlLeft.MouseDown += Form_MouseDown;
         pnlRight.MouseDown += Form_MouseDown;

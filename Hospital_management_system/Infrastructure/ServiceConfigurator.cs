@@ -40,12 +40,14 @@ public static class ServiceConfigurator
         services.AddTransient<PatientsControl>();
         services.AddTransient<StaffsControl>();
         services.AddTransient<UsersControl>();
+        services.AddTransient<PositionsControl>();
 
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IDoctorRepository, DoctorRepository>();
         services.AddScoped<IStaffRepository, StaffRepository>();
         services.AddScoped<IPatientRepository, PatientRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPositionRepository, PositionRepository>();
 
         return services;
     }

@@ -158,7 +158,7 @@ public partial class UsersControl : UserControl, IDisposable
         btnDelete.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(231, 76, 60), System.Drawing.Color.White);
         btnSubmit.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(46, 204, 113), System.Drawing.Color.White);
         btnCancel.ApplyModernButtonStyle(System.Drawing.Color.FromArgb(149, 165, 166), System.Drawing.Color.White);
-        tableLayoutPanel1?.ApplyModernInputStyles();
+        tlpInput?.ApplyModernInputStyles();
         tbSearch?.ApplyModernTextBoxStyle();
 
         tbFirstName.Enabled = tbLastName.Enabled = cmbGender.Enabled = dtpDob.Enabled = 
@@ -171,7 +171,7 @@ public partial class UsersControl : UserControl, IDisposable
         dtpDob.CustomFormat = "dd/MM/yyyy";
         
         cmbGender.DataSource = Enum.GetValues(typeof(PersonGender));
-        cmbPosition.DataSource = Enum.GetValues(typeof(Position));
+        cmbPosition.DataSource = Enum.GetValues(typeof(Hospital_management_system.Domain.ValueObjects.Position));
         cmbDepartment.DataSource = GlobalState.Departments;
         cmbDepartment.DisplayMember = "Name";
 

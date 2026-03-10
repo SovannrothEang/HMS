@@ -16,20 +16,23 @@ public class StaffRepository : DapperRepository<Staff>, IStaffRepository
     {
         string sql = $@"
             SELECT s.*, 
-                   d.department_id AS split_dept, d.* 
+                   d.department_id AS split_dept, d.*,
+                   p.position_id AS split_pos, p.*
             FROM {TableNames.Staffs} s
             LEFT JOIN {TableNames.Departments} d ON s.department_id = d.department_id
+            LEFT JOIN {TableNames.Positions} p ON s.position_id = p.position_id
             WHERE s.is_deleted = 0";
 
         using var connection = _connectionFactory.CreateConnection();
-        var staffList = await connection.QueryAsync<Staff, Department, Staff>(
+        var staffList = await connection.QueryAsync<Staff, Department, Position, Staff>(
             sql,
-            (staff, department) =>
+            (staff, department, position) =>
             {
                 staff.Department = department;
+                staff.Position = position;
                 return staff;
             },
-            splitOn: "split_dept");
+            splitOn: "split_dept,split_pos");
 
         return staffList;
     }
@@ -40,11 +43,11 @@ public class StaffRepository : DapperRepository<Staff>, IStaffRepository
         string sql = $@"
             INSERT INTO {TableNames.Staffs} (
                 staff_id, code, firstname, lastname, dob, gender, 
-                phonenumber, address, email, position, hired_date, 
+                phonenumber, address, email, position_id, hired_date, 
                 salary, department_id, is_active, is_deleted, created_at
             ) VALUES (
                 @StaffId, @Code, @FirstName, @LastName, @DOB, @Gender, 
-                @PhoneNumber, @Address, @Email, @Position, @HiredDate, 
+                @PhoneNumber, @Address, @Email, @PositionId, @HiredDate, 
                 @Salary, @DepartmentId, @IsActive, @IsDeleted, @CreatedAt
             )";
 
@@ -64,7 +67,7 @@ public class StaffRepository : DapperRepository<Staff>, IStaffRepository
                 phonenumber = @PhoneNumber, 
                 address = @Address, 
                 email = @Email, 
-                position = @Position, 
+                position_id = @PositionId, 
                 hired_date = @HiredDate, 
                 salary = @Salary, 
                 department_id = @DepartmentId, 
