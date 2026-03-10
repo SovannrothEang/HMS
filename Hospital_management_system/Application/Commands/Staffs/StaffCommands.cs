@@ -112,10 +112,17 @@ public record DeleteStaffCommand(string Code) : IRequest<Result>;
 public class DeleteStaffHandler : IRequestHandler<DeleteStaffCommand, Result>
 {
     private readonly IStaffRepository _staffRepository;
+    private readonly IDoctorRepository _doctorRepository;
+    private readonly IPatientRepository _patientRepository;
 
-    public DeleteStaffHandler(IStaffRepository staffRepository)
+    public DeleteStaffHandler(
+        IStaffRepository staffRepository,
+        IDoctorRepository doctorRepository,
+        IPatientRepository patientRepository)
     {
         _staffRepository = staffRepository;
+        _doctorRepository = doctorRepository;
+        _patientRepository = patientRepository;
     }
 
     public async Task<Result> HandleAsync(DeleteStaffCommand request, CancellationToken cancellationToken)
@@ -123,6 +130,21 @@ public class DeleteStaffHandler : IRequestHandler<DeleteStaffCommand, Result>
         var staff = await _staffRepository.GetByCodeAsync(request.Code);
         if (staff == null) return Result.Failure("Staff not found.");
 
+        // Validation for Staff who is also a Doctor
+        var doctor = await _doctorRepository.GetByStaffIdAsync(staff.StaffId);
+        if (doctor != null)
+        {
+            var hasActivePatients = await _patientRepository.HasActivePatientsAsync(doctor.DoctorId);
+            if (hasActivePatients)
+            {
+                return Result.Failure("Cannot delete this staff member because they are a doctor with active patients assigned. Please reassign the patients first.");
+            }
+
+            // If no patients, cascade soft-delete the doctor record first
+            await _doctorRepository.DeleteAsync(doctor.Code);
+        }
+
+        // Finally, delete the staff
         await _staffRepository.DeleteAsync(request.Code);
         return Result.Success();
     }

@@ -90,4 +90,11 @@ public class DoctorRepository : DapperRepository<Doctor>, IDoctorRepository
         using var connection = _connectionFactory.CreateConnection();
         return await connection.QueryFirstOrDefaultAsync<Doctor>(sql, new { Code = code });
     }
+
+    public async Task<Doctor?> GetByStaffIdAsync(string staffId)
+    {
+        string sql = $"SELECT * FROM {TableNames.Doctors} WHERE staff_id = @StaffId AND is_deleted = 0";
+        using var connection = _connectionFactory.CreateConnection();
+        return await connection.QueryFirstOrDefaultAsync<Doctor>(sql, new { StaffId = staffId });
+    }
 }

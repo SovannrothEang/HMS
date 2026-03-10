@@ -10,4 +10,5 @@ public interface IDoctorRepository
     Task<int> AddAsync(Doctor doctor);
     Task<int> UpdateAsync(Doctor doctor);
     Task<int> DeleteAsync(string code);
+    Task<Doctor?> GetByStaffIdAsync(string staffId);
 }

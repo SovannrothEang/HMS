@@ -28,6 +28,7 @@ public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, 
 
         var department = new Department
         {
+            DepartmentId = Guid.NewGuid().ToString(),
             Code = request.Code,
             Name = request.Name,
             Description = request.Description,

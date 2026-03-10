@@ -100,4 +100,12 @@ public class PatientRepository : DapperRepository<Patient>, IPatientRepository
         using var connection = _connectionFactory.CreateConnection();
         return await connection.QueryFirstOrDefaultAsync<Patient>(sql, new { Code = code });
     }
+
+    public async Task<bool> HasActivePatientsAsync(string doctorId)
+    {
+        string sql = $"SELECT COUNT(1) FROM {TableNames.Patients} WHERE doctor_id = @DoctorId AND is_deleted = 0";
+        using var connection = _connectionFactory.CreateConnection();
+        var count = await connection.ExecuteScalarAsync<int>(sql, new { DoctorId = doctorId });
+        return count > 0;
+    }
 }

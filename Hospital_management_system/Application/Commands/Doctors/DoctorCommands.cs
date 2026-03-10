@@ -83,16 +83,27 @@ public record DeleteDoctorCommand(string Code) : IRequest<Result>;
 public class DeleteDoctorHandler : IRequestHandler<DeleteDoctorCommand, Result>
 {
     private readonly IDoctorRepository _doctorRepository;
+    private readonly IPatientRepository _patientRepository;
 
-    public DeleteDoctorHandler(IDoctorRepository doctorRepository)
+    public DeleteDoctorHandler(
+        IDoctorRepository doctorRepository,
+        IPatientRepository patientRepository)
     {
         _doctorRepository = doctorRepository;
+        _patientRepository = patientRepository;
     }
 
     public async Task<Result> HandleAsync(DeleteDoctorCommand request, CancellationToken cancellationToken)
     {
         var doctor = await _doctorRepository.GetByCodeAsync(request.Code);
         if (doctor == null) return Result.Failure("Doctor not found.");
+
+        // Check if there are active patients assigned to this doctor
+        var hasActivePatients = await _patientRepository.HasActivePatientsAsync(doctor.DoctorId);
+        if (hasActivePatients)
+        {
+            return Result.Failure("Cannot delete this doctor because they have active patients assigned. Please reassign the patients first.");
+        }
 
         await _doctorRepository.DeleteAsync(request.Code);
         return Result.Success();

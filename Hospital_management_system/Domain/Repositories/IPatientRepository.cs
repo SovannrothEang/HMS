@@ -10,4 +10,5 @@ public interface IPatientRepository
     Task<int> AddAsync(Patient patient);
     Task<int> UpdateAsync(Patient patient);
     Task<int> DeleteAsync(string code);
+    Task<bool> HasActivePatientsAsync(string doctorId);
 }

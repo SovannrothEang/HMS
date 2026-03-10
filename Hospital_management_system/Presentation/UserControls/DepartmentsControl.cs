@@ -97,13 +97,20 @@ public partial class DepartmentsControl : UserControl, IDisposable
             }
             IsNew = false;
             DisableControls(false);
-            tbCode.Focus();
+            tbCode.Enabled = false; // Prevent editing the Code during update
+            tbName.Focus();
         };
         btnSubmit.Click += async (s, e) =>
         {
             var code = tbCode.Text.Trim();
             var name = tbName.Text.Trim();
             var description = tbDescription?.Text.Trim() ?? string.Empty;
+
+            if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(name))
+            {
+                MessageBox.Show("Code and Name cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             if (IsNew)
             {
